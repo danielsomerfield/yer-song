@@ -1,25 +1,19 @@
 import {
   AttributeValue,
-  DynamoDBClient,
+  DynamoDB,
   GetItemCommand,
 } from "@aws-sdk/client-dynamodb";
-import { logger } from "./logger";
+import { logger } from "../util/logger";
+
+import { Song } from "./domain";
 
 export type Maybe<T> = T | undefined;
-
-export interface Song {
-  id: string;
-  name: string;
-  artistName: string;
-}
 
 export interface SongRepository {
   getSongById: (id: string) => Promise<Maybe<Song>>;
 }
 
-export const createSongRepository = (
-  client: DynamoDBClient
-): SongRepository => {
+export const createSongRepository = (client: DynamoDB): SongRepository => {
   return {
     getSongById: async (id: string) => {
       const maybeSongResponse = await client.send(

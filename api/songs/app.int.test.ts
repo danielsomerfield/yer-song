@@ -1,13 +1,18 @@
-import { describe, it } from "@jest/globals";
+import { defaultConfiguration, getSongDependencies } from "./app";
+import { v4 as uuidv4 } from "uuid";
+import { APIGatewayProxyEvent } from "aws-lambda";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { GenericContainer, StartedTestContainer, Wait } from "testContainers";
 import { afterEach } from "node:test";
-import { createSongRepository } from "./song-repository";
-import { v4 as uuidv4 } from "uuid";
+import { createGetSongLambda } from "./song/getSong";
+import { Song } from "./song/domain";
 
-describe("The song repository", () => {
+describe("the lambda", () => {
+  // TODO: refactor
   let dynamoDBContainer: StartedTestContainer;
+
   let client: DynamoDB;
+  let endpoint: string;
 
   beforeEach(async () => {
     dynamoDBContainer = await new GenericContainer("localstack/localstack")
@@ -15,9 +20,10 @@ describe("The song repository", () => {
       .withExposedPorts(4569)
       .withWaitStrategy(Wait.forLogMessage(/.*Running on https.*/, 2))
       .start();
+
     const region = "us-west-2";
     const port = dynamoDBContainer.getMappedPort(4566);
-    const endpoint = `http://localhost:${port}`;
+    endpoint = `http://localhost:${port}`;
     client = new DynamoDB({
       endpoint,
       region,
@@ -46,8 +52,11 @@ describe("The song repository", () => {
     }
   });
 
-  it("loads songs from the database", async () => {
+  it("loads a song from the path", async () => {
     const songId = uuidv4();
+
+    const songName = "Money for Nothing";
+    const artistName = "Dire Straights";
     await client.putItem({
       TableName: "song",
       Item: {
@@ -55,43 +64,38 @@ describe("The song repository", () => {
           S: songId,
         },
         name: {
-          S: "Someone I used to know",
+          S: songName,
         },
         artistName: {
-          S: "Gotye",
+          S: artistName,
         },
       },
     });
 
-    const songRepository = createSongRepository(client);
-    const song = await songRepository.getSongById(songId);
-    expect(song?.id).toEqual(songId);
-  });
+    const event = {
+      pathParameters: { id: songId },
+    } as unknown as APIGatewayProxyEvent;
 
-  it("returns undefined for a non-existent record", async () => {
-    const songId = "nope";
-
-    const songRepository = createSongRepository(client);
-    const song = await songRepository.getSongById(songId);
-    expect(song?.id).toBeUndefined();
-  });
-
-  it("returns undefined if required fields are missing", async () => {
-    const songId = uuidv4();
-    await client.putItem({
-      TableName: "song",
-      Item: {
-        id: {
-          S: songId,
+    const getSong = createGetSongLambda(
+      getSongDependencies({
+        ...defaultConfiguration,
+        dynamodb: {
+          endpoint,
+          credentials: {
+            accessKeyId: "fake",
+            secretAccessKey: "fake",
+            sessionToken: "fake",
+          },
         },
-        name: {
-          S: "Someone I used to know",
-        },
-      },
+      })
+    );
+    const result = await getSong(event);
+    expect(result.statusCode).toEqual(200);
+    const song = JSON.parse(result.body) as Song;
+    expect(song).toMatchObject({
+      id: songId,
+      name: songName,
+      artistName,
     });
-
-    const songRepository = createSongRepository(client);
-    const song = await songRepository.getSongById(songId);
-    expect(song).toEqual(undefined);
   });
 });

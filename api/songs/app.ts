@@ -1,49 +1,28 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { createGetSongLambda } from "./song/getSong";
+import { createSongRepository } from "./song/song-repository";
+import { DynamoDB } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClientConfig } from "@aws-sdk/client-dynamodb/dist-types/DynamoDBClient";
 
-interface Song {
-  id: string;
-  name: string;
-  artistName: string;
+const dynamoDBConfiguration: DynamoDBClientConfig = {};
+
+export interface Configuration {
+  dynamodb: DynamoDBClientConfig;
 }
 
-type Maybe<T> = T | undefined;
+export const defaultConfiguration: Configuration = {
+  dynamodb: dynamoDBConfiguration,
+};
 
-interface Dependencies {
-  findSongById: (id: string) => Maybe<Song>;
-}
+export const getSongDependencies = (
+  configuration: Configuration = defaultConfiguration
+) => {
+  const createDynamoClient = () => new DynamoDB(configuration.dynamodb);
 
-export const createGetSongLambda = (dependencies: Dependencies) => {
-  return async (
-    event: APIGatewayProxyEvent
-  ): Promise<APIGatewayProxyResult> => {
-    const id = event.pathParameters?.["id"];
-    if (id) {
-      const maybeSong = dependencies.findSongById(id);
-      return {
-        statusCode: 200,
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(maybeSong),
-      };
-    } else {
-      return {
-        statusCode: 404,
-        headers: {
-          "content-type": "application/json",
-        },
-        body: '{"message":"Missing id"}',
-      };
-    }
+  const dynamoClient: DynamoDB = createDynamoClient();
+
+  return {
+    findSongById: createSongRepository(dynamoClient).getSongById,
   };
 };
 
-export const getSong = createGetSongLambda({
-  findSongById: (id) => {
-    return {
-      id,
-      name: `name-${id}`,
-      artistName: `artist-${id}`,
-    };
-  },
-});
+export const getSong = createGetSongLambda(getSongDependencies());

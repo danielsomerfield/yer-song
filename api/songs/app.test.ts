@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { describe, expect, it } from "@jest/globals";
-import { createGetSongLambda } from "./app";
+
+import { createGetSongLambda } from "./song/getSong";
 
 describe("the handler", function () {
   it("return song with existing id", async () => {
@@ -10,11 +11,11 @@ describe("the handler", function () {
     } as unknown as APIGatewayProxyEvent;
     const dependencies = {
       findSongById: (id: string) => {
-        return {
+        return Promise.resolve({
           id: id,
           name: `name-${id}`,
           artistName: `artist-${id}`,
-        };
+        });
       },
     };
     const getSong = createGetSongLambda(dependencies);
@@ -36,7 +37,7 @@ describe("the handler", function () {
     } as unknown as APIGatewayProxyEvent;
     const dependencies = {
       findSongById: () => {
-        return undefined;
+        return Promise.resolve(undefined);
       },
     };
     const getSong = createGetSongLambda(dependencies);
