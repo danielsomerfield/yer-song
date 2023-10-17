@@ -75,4 +75,33 @@ describe("The song respository", () => {
     const song = await songRepository.getSongById(songId);
     expect(song?.id).toEqual(songId);
   });
+
+  it("returns undefined for a non-existant record", async () => {
+    const songId = "nope";
+
+    const songRepository = createSongRepository(client);
+    const song = await songRepository.getSongById(songId);
+    expect(song?.id).toBeUndefined();
+  });
+
+  it("returns undefined if required fields are missing", async () => {
+    const songId = uuidv4();
+    await client.send(
+      new PutItemCommand({
+        TableName: "song",
+        Item: {
+          id: {
+            S: songId,
+          },
+          name: {
+            S: "Someone I used to know",
+          },
+        },
+      })
+    );
+
+    const songRepository = createSongRepository(client);
+    const song = await songRepository.getSongById(songId);
+    expect(song).toEqual(undefined);
+  });
 });

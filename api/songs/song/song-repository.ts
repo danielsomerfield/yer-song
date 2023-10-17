@@ -1,4 +1,9 @@
-import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
+import {
+  AttributeValue,
+  DynamoDBClient,
+  GetItemCommand,
+} from "@aws-sdk/client-dynamodb";
+import { logger } from "./logger";
 
 export type Maybe<T> = T | undefined;
 
@@ -31,15 +36,31 @@ export const createSongRepository = (
       const maybeItem = maybeSongResponse.Item;
 
       if (maybeItem) {
-        // TODO: handle malformed inputs
-        return {
-          id: maybeItem["id"].S!,
-          name: maybeItem["name"].S!,
-          artistName: maybeItem["artistName"].S!,
-        };
+        try {
+          return {
+            id: getRequiredString(maybeItem, "id"),
+            name: getRequiredString(maybeItem, "name"),
+            artistName: getRequiredString(maybeItem, "artistName"),
+          };
+        } catch (e) {
+          logger.error(e, "A malformed record was found in the DB");
+          return undefined;
+        }
       } else {
-        throw "NYI";
+        return undefined;
       }
     },
   };
+};
+
+const getRequiredString = (
+  item: Record<string, AttributeValue>,
+  fieldName: string
+): string => {
+  const value = item?.[fieldName]?.S;
+  if (!value) {
+    throw { message: `Missing value for field: '${fieldName}'.` };
+  } else {
+    return value;
+  }
 };

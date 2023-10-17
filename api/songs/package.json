@@ -16,6 +16,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.429.0",
     "esbuild": "^0.14.14",
+    "pino": "^8.16.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
