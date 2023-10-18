@@ -29,6 +29,9 @@ resource "aws_s3_bucket_website_configuration" "yer_song_ui_resource_bucket" {
   index_document {
     suffix = "index.html"
   }
+  error_document {
+    key = "index.html"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "yer_song_ui_resource_bucket" {

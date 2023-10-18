@@ -13,7 +13,7 @@ describe("the handler", function () {
       findSongById: (id: string) => {
         return Promise.resolve({
           id: id,
-          name: `name-${id}`,
+          title: `name-${id}`,
           artistName: `artist-${id}`,
         });
       },
@@ -25,9 +25,11 @@ describe("the handler", function () {
     expect(result.statusCode).toEqual(200);
     expect(result.headers?.["content-type"]).toEqual("application/json");
     expect(JSON.parse(result.body)).toMatchObject({
-      id: songId,
-      name: `name-${songId}`,
-      artistName: `artist-${songId}`,
+      data: {
+        id: songId,
+        title: `name-${songId}`,
+        artistName: `artist-${songId}`,
+      },
     });
   });
 

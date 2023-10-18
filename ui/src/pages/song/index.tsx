@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export interface Song {
-    id: string;
-    title: string;
-    artist: string;
+  id: string;
+  title: string;
+  artistName: string;
 }
 
 const Title = styled.h1`
@@ -21,31 +22,94 @@ const ArtistNme = styled.h1`
   text-align: center;
 `;
 
-export type GetSong = () => Promise<Song | undefined>;
+export type GetSong = (id: string) => Promise<Song | undefined>;
 
-export const SongView = ({song}: { song: Song }) => {
-    return <div>
-        <Title role={"heading"} aria-level={1} aria-label={"song-title"}>{song.title}</Title>
-        <ArtistNme role={"heading"} aria-level={2} aria-label={"artist-name"}>{song.artist}</ArtistNme>
-    </div>;
+export const SongView = ({ song }: { song: Song }) => {
+  return (
+    <div>
+      <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
+        {song.title}
+      </Title>
+      <ArtistNme role={"heading"} aria-level={2} aria-label={"artist-name"}>
+        {song.artistName}
+      </ArtistNme>
+    </div>
+  );
 };
-
 
 const SongNotFound = () => {
-    return <div>The song was not found</div>;
+  return <div>The song was not found</div>;
 };
 
+const SongLoading = () => {
+  return <div>Loading...</div>;
+};
 
-export const SongPage = ({getSong}: { getSong: GetSong }) => {
-    const [song, setSong] =
-        useState<Song | undefined>(undefined);
+interface Maybe<T> {
+  getValue: () => T;
+  exists: () => boolean;
+}
 
-    useEffect(() => {
-        (async () => {
-            const song = await getSong();
-            setSong(song);
-        })();
+// TODO: test the none case
+const Maybe = {
+  none: function <T>(): Maybe<T> {
+    return {
+      getValue: () => {
+        throw "NYI: no value";
+      },
+      exists: () => false,
+    };
+  },
+  of: function <T>(t: T | undefined): Maybe<T> {
+    return {
+      getValue: () => {
+        console.log(`getValue: ${t}`, t);
+        if (t) {
+          return t;
+        } else {
+          throw "NYI: no value";
+        }
+      },
+      exists: () => t != null,
+    };
+  },
+};
 
-    }, undefined);
-    return song ? <SongView song={song}/> : <SongNotFound/>;
+export const SongPage = ({
+  getSong,
+  songId,
+}: {
+  getSong: GetSong;
+  songId?: string;
+}) => {
+  const [song, setSong] = useState<Maybe<Song> | undefined>(undefined);
+  const [loadStarted, setLoadStarted] = useState(false);
+
+  useEffect(() => {
+    if (!loadStarted) {
+      setLoadStarted(true);
+      (async () => {
+        if (!songId) {
+          setSong(Maybe.none);
+        } else {
+          const song = await getSong(songId);
+          console.log("Setting song to undefined?", song == undefined);
+          setSong(Maybe.of(song));
+        }
+      })();
+    }
+  }, undefined);
+
+  if (!song) {
+    return <SongLoading />;
+  } else console.log("exists?", song.exists(), song);
+
+  return song.exists() ? <SongView song={song.getValue()} /> : <SongNotFound />;
+};
+
+// TODO: can we make this injection less redundant?
+export const SongPageWithParams = ({ getSong }: { getSong: GetSong }) => {
+  const { songId } = useParams();
+  console.log(`Rendering page with id ${songId} at ${new Date().getTime()}`);
+  return <SongPage getSong={getSong} songId={songId} />;
 };

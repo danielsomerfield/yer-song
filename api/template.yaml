@@ -3,14 +3,36 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   API for Yer-Song App
 
+Parameters:
+  DynamoDbEndpoint:
+    Description: The url prefix requests to the song api
+    Type: String
+    Default: http://host.docker.internal:4566
+  AllowOrigin:
+    Description: The origin the server allows for CORS purposes
+    Type: String
+    Default: "'http://localhost:3001'"
+
 Globals:
   Function:
     Timeout: 10
 
 Resources:
+  SongByIdAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: "Prod"
+      Cors:
+        AllowMethods: "'GET,OPTIONS'"
+        AllowOrigin: !Ref AllowOrigin
+        AllowHeaders: "'Content-Type'"
+
   SongByIdFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Environment:
+        Variables:
+          API_ENDPOINT: !Ref DynamoDbEndpoint
       CodeUri: songs/
       Handler: app.getSong
       Runtime: nodejs18.x
@@ -22,6 +44,7 @@ Resources:
           Properties:
             Path: /songs/{id}
             Method: get
+            RestApiId: !Ref SongByIdAPI
       Policies: AWSLambdaDynamoDBExecutionRole
     Metadata:
       BuildMethod: esbuild
@@ -36,7 +59,6 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-
   SongTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -57,7 +79,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   SongByIdAPI:
     Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/songs/"
+    Value: !Sub "https://${SongByIdAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
   SongByIdFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt SongByIdFunction.Arn

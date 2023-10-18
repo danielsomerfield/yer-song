@@ -63,7 +63,7 @@ describe("the lambda", () => {
         id: {
           S: songId,
         },
-        name: {
+        title: {
           S: songName,
         },
         artistName: {
@@ -91,10 +91,10 @@ describe("the lambda", () => {
     );
     const result = await getSong(event);
     expect(result.statusCode).toEqual(200);
-    const song = JSON.parse(result.body) as Song;
-    expect(song).toMatchObject({
+    const payload = JSON.parse(result.body) as { data: Song };
+    expect(payload.data).toMatchObject({
       id: songId,
-      name: songName,
+      title: songName,
       artistName,
     });
   });

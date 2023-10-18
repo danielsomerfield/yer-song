@@ -2,7 +2,9 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/home";
 import styled from "styled-components";
-import { GetSong, Song, SongPage } from "./pages/song";
+import { SongPageWithParams } from "./pages/song";
+import { createSongForIdFn } from "./pages/song/songService";
+import { configuration } from "./configuration";
 
 const AppContainer = styled.main`
   text-align: center;
@@ -22,14 +24,9 @@ const Branding = styled.h1`
   font-size: 3em;
 `;
 
-const fakeFetch: GetSong = (): Promise<Song> => {
-  return Promise.resolve({
-    id: "song1",
-    title:
-      "The long way to get to the place that I am going and then I get there",
-    artist: "The Greatful Racoons of Yore",
-  });
-};
+const getSongForId = createSongForIdFn({
+  songsAPIHostURL: configuration.songsAPIHostURL,
+});
 
 function App() {
   return (
@@ -42,7 +39,7 @@ function App() {
           <Route index element={<Home />} />
           <Route
             path={"/songs/:songId"}
-            element={<SongPage getSong={fakeFetch} />}
+            element={<SongPageWithParams getSong={getSongForId} />}
           />
         </Routes>
       </AppContainer>

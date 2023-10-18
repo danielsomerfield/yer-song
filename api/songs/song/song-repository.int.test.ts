@@ -54,7 +54,7 @@ describe("The song repository", () => {
         id: {
           S: songId,
         },
-        name: {
+        title: {
           S: "Someone I used to know",
         },
         artistName: {

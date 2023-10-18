@@ -14,12 +14,13 @@ export const createGetSongLambda = (dependencies: Dependencies) => {
     const id = event.pathParameters?.["id"];
     if (id) {
       const maybeSong = await findSongById(id);
+      console.log("Found:", maybeSong);
       return {
         statusCode: 200,
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(maybeSong),
+        body: JSON.stringify({ data: maybeSong }),
       };
     } else {
       return {

@@ -3,7 +3,21 @@ import { createSongRepository } from "./song/song-repository";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBClientConfig } from "@aws-sdk/client-dynamodb/dist-types/DynamoDBClient";
 
-const dynamoDBConfiguration: DynamoDBClientConfig = {};
+console.log("Running with environment", process.env);
+
+const getDynamoEndpoint = () => {
+  const endpoint = process.env.API_ENDPOINT;
+  return endpoint == undefined || endpoint.trim().length == 0
+    ? undefined
+    : endpoint;
+};
+
+const dynamoDBConfiguration: DynamoDBClientConfig = {
+  // TODO this should be nothing production, localhost in api tests outside of docker, and host.docker.internal for
+  //  running inside of docker (like in sam local)
+  // endpoint: "http://localhost:4566",
+  endpoint: getDynamoEndpoint(),
+};
 
 export interface Configuration {
   dynamodb: DynamoDBClientConfig;

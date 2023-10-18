@@ -1,0 +1,13 @@
+{
+    "song": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {"S": "9FF01A07-F9E4-4C6C-8C14-8318A6517C4F"},
+                    "title": {"S": "American Woman"},
+                    "artistName": {"S": "The Guess Who"}
+                }
+            }
+        }
+    ]
+}

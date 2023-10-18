@@ -16,31 +16,36 @@ export interface SongRepository {
 export const createSongRepository = (client: DynamoDB): SongRepository => {
   return {
     getSongById: async (id: string) => {
-      const maybeSongResponse = await client.send(
-        new GetItemCommand({
-          Key: {
-            id: {
-              S: id,
+      try {
+        const maybeSongResponse = await client.send(
+          new GetItemCommand({
+            Key: {
+              id: {
+                S: id,
+              },
             },
-          },
-          TableName: "song",
-        })
-      );
+            TableName: "song",
+          })
+        );
 
-      const maybeItem = maybeSongResponse.Item;
+        const maybeItem = maybeSongResponse.Item;
 
-      if (maybeItem) {
-        try {
-          return {
-            id: getRequiredString(maybeItem, "id"),
-            name: getRequiredString(maybeItem, "name"),
-            artistName: getRequiredString(maybeItem, "artistName"),
-          };
-        } catch (e) {
-          logger.error(e, "A malformed record was found in the DB");
+        if (maybeItem) {
+          try {
+            return {
+              id: getRequiredString(maybeItem, "id"),
+              title: getRequiredString(maybeItem, "title"),
+              artistName: getRequiredString(maybeItem, "artistName"),
+            };
+          } catch (e) {
+            logger.error(e, "A malformed record was found in the DB");
+            return undefined;
+          }
+        } else {
           return undefined;
         }
-      } else {
+      } catch (e) {
+        console.log("Failed to get song", e);
         return undefined;
       }
     },

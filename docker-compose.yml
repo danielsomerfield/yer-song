@@ -13,3 +13,9 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - lambda_local
+
+networks:
+  lambda_local:
+    name: lambda_local
