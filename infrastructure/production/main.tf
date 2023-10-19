@@ -19,6 +19,11 @@ provider "aws" {
   region  = "us-west-2"
 }
 
+provider "aws" {
+  alias = "us-east-1"
+  region = "us-east-1"
+}
+
 resource "aws_s3_bucket" "yer_song_ui_resource_bucket" {
   bucket = "yer-song-ui-production"
   force_destroy = true
@@ -50,7 +55,7 @@ data "aws_iam_policy_document" "yer_song_ui_resource_bucket_allow_public" {
   statement {
     sid = "AllPublicAccessToYerSongUI"
     actions = [
-      "s3:GetObject"
+      "s3:GetObject",
     ]
     principals {
       identifiers = ["*"]
@@ -60,7 +65,120 @@ data "aws_iam_policy_document" "yer_song_ui_resource_bucket_allow_public" {
       "${aws_s3_bucket.yer_song_ui_resource_bucket.arn}/*"
     ]
   }
+
+  statement {
+    sid = "ListBucketToYerSongUI"
+    actions = [
+      "s3:ListBucket"
+    ]
+    principals {
+      identifiers = ["*"]
+      type        = "AWS"
+    }
+    resources = [
+      aws_s3_bucket.yer_song_ui_resource_bucket.arn
+    ]
+  }
+
+
   depends_on = [
     aws_s3_bucket.yer_song_ui_resource_bucket
   ]
 }
+
+#resource "aws_acm_certificate" "spa_cert" {
+#  provider = aws.us-east-1
+#  domain_name = local.fqdn
+#  validation_method = "DNS"
+#
+#  lifecycle {
+#    create_before_destroy = true
+#  }
+#
+#}
+
+
+#resource "aws_acm_certificate_validation" "cert_validation" {
+#  provider        = aws.us-east-1
+#  certificate_arn = aws_acm_certificate.spa_cert.arn
+#  validation_record_fqdns = [for record in aws_route53_record.yersong_cert_validation : record.fqdn]
+#}
+
+resource "aws_cloudfront_origin_access_identity" "spa_cdn" {}
+
+locals {
+  s3_origin_id = "spa_s3_origin"
+  fqdn = "${var.spa_host}.${var.spa_domain_name}"
+}
+
+resource "aws_cloudfront_distribution" "spa_cdn" {
+  origin {
+    domain_name = aws_s3_bucket.yer_song_ui_resource_bucket.bucket_domain_name
+    origin_id   = local.s3_origin_id
+
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.spa_cdn.cloudfront_access_identity_path
+
+    }
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "whitelist"
+      locations        = ["US", "CA"]
+    }
+  }
+
+  viewer_certificate {
+#    acm_certificate_arn = aws_acm_certificate.spa_cert.arn
+#    ssl_support_method       = "sni-only"
+#    minimum_protocol_version = "TLSv1.2_2019"
+    cloudfront_default_certificate = true
+  }
+
+  default_cache_behavior {
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = local.s3_origin_id
+
+    forwarded_values {
+      query_string = false
+
+      cookies {
+        forward = "none"
+      }
+    }
+
+    viewer_protocol_policy = "allow-all"
+
+    min_ttl                = 0
+    // TODO: increase this once we've stabilized or have configured invalidation
+    default_ttl            = 5
+    max_ttl                = 60
+  }
+
+  custom_error_response {
+    error_code = 404
+    response_code = 200
+    response_page_path = "/index.html"
+  }
+
+  enabled = true
+  default_root_object = "index.html"
+}
+
+#resource "aws_route53_zone" "rwwf_zone" {
+#  name = local.fqdn
+#}
+
+#resource "aws_route53_record" "yersong_a_record" {
+#  name    = local.fqdn
+#  type    = "A"
+#  zone_id = aws_route53_zone.rwwf_zone.id
+#
+#  alias {
+#    name                   = aws_cloudfront_distribution.spa_cdn.domain_name
+#    zone_id                = aws_cloudfront_distribution.spa_cdn.hosted_zone_id
+#    evaluate_target_health = false
+#  }
+#}

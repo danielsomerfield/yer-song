@@ -12,13 +12,15 @@ build-api:
 
 deploy-infrastructure:
 	cd infrastructure/production; \
+	terraform init; \
 	terraform apply
 
 # TODO: the following origin isn't going to work with new CORS security restrictions.
 #   Need to add cloudfront with TLS and a valid host name.
 deploy-api: build-api
-	cd api; \ 
-	sam deploy --parameter-overrides=AllowOrigin="\'http://yer-song-ui-production.s3-website-us-west-2.amazonaws.com\'" DynamoDbEndpoint="''"
+	pwd;
+	cd api; \
+	sam deploy --parameter-overrides=AllowOrigin="\'https://d2jzo5ab0uypii.cloudfront.net/\'" DynamoDbEndpoint="''"
 
 deploy-ui: build-ui-production
 	aws s3 cp ui/build/ s3://yer-song-ui-production/ --recursive

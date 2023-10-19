@@ -19,6 +19,10 @@ export const createGetSongLambda = (dependencies: Dependencies) => {
         statusCode: 200,
         headers: {
           "content-type": "application/json",
+          "access-control-allow-headers": "Content-Type",
+          "access-control-allow-origin":
+            "https://d2jzo5ab0uypii.cloudfront.net",
+          "access-control-allow-methods": "GET, OPTIONS",
         },
         body: JSON.stringify({ data: maybeSong }),
       };
