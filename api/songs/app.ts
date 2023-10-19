@@ -21,10 +21,12 @@ const dynamoDBConfiguration: DynamoDBClientConfig = {
 
 export interface Configuration {
   dynamodb: DynamoDBClientConfig;
+  allowOrigin: string;
 }
 
 export const defaultConfiguration: Configuration = {
   dynamodb: dynamoDBConfiguration,
+  allowOrigin: process.env["ALLOW_ORIGIN"] || "http://localhost:3001",
 };
 
 export const getSongDependencies = (
@@ -36,6 +38,7 @@ export const getSongDependencies = (
 
   return {
     findSongById: createSongRepository(dynamoClient).getSongById,
+    allowOrigin: configuration.allowOrigin,
   };
 };
 

@@ -11,7 +11,7 @@ Parameters:
   AllowOrigin:
     Description: The origin the server allows for CORS purposes
     Type: String
-    Default: "'http://localhost:3001'"
+    Default: "http://localhost:3001"
 
 Globals:
   Function:
@@ -24,7 +24,7 @@ Resources:
       StageName: "Prod"
       Cors:
         AllowMethods: "'GET,OPTIONS'"
-        AllowOrigin: !Ref AllowOrigin
+        AllowOrigin: !Sub "'${AllowOrigin}'"
         AllowHeaders: "'Content-Type'"
 
   SongByIdFunction:
@@ -33,6 +33,7 @@ Resources:
       Environment:
         Variables:
           API_ENDPOINT: !Ref DynamoDbEndpoint
+          ALLOW_ORIGIN: !Ref AllowOrigin
       CodeUri: songs/
       Handler: app.getSong
       Runtime: nodejs18.x

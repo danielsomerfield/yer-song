@@ -4,10 +4,11 @@ import { Song } from "./domain";
 
 export interface Dependencies {
   findSongById: (id: string) => Promise<Maybe<Song>>;
+  allowOrigin: string;
 }
 
 export const createGetSongLambda = (dependencies: Dependencies) => {
-  const { findSongById } = dependencies;
+  const { findSongById, allowOrigin } = dependencies;
   return async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
@@ -20,8 +21,7 @@ export const createGetSongLambda = (dependencies: Dependencies) => {
         headers: {
           "content-type": "application/json",
           "access-control-allow-headers": "Content-Type",
-          "access-control-allow-origin":
-            "https://d2jzo5ab0uypii.cloudfront.net",
+          "access-control-allow-origin": allowOrigin,
           "access-control-allow-methods": "GET, OPTIONS",
         },
         body: JSON.stringify({ data: maybeSong }),
