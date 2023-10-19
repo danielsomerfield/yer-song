@@ -6,22 +6,30 @@ import { SongPageWithParams } from "./pages/song";
 import { createSongForIdFn } from "./pages/song/songService";
 import { configuration } from "./configuration";
 
-const AppContainer = styled.main`
+const AppContainer = styled.div`
   text-align: center;
-  display: flex;
-  flex-flow: column;
-  top: 50%;
-  position: relative;
+  display: grid;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  border: 1px solid green;
   height: 100%;
-  border: 2px solid #000000;
 `;
 
 const AppHeader = styled.header`
   text-align: center;
 `;
 
+const Screen = styled.div`
+  //height: 90%;
+  border: 1px solid purple;
+  inset: 0 0 0 0;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Branding = styled.h1`
-  font-size: 3em;
+  font-size: 5dvh;
 `;
 
 const getSongForId = createSongForIdFn({
@@ -30,11 +38,13 @@ const getSongForId = createSongForIdFn({
 
 function App() {
   return (
-    <div>
+    <Screen className={"screen"}>
       <AppHeader className="App-header">
-        <Branding>Branding here</Branding>
+        <Branding>
+          <div>John and Julie's Wedding!</div>
+        </Branding>
       </AppHeader>
-      <AppContainer>
+      <AppContainer className={"AppContainer"}>
         <Routes>
           <Route index element={<Home />} />
           <Route
@@ -43,7 +53,7 @@ function App() {
           />
         </Routes>
       </AppContainer>
-    </div>
+    </Screen>
   );
 }
 

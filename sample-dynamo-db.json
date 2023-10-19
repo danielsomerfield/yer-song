@@ -8,6 +8,16 @@
                     "artistName": {"S": "The Guess Who"}
                 }
             }
+            
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "id": {"S": "AE524F19-CF4D-4D07-B819-2715321ACF14"},
+                    "title": {"S": "Eleanor Rigby"},
+                    "artistName": {"S": "The Beatles"}
+                }
+            }
         }
     ]
 }

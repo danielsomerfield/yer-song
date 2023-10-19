@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { SongControlPanel } from "./songControlPanel";
 
 export interface Song {
   id: string;
@@ -26,14 +27,16 @@ export type GetSong = (id: string) => Promise<Song | undefined>;
 
 export const SongView = ({ song }: { song: Song }) => {
   return (
-    <div>
-      <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
-        {song.title}
-      </Title>
-      <ArtistNme role={"heading"} aria-level={2} aria-label={"artist-name"}>
-        {song.artistName}
-      </ArtistNme>
-    </div>
+    <>
+      <div>
+        <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
+          {song.title}
+        </Title>
+        <ArtistNme role={"heading"} aria-level={2} aria-label={"artist-name"}>
+          {song.artistName}
+        </ArtistNme>
+      </div>
+    </>
   );
 };
 
@@ -75,6 +78,10 @@ const Maybe = {
   },
 };
 
+export const SongPageContainer = styled.div`
+  font-size: 3dvh;
+`;
+
 export const SongPage = ({
   getSong,
   songId,
@@ -110,6 +117,12 @@ export const SongPage = ({
 // TODO: can we make this injection less redundant?
 export const SongPageWithParams = ({ getSong }: { getSong: GetSong }) => {
   const { songId } = useParams();
-  console.log(`Rendering page with id ${songId} at ${new Date().getTime()}`);
-  return <SongPage getSong={getSong} songId={songId} />;
+  return (
+    <div className={"SongWithParam"}>
+      <SongPageContainer>
+        <SongPage getSong={getSong} songId={songId} />
+      </SongPageContainer>
+      <SongControlPanel />
+    </div>
+  );
 };
