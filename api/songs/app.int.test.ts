@@ -1,11 +1,14 @@
-import { defaultConfiguration, getSongDependencies } from "./app";
+import { defaultConfiguration, getAppDependencies } from "./app";
 import { v4 as uuidv4 } from "uuid";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { GenericContainer, StartedTestContainer, Wait } from "testContainers";
 import { afterEach } from "node:test";
 import { createGetSongLambda } from "./song/getSong";
-import { Song } from "./song/domain";
+
+import { Song } from "./domain/songs";
+import { createGetTagsByNameLambda } from "./tags/getTags";
+import { Tag, Tags } from "./domain/tags";
 
 describe("the lambda", () => {
   // TODO: refactor
@@ -37,9 +40,32 @@ describe("the lambda", () => {
     // TODO: refactor this with the makefile so we don't have three definitions of the same table
     await client.createTable({
       TableName: "song",
-      AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
-      KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
+      AttributeDefinitions: [
+        { AttributeName: "PK", AttributeType: "S" },
+        { AttributeName: "SK", AttributeType: "S" },
+        { AttributeName: "entityType", AttributeType: "S" },
+      ],
+      KeySchema: [
+        { AttributeName: "PK", KeyType: "HASH" },
+        { AttributeName: "SK", KeyType: "RANGE" },
+      ],
       ProvisionedThroughput: { WriteCapacityUnits: 1, ReadCapacityUnits: 1 },
+      GlobalSecondaryIndexes: [
+        {
+          IndexName: "entityTypeGSI",
+          KeySchema: [
+            { AttributeName: "entityType", KeyType: "HASH" },
+            { AttributeName: "SK", KeyType: "RANGE" },
+          ],
+          Projection: {
+            ProjectionType: "ALL",
+          },
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1,
+          },
+        },
+      ],
     });
   }, 60 * 1000);
 
@@ -53,14 +79,17 @@ describe("the lambda", () => {
   });
 
   it("loads a song from the path", async () => {
-    const songId = uuidv4();
+    const songId = `s:${uuidv4()}`;
 
     const songName = "Money for Nothing";
     const artistName = "Dire Straights";
     await client.putItem({
       TableName: "song",
       Item: {
-        id: {
+        PK: {
+          S: songId,
+        },
+        SK: {
           S: songId,
         },
         title: {
@@ -68,6 +97,9 @@ describe("the lambda", () => {
         },
         artistName: {
           S: artistName,
+        },
+        entityType: {
+          S: "song",
         },
       },
     });
@@ -77,7 +109,7 @@ describe("the lambda", () => {
     } as unknown as APIGatewayProxyEvent;
 
     const getSong = createGetSongLambda(
-      getSongDependencies({
+      getAppDependencies({
         ...defaultConfiguration,
         dynamodb: {
           endpoint,
@@ -96,6 +128,83 @@ describe("the lambda", () => {
       id: songId,
       title: songName,
       artistName,
+    });
+  });
+
+  it("loads all tags by name", async () => {
+    const tagName = "genre";
+
+    const genres = [
+      {
+        PK: {
+          S: "t:genre",
+        },
+        SK: {
+          S: "t:genre:MovieTVStage",
+        },
+        entityType: {
+          S: "tag",
+        },
+        tag: {
+          S: "genre:Movie, TV, & Stage",
+        },
+      },
+      {
+        PK: {
+          S: "t:genre",
+        },
+        SK: {
+          S: "t:genre:JazzStandardsOldLoveSongs",
+        },
+        entityType: {
+          S: "tag",
+        },
+        tag: {
+          S: "genre:Jazz Standards and Old Love Songs",
+        },
+      },
+    ];
+
+    await Promise.all(
+      genres.map((genre) =>
+        client.putItem({
+          TableName: "song",
+          Item: genre,
+        })
+      )
+    );
+
+    const event = {
+      pathParameters: { name: tagName },
+    } as unknown as APIGatewayProxyEvent;
+
+    const getTagsByName = createGetTagsByNameLambda(
+      getAppDependencies({
+        ...defaultConfiguration,
+        dynamodb: {
+          endpoint,
+          credentials: {
+            accessKeyId: "fake",
+            secretAccessKey: "fake",
+            sessionToken: "fake",
+          },
+        },
+      })
+    );
+
+    const result = await getTagsByName(event);
+    expect(result.statusCode).toEqual(200);
+    const payload = JSON.parse(result.body) as { data: Tags };
+    expect(payload.data.page.length).toEqual(2);
+    expect(payload.data.page[0]).toMatchObject({
+      id: "t:genre:JazzStandardsOldLoveSongs",
+      name: "genre",
+      value: "Jazz Standards and Old Love Songs",
+    });
+    expect(payload.data.page[1]).toMatchObject({
+      id: "t:genre:MovieTVStage",
+      name: "genre",
+      value: "Movie, TV, & Stage",
     });
   });
 });

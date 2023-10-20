@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const MainPanel = styled.div`
   display: flex;
@@ -25,11 +26,16 @@ const BackToSongsButton = styled.button`
 `;
 
 export const SongControlPanel = () => {
+  const navigate = useNavigate();
+  const navigateToSelector = () => {
+    navigate("/songs");
+  };
+
   return (
     <>
       <MainPanel className={"SongControlPanel.MainPanel"}>
         <VoteButton title={"Up Vote!"}>Up Vote!</VoteButton>
-        <BackToSongsButton title={"Back to songs"}>
+        <BackToSongsButton title={"Back to songs"} onClick={navigateToSelector}>
           Back to songs
         </BackToSongsButton>
       </MainPanel>

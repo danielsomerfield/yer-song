@@ -2,7 +2,7 @@ import { describe, it } from "@jest/globals";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { GenericContainer, StartedTestContainer, Wait } from "testContainers";
 import { afterEach } from "node:test";
-import { createSongRepository } from "./song-repository";
+import { createSongRepository } from "../respository/song-repository";
 import { v4 as uuidv4 } from "uuid";
 
 describe("The song repository", () => {

@@ -1,23 +1,76 @@
 {
-    "song": [
-        {
-            "PutRequest": {
-                "Item": {
-                    "id": {"S": "9FF01A07-F9E4-4C6C-8C14-8318A6517C4F"},
-                    "title": {"S": "American Woman"},
-                    "artistName": {"S": "The Guess Who"}
-                }
-            }
-            
-        },
-        {
-            "PutRequest": {
-                "Item": {
-                    "id": {"S": "AE524F19-CF4D-4D07-B819-2715321ACF14"},
-                    "title": {"S": "Eleanor Rigby"},
-                    "artistName": {"S": "The Beatles"}
-                }
-            }
+  "song": [
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Classic Pop & Rock"
+          }
         }
-    ]
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:Contemporary"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Contemporary"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Movie, TV, & Stage"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:JazzStandardsOldLoveSongs"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Jazz Standards and Old Love Songs"
+          }
+        }
+      }
+    }
+  ]
 }

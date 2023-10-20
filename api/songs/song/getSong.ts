@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Maybe } from "../util/maybe";
-import { Song } from "./domain";
+
+import { Song } from "../domain/songs";
 
 export interface Dependencies {
   findSongById: (id: string) => Promise<Maybe<Song>>;
@@ -15,7 +16,6 @@ export const createGetSongLambda = (dependencies: Dependencies) => {
     const id = event.pathParameters?.["id"];
     if (id) {
       const maybeSong = await findSongById(id);
-      console.log("Found:", maybeSong);
       return {
         statusCode: 200,
         headers: {

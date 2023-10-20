@@ -17,6 +17,7 @@ describe("the handler", function () {
           artistName: `artist-${id}`,
         });
       },
+      allowOrigin: "",
     };
     const getSong = createGetSongLambda(dependencies);
 
@@ -41,6 +42,7 @@ describe("the handler", function () {
       findSongById: () => {
         return Promise.resolve(undefined);
       },
+      allowOrigin: "",
     };
     const getSong = createGetSongLambda(dependencies);
     const result: APIGatewayProxyResult = await getSong(event);

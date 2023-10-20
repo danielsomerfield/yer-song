@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SongControlPanel } from "./songControlPanel";
+import { LoadingPanel } from "../../components/loadingPanel";
 
 export interface Song {
   id: string;
@@ -42,10 +43,6 @@ export const SongView = ({ song }: { song: Song }) => {
 
 const SongNotFound = () => {
   return <div>The song was not found</div>;
-};
-
-const SongLoading = () => {
-  return <div>Loading...</div>;
 };
 
 interface Maybe<T> {
@@ -93,6 +90,7 @@ export const SongPage = ({
   const [loadStarted, setLoadStarted] = useState(false);
 
   useEffect(() => {
+    // TODO: error handling
     if (!loadStarted) {
       setLoadStarted(true);
       (async () => {
@@ -108,7 +106,7 @@ export const SongPage = ({
   }, undefined);
 
   if (!song) {
-    return <SongLoading />;
+    return <LoadingPanel />;
   } else console.log("exists?", song.exists(), song);
 
   return song.exists() ? <SongView song={song.getValue()} /> : <SongNotFound />;

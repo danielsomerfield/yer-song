@@ -1,7 +1,9 @@
 import { createGetSongLambda } from "./song/getSong";
-import { createSongRepository } from "./song/song-repository";
+import { createSongRepository } from "./respository/song-repository";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBClientConfig } from "@aws-sdk/client-dynamodb/dist-types/DynamoDBClient";
+import { createGetTagsByNameLambda } from "./tags/getTags";
+import { createTagsRepository } from "./respository/tag-repository";
 
 console.log("Running with environment", process.env);
 
@@ -29,7 +31,7 @@ export const defaultConfiguration: Configuration = {
   allowOrigin: process.env["ALLOW_ORIGIN"] || "http://localhost:3001",
 };
 
-export const getSongDependencies = (
+export const getAppDependencies = (
   configuration: Configuration = defaultConfiguration
 ) => {
   const createDynamoClient = () => new DynamoDB(configuration.dynamodb);
@@ -39,7 +41,10 @@ export const getSongDependencies = (
   return {
     findSongById: createSongRepository(dynamoClient).getSongById,
     allowOrigin: configuration.allowOrigin,
+    getTagsByName: createTagsRepository(dynamoClient).getTagsByName,
   };
 };
 
-export const getSong = createGetSongLambda(getSongDependencies());
+export const getSong = createGetSongLambda(getAppDependencies());
+
+export const getTags = createGetTagsByNameLambda(getAppDependencies());

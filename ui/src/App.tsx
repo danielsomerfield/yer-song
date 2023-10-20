@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { SongPageWithParams } from "./pages/song";
 import { createSongForIdFn } from "./pages/song/songService";
 import { configuration } from "./configuration";
+import { SongSelectorPage } from "./pages/songs";
+import { createGetTagsByName } from "./pages/songs/tagsService";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -36,6 +38,10 @@ const getSongForId = createSongForIdFn({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
+const getGenresFn = createGetTagsByName("genre", {
+  songsAPIHostURL: configuration.songsAPIHostURL,
+});
+
 function App() {
   return (
     <Screen className={"screen"}>
@@ -50,6 +56,10 @@ function App() {
           <Route
             path={"/songs/:songId"}
             element={<SongPageWithParams getSong={getSongForId} />}
+          />
+          <Route
+            path={"/songs"}
+            element={<SongSelectorPage getGenres={getGenresFn} />}
           />
         </Routes>
       </AppContainer>

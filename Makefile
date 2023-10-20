@@ -38,9 +38,10 @@ start-api-local: build-api
 build-table-local: # TODO: make this only run if the table doesn't exist
 	aws --endpoint-url http://localhost:4566 dynamodb create-table \
 			--table-name song \
-			--attribute-definitions AttributeName=id,AttributeType=S \
-			--key-schema AttributeName=id,KeyType=HASH \
+			--attribute-definitions AttributeName=PK,AttributeType=S AttributeName=SK,AttributeType=S \
+			--key-schema AttributeName=PK,KeyType=HASH AttributeName=SK,KeyType=RANGE \
 			--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+
 
 start-local: start-api-local start-ui-local
 
