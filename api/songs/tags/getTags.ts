@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Tag } from "../domain/tags";
 
 export interface Dependencies {
-  allowOrigin: string;
+  allowOrigin(origin: string): boolean;
   getTagsByName: (name: string) => Promise<Tag[]>;
 }
 
@@ -17,12 +17,17 @@ export const createGetTagsByNameLambda = (dependencies: Dependencies) => {
       throw "NYI";
     }
     const page = await getTagsByName(tagName);
+
+    // TODO: make sure that origin exists
+    const originValue = event.headers["origin"];
     return {
       statusCode: 200,
+      //TODO: refactor header gen
       headers: {
         "content-type": "application/json",
         "access-control-allow-headers": "Content-Type",
-        "access-control-allow-origin": allowOrigin,
+        "access-control-allow-origin":
+          originValue && allowOrigin(originValue) ? originValue : "",
         "access-control-allow-methods": "GET, OPTIONS",
       },
       // TODO: add the pagination code

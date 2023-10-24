@@ -20,7 +20,7 @@ deploy-infrastructure:
 deploy-api: build-api
 	pwd;
 	cd api; \
-	sam deploy --parameter-overrides=AllowOrigin="https://d2jzo5ab0uypii.cloudfront.net" DynamoDbEndpoint="''"
+	sam deploy --parameter-overrides=AllowOrigin="https://d2jzo5ab0uypii.cloudfront.net,https://yersong.danielsomerfield.com" DynamoDbEndpoint="''"
 
 deploy-ui: build-ui-production
 	aws s3 cp ui/build/ s3://yer-song-ui-production/ --recursive

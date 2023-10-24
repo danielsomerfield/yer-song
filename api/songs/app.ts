@@ -38,9 +38,11 @@ export const getAppDependencies = (
 
   const dynamoClient: DynamoDB = createDynamoClient();
 
+  const allowedOrigins = new Set(configuration.allowOrigin.split(","));
+  console.log("allowed: ", allowedOrigins);
   return {
     findSongById: createSongRepository(dynamoClient).getSongById,
-    allowOrigin: configuration.allowOrigin,
+    allowOrigin: (origin: string) => allowedOrigins.has(origin),
     getTagsByName: createTagsRepository(dynamoClient).getTagsByName,
   };
 };
