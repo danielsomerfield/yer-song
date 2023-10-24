@@ -1,5 +1,5 @@
 variable "spa_domain_name" {
-  default = "redwinewithfish.org"
+  default = "danielsomerfield.com"
 }
 
 variable "spa_host" {

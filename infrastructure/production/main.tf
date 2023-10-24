@@ -16,16 +16,16 @@ terraform {
 }
 
 provider "aws" {
-  region  = "us-west-2"
+  region = "us-west-2"
 }
 
 provider "aws" {
-  alias = "us-east-1"
+  alias  = "us-east-1"
   region = "us-east-1"
 }
 
 resource "aws_s3_bucket" "yer_song_ui_resource_bucket" {
-  bucket = "yer-song-ui-production"
+  bucket        = "yer-song-ui-production"
   force_destroy = true
 }
 
@@ -40,20 +40,20 @@ resource "aws_s3_bucket_website_configuration" "yer_song_ui_resource_bucket" {
 }
 
 resource "aws_s3_bucket_public_access_block" "yer_song_ui_resource_bucket" {
-  bucket = aws_s3_bucket.yer_song_ui_resource_bucket.id
-  block_public_acls = false
+  bucket              = aws_s3_bucket.yer_song_ui_resource_bucket.id
+  block_public_acls   = false
   block_public_policy = false
 }
 
 resource "aws_s3_bucket_policy" "yer_song_ui_resource_bucket_allow_public" {
-  bucket = aws_s3_bucket.yer_song_ui_resource_bucket.bucket
-  policy = data.aws_iam_policy_document.yer_song_ui_resource_bucket_allow_public.json
+  bucket     = aws_s3_bucket.yer_song_ui_resource_bucket.bucket
+  policy     = data.aws_iam_policy_document.yer_song_ui_resource_bucket_allow_public.json
   depends_on = [aws_s3_bucket_public_access_block.yer_song_ui_resource_bucket]
 }
 
 data "aws_iam_policy_document" "yer_song_ui_resource_bucket_allow_public" {
   statement {
-    sid = "AllPublicAccessToYerSongUI"
+    sid     = "AllPublicAccessToYerSongUI"
     actions = [
       "s3:GetObject",
     ]
@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "yer_song_ui_resource_bucket_allow_public" {
   }
 
   statement {
-    sid = "ListBucketToYerSongUI"
+    sid     = "ListBucketToYerSongUI"
     actions = [
       "s3:ListBucket"
     ]
@@ -86,29 +86,47 @@ data "aws_iam_policy_document" "yer_song_ui_resource_bucket_allow_public" {
   ]
 }
 
-#resource "aws_acm_certificate" "spa_cert" {
-#  provider = aws.us-east-1
-#  domain_name = local.fqdn
-#  validation_method = "DNS"
-#
-#  lifecycle {
-#    create_before_destroy = true
-#  }
-#
-#}
+resource "aws_acm_certificate" "spa_cert" {
+  provider          = aws.us-east-1
+  domain_name       = local.fqdn
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+}
 
 
-#resource "aws_acm_certificate_validation" "cert_validation" {
-#  provider        = aws.us-east-1
-#  certificate_arn = aws_acm_certificate.spa_cert.arn
-#  validation_record_fqdns = [for record in aws_route53_record.yersong_cert_validation : record.fqdn]
-#}
+resource "aws_acm_certificate_validation" "cert_validation" {
+  provider                = aws.us-east-1
+  certificate_arn         = aws_acm_certificate.spa_cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+}
+
+resource "aws_route53_record" "cert_validation" {
+  provider = aws.us-east-1
+  for_each = {
+    for dvo in aws_acm_certificate.spa_cert.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = aws_route53_zone.rwwf_zone.id
+}
 
 resource "aws_cloudfront_origin_access_identity" "spa_cdn" {}
 
 locals {
   s3_origin_id = "spa_s3_origin"
-  fqdn = "${var.spa_host}.${var.spa_domain_name}"
+  fqdn         = "${var.spa_host}.${var.spa_domain_name}"
 }
 
 resource "aws_cloudfront_distribution" "spa_cdn" {
@@ -129,11 +147,13 @@ resource "aws_cloudfront_distribution" "spa_cdn" {
     }
   }
 
+  aliases = [local.fqdn]
+
   viewer_certificate {
-#    acm_certificate_arn = aws_acm_certificate.spa_cert.arn
-#    ssl_support_method       = "sni-only"
-#    minimum_protocol_version = "TLSv1.2_2019"
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate.spa_cert.arn
+    ssl_support_method  = "sni-only"
+    #    minimum_protocol_version = "TLSv1.2_2019"
+    #    cloudfront_default_certificate = true
   }
 
   default_cache_behavior {
@@ -151,34 +171,34 @@ resource "aws_cloudfront_distribution" "spa_cdn" {
 
     viewer_protocol_policy = "allow-all"
 
-    min_ttl                = 0
+    min_ttl     = 0
     // TODO: increase this once we've stabilized or have configured invalidation
-    default_ttl            = 5
-    max_ttl                = 60
+    default_ttl = 5
+    max_ttl     = 60
   }
 
   custom_error_response {
-    error_code = 404
-    response_code = 200
+    error_code         = 404
+    response_code      = 200
     response_page_path = "/index.html"
   }
 
-  enabled = true
+  enabled             = true
   default_root_object = "index.html"
 }
 
-#resource "aws_route53_zone" "rwwf_zone" {
-#  name = local.fqdn
-#}
+resource "aws_route53_zone" "rwwf_zone" {
+  name = local.fqdn
+}
 
-#resource "aws_route53_record" "yersong_a_record" {
-#  name    = local.fqdn
-#  type    = "A"
-#  zone_id = aws_route53_zone.rwwf_zone.id
-#
-#  alias {
-#    name                   = aws_cloudfront_distribution.spa_cdn.domain_name
-#    zone_id                = aws_cloudfront_distribution.spa_cdn.hosted_zone_id
-#    evaluate_target_health = false
-#  }
-#}
+resource "aws_route53_record" "yersong_a_record" {
+  name    = local.fqdn
+  type    = "A"
+  zone_id = aws_route53_zone.rwwf_zone.id
+
+  alias {
+    name                   = aws_cloudfront_distribution.spa_cdn.domain_name
+    zone_id                = aws_cloudfront_distribution.spa_cdn.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
