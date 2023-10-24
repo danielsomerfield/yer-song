@@ -70,6 +70,41 @@
             "S": "genre:Jazz Standards and Old Love Songs"
           }
         }
+      }},
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "9FF01A07-F9E4-4C6C-8C14-8318A6517C4F"
+          },
+          "SK": {
+            "S": "AE524F19-CF4D-4D07-B819-2715321ACF14"
+          },
+          "Title": {
+            "S": "American Woman"
+          },
+          "artistName": {
+            "S": "The Guess Who"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "AE524F19-CF4D-4D07-B819-2715321ACF14"
+          },
+          "SK": {
+            "S": "AE524F19-CF4D-4D07-B819-2715321ACF14"
+          },
+          "title": {
+            "S": "Eleanor Rigby"
+          },
+          "artistName": {
+            "S": "The Beatles"
+          }
+        }
       }
     }
   ]
