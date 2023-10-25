@@ -51,3 +51,13 @@ populate-table-local:
 
 populate-table-production:
 	aws dynamodb batch-write-item --request-items file://sample-dynamo-db.json
+
+test: test-ui test-api
+
+test-api:
+	cd api/songs; \
+	npm test
+
+test-ui:
+	cd ui;\
+	npm test -- --watchAll=false

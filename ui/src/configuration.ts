@@ -2,8 +2,6 @@ export interface Configuration {
   songsAPIHostURL: string;
 }
 
-console.log("Running with envvars", process.env);
-
 const getRequiredEnvVar = (name: string) => {
   const value = process.env[name];
   if (!value) {

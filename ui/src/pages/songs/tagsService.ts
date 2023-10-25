@@ -12,6 +12,7 @@ export interface Tags {
 export interface Tag {
   name: string;
   value: string;
+  id: string;
 }
 
 export const createGetTagsByName = (

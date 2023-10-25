@@ -31,8 +31,14 @@ describe("The song repository", () => {
     // TODO: refactor this with the makefile so we don't have three definitions of the same table
     await client.createTable({
       TableName: "song",
-      AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
-      KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
+      AttributeDefinitions: [
+        { AttributeName: "PK", AttributeType: "S" },
+        { AttributeName: "SK", AttributeType: "S" },
+      ],
+      KeySchema: [
+        { AttributeName: "PK", KeyType: "HASH" },
+        { AttributeName: "SK", KeyType: "RANGE" },
+      ],
       ProvisionedThroughput: { WriteCapacityUnits: 1, ReadCapacityUnits: 1 },
     });
   }, 60 * 1000);
@@ -51,7 +57,10 @@ describe("The song repository", () => {
     await client.putItem({
       TableName: "song",
       Item: {
-        id: {
+        PK: {
+          S: songId,
+        },
+        SK: {
           S: songId,
         },
         title: {
@@ -81,7 +90,10 @@ describe("The song repository", () => {
     await client.putItem({
       TableName: "song",
       Item: {
-        id: {
+        PK: {
+          S: songId,
+        },
+        SK: {
           S: songId,
         },
         name: {

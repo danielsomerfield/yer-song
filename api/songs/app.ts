@@ -5,8 +5,6 @@ import { DynamoDBClientConfig } from "@aws-sdk/client-dynamodb/dist-types/Dynamo
 import { createGetTagsByNameLambda } from "./tags/getTags";
 import { createTagsRepository } from "./respository/tag-repository";
 
-console.log("Running with environment", process.env);
-
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
   return endpoint == undefined || endpoint.trim().length == 0
@@ -39,7 +37,6 @@ export const getAppDependencies = (
   const dynamoClient: DynamoDB = createDynamoClient();
 
   const allowedOrigins = new Set(configuration.allowOrigin.split(","));
-  console.log("allowed: ", allowedOrigins);
   return {
     findSongById: createSongRepository(dynamoClient).getSongById,
     allowOrigin: (origin: string) => allowedOrigins.has(origin),

@@ -63,7 +63,6 @@ const Maybe = {
   of: function <T>(t: T | undefined): Maybe<T> {
     return {
       getValue: () => {
-        console.log(`getValue: ${t}`, t);
         if (t) {
           return t;
         } else {
@@ -98,7 +97,6 @@ export const SongPage = ({
           setSong(Maybe.none);
         } else {
           const song = await getSong(songId);
-          console.log("Setting song to undefined?", song == undefined);
           setSong(Maybe.of(song));
         }
       })();
@@ -107,7 +105,7 @@ export const SongPage = ({
 
   if (!song) {
     return <LoadingPanel />;
-  } else console.log("exists?", song.exists(), song);
+  }
 
   return song.exists() ? <SongView song={song.getValue()} /> : <SongNotFound />;
 };

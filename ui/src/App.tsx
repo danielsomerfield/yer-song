@@ -1,12 +1,15 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { NavigateFunction, Route, Routes, useNavigate } from "react-router-dom";
 import { Home } from "./pages/home";
 import styled from "styled-components";
 import { SongPageWithParams } from "./pages/song";
 import { createSongForIdFn } from "./pages/song/songService";
 import { configuration } from "./configuration";
-import { SongSelectorPage } from "./pages/songs";
 import { createGetTagsByName } from "./pages/songs/tagsService";
+import { To } from "@remix-run/router";
+import { NavigateOptions } from "react-router/dist/lib/context";
+import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
+import { SongListPage } from "./pages/songs/songlistPage";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -43,6 +46,8 @@ const getGenresFn = createGetTagsByName("genre", {
 });
 
 function App() {
+  const navigator = useNavigate();
+
   return (
     <Screen className={"screen"}>
       <AppHeader className="App-header">
@@ -58,8 +63,14 @@ function App() {
             element={<SongPageWithParams getSong={getSongForId} />}
           />
           <Route
-            path={"/songs"}
-            element={<SongSelectorPage getGenres={getGenresFn} />}
+            path={"/genres"}
+            element={
+              <GenreSelectorPage getGenres={getGenresFn} nav={navigator} />
+            }
+          />
+          <Route
+            path={"/tags/:tag/songs"}
+            element={<SongListPage getSongsForTag={() => []} />}
           />
         </Routes>
       </AppContainer>

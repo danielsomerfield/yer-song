@@ -8,6 +8,7 @@ describe("the handler", function () {
     const songId = "123";
     const event = {
       pathParameters: { id: songId },
+      headers: {},
     } as unknown as APIGatewayProxyEvent;
     const dependencies = {
       findSongById: (id: string) => {
@@ -17,7 +18,7 @@ describe("the handler", function () {
           artistName: `artist-${id}`,
         });
       },
-      allowOrigin: "",
+      allowOrigin: () => true,
     };
     const getSong = createGetSongLambda(dependencies);
 
@@ -37,12 +38,13 @@ describe("the handler", function () {
   it("returns 404 with non-existing id", async () => {
     const event = {
       pathParameters: {},
+      headers: {},
     } as unknown as APIGatewayProxyEvent;
     const dependencies = {
       findSongById: () => {
         return Promise.resolve(undefined);
       },
-      allowOrigin: "",
+      allowOrigin: () => true,
     };
     const getSong = createGetSongLambda(dependencies);
     const result: APIGatewayProxyResult = await getSong(event);

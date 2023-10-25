@@ -51,7 +51,7 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
         return undefined;
       }
     } catch (e) {
-      console.log("Failed to get song", e);
+      logger.error("Failed to get song", e);
       return undefined;
     }
   };

@@ -8,7 +8,6 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 
-console.log("Starting up with env var configuration", process.env);
 root.render(
   // <React.StrictMode>
   <BrowserRouter>

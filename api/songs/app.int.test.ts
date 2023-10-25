@@ -106,6 +106,7 @@ describe("the lambda", () => {
 
     const event = {
       pathParameters: { id: songId },
+      headers: { origin: "localhost" },
     } as unknown as APIGatewayProxyEvent;
 
     const getSong = createGetSongLambda(
@@ -176,6 +177,7 @@ describe("the lambda", () => {
 
     const event = {
       pathParameters: { name: tagName },
+      headers: { origin: "localhost" },
     } as unknown as APIGatewayProxyEvent;
 
     const getTagsByName = createGetTagsByNameLambda(
