@@ -4,6 +4,7 @@ import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBClientConfig } from "@aws-sdk/client-dynamodb/dist-types/DynamoDBClient";
 import { createGetTagsByNameLambda } from "./tags/getTags";
 import { createTagsRepository } from "./respository/tag-repository";
+import { createGetSongsByTagIdLambda } from "./songs/getSongs";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -13,9 +14,6 @@ const getDynamoEndpoint = () => {
 };
 
 const dynamoDBConfiguration: DynamoDBClientConfig = {
-  // TODO this should be nothing production, localhost in api tests outside of docker, and host.docker.internal for
-  //  running inside of docker (like in sam local)
-  // endpoint: "http://localhost:4566",
   endpoint: getDynamoEndpoint(),
 };
 
@@ -37,13 +35,20 @@ export const getAppDependencies = (
   const dynamoClient: DynamoDB = createDynamoClient();
 
   const allowedOrigins = new Set(configuration.allowOrigin.split(","));
+  const tagsRepository = createTagsRepository(dynamoClient);
+  const songsRepository = createSongRepository(dynamoClient);
   return {
-    findSongById: createSongRepository(dynamoClient).getSongById,
-    allowOrigin: (origin: string) => allowedOrigins.has(origin),
-    getTagsByName: createTagsRepository(dynamoClient).getTagsByName,
+    findSongById: songsRepository.getSongById,
+    allowedOrigins,
+    getTagsByName: tagsRepository.getTagsByName,
+    findSongsByTagId: songsRepository.findSongsByTag,
   };
 };
 
 export const getSong = createGetSongLambda(getAppDependencies());
 
 export const getTags = createGetTagsByNameLambda(getAppDependencies());
+
+export const getSongsByTagId = createGetSongsByTagIdLambda(
+  getAppDependencies()
+);

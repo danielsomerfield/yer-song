@@ -2,14 +2,15 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Maybe } from "../util/maybe";
 
 import { Song } from "../domain/songs";
+import { generateHeadersForSuccessRequest } from "../http/headers";
 
 export interface Dependencies {
   findSongById: (id: string) => Promise<Maybe<Song>>;
-  allowOrigin(origin: string): boolean;
+  allowedOrigins: Set<string>;
 }
 
 export const createGetSongLambda = (dependencies: Dependencies) => {
-  const { findSongById, allowOrigin } = dependencies;
+  const { findSongById, allowedOrigins } = dependencies;
   return async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
@@ -17,20 +18,11 @@ export const createGetSongLambda = (dependencies: Dependencies) => {
     if (id) {
       const maybeSong = await findSongById(id);
 
-      //TODO: refactor header gen
-      const originValue = event.headers["origin"] || "";
-      return {
-        statusCode: 200,
-        //TODO: refactor header gen
-        headers: {
-          "content-type": "application/json",
-          "access-control-allow-headers": "Content-Type",
-          "access-control-allow-origin":
-            originValue && allowOrigin(originValue) ? originValue : "",
-          "access-control-allow-methods": "GET, OPTIONS",
-        },
-        body: JSON.stringify({ data: maybeSong }),
-      };
+      return generateHeadersForSuccessRequest(
+        maybeSong,
+        event.headers,
+        allowedOrigins
+      );
     } else {
       return {
         statusCode: 404,

@@ -8,7 +8,7 @@ import { createGetSongLambda } from "./song/getSong";
 
 import { Song } from "./domain/songs";
 import { createGetTagsByNameLambda } from "./tags/getTags";
-import { Tag, Tags } from "./domain/tags";
+import { Tags } from "./domain/tags";
 
 describe("the lambda", () => {
   // TODO: refactor

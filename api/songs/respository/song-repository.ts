@@ -2,6 +2,7 @@ import {
   AttributeValue,
   DynamoDB,
   GetItemCommand,
+  QueryCommand,
 } from "@aws-sdk/client-dynamodb";
 import { logger } from "../util/logger";
 
@@ -56,8 +57,34 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
     }
   };
 
-  const findSongsByTag = (tag: string): Promise<Songs> => {
-    throw "NYI";
+  const findSongsByTag = async (tag: string): Promise<Songs> => {
+    const maybeSongResponse = await client.send(
+      new QueryCommand({
+        TableName: "song",
+        IndexName: "GSI1",
+        KeyConditionExpression: "GSI1PK = :pk AND begins_with(SK, :sk)",
+        ExpressionAttributeValues: {
+          ":pk": {
+            S: tag,
+          },
+          ":sk": {
+            S: "s:",
+          },
+        },
+      })
+    );
+
+    if (maybeSongResponse.Items) {
+      return {
+        page: maybeSongResponse.Items.map((i) => createSongFromRecord(i)),
+        thisPage: "",
+      };
+    } else {
+      return {
+        page: [],
+        thisPage: "",
+      };
+    }
   };
   return {
     getSongById,

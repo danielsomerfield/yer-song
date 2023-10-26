@@ -1,5 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
+Transform:
+  - AWS::Serverless-2016-10-31
+  - "Fn:Transform":
+      Name: 'AWS::Include'
+      Parameters:
+        Location: asdf
+
 Description: >
   API for Yer-Song App
 
@@ -34,15 +40,6 @@ Resources:
         AllowMethods: "'GET,OPTIONS'"
         AllowOrigin: !Sub "'${AllowOrigin}'"
         AllowHeaders: "'Content-Type'"
-
-#  TagsAPI:
-#    Type: AWS::Serverless::Api
-#    Properties:
-#      StageName: "Prod"
-#      Cors:
-#        AllowMethods: "'GET,OPTIONS'"
-#        AllowOrigin: !Sub "'${AllowOrigin}'"
-#        AllowHeaders: "'Content-Type'"
 
   TagsFunction:
     Type: AWS::Serverless::Function
@@ -94,6 +91,32 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
+
+  SongsByTagIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.getSongsByTagId
+      Events:
+        Song:
+          Type: Api
+          Properties:
+            Path: /tags/{tagId}/songs
+            Method: get
+            RestApiId: !Ref SongByIdAPI
+      Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+    Connectors:
+      ReadFromSongs:
+        Properties:
+          Destination:
+            Id: SongTable
+          Permissions:
+            - Read
   SongTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -103,19 +126,27 @@ Resources:
             AttributeType: S
           - AttributeName: SK
             AttributeType: S
+          - AttributeName: GSI1PK
+            AttributeType: S
         KeySchema:
           - AttributeName: PK
             KeyType: HASH
           - AttributeName: SK
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+          ReadCapacityUnits: 100
+          WriteCapacityUnits: 100
+        GlobalSecondaryIndexes:
+          - IndexName: GSI1
+            KeySchema:
+              - AttributeName: GSI1PK
+                KeyType: HASH
+              - AttributeName: SK
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   SongByIdAPI:
     Description: "API Gateway endpoint URL for Prod stage"
     Value: !Sub "https://${SongByIdAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
@@ -130,4 +161,10 @@ Outputs:
     Value: !GetAtt TagsFunction.Arn
   TagsFunctionFunctionIamRole:
     Description: "Implicit IAM Role"
-    Value: !GetAtt TagsFunction.Arn
+    Value: !GetAtt TagsFunctionRole.Arn
+  SongsByTagIdFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt SongsByTagIdFunction.Arn
+  SongsByTagIdFunctionIamRole:
+    Description: "Implicit IAM Role"
+    Value: !GetAtt SongsByTagIdFunctionRole.Arn

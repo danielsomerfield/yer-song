@@ -6,6 +6,6 @@ export interface Song {
 
 export interface Songs {
   thisPage: string;
-  nextPage: string;
+  nextPage?: string;
   page: Song[];
 }

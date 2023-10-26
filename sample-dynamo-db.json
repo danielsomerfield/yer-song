@@ -70,15 +70,19 @@
             "S": "genre:Jazz Standards and Old Love Songs"
           }
         }
-      }},
+      }
+    },
     {
       "PutRequest": {
         "Item": {
           "PK": {
-            "S": "9FF01A07-F9E4-4C6C-8C14-8318A6517C4F"
+            "S": "s:9FF01A07-F9E4-4C6C-8C14-8318A6517C4F"
           },
           "SK": {
-            "S": "AE524F19-CF4D-4D07-B819-2715321ACF14"
+            "S": "s:9FF01A07-F9E4-4C6C-8C14-8318A6517C4F"
+          },
+          "entityType": {
+            "S": "song"
           },
           "Title": {
             "S": "American Woman"
@@ -93,16 +97,43 @@
       "PutRequest": {
         "Item": {
           "PK": {
-            "S": "AE524F19-CF4D-4D07-B819-2715321ACF14"
+            "S": "s:AE524F19-CF4D-4D07-B819-2715321ACF14"
           },
           "SK": {
-            "S": "AE524F19-CF4D-4D07-B819-2715321ACF14"
+            "S": "s:AE524F19-CF4D-4D07-B819-2715321ACF14"
+          },
+          "entityType": {
+            "S": "song"
           },
           "title": {
             "S": "Eleanor Rigby"
           },
           "artistName": {
             "S": "The Beatles"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:9CA15D42-8206-4E15-8E25-64D8587BC4C8"
+          },
+          "SK": {
+            "S": "s:9CA15D42-8206-4E15-8E25-64D8587BC4C8"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S":"t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Jaws Theme Song"
+          },
+          "artistName": {
+            "S": "John Williams"
           }
         }
       }

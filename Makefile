@@ -36,21 +36,22 @@ start-api-local: build-api
 	DOCKER_HOST=unix:///Users/danielsomerfield/.docker/run/docker.sock sam local start-api --docker-network lambda_local
 
 build-table-local: # TODO: make this only run if the table doesn't exist
-	aws --endpoint-url http://localhost:4566 dynamodb create-table \
+	aws --no-paginate --no-cli-pager --endpoint-url http://localhost:4566 dynamodb create-table \
 			--table-name song \
-			--attribute-definitions AttributeName=PK,AttributeType=S AttributeName=SK,AttributeType=S \
-			--key-schema AttributeName=PK,KeyType=HASH AttributeName=SK,KeyType=RANGE \
-			--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+			--attribute-definitions AttributeName=PK,AttributeType=S AttributeName=SK,AttributeType=S AttributeName=GSI1PK,AttributeType=S \
+			--key-schema AttributeName=PK,KeyType=HASH AttributeName=SK,KeyType=RANGE  \
+			--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+			--global-secondary-indexes file://./api/tables/song.swap.gsi.json
 
 
 start-local: start-api-local start-ui-local
 
 populate-table-local:
-	aws --endpoint-url http://localhost:4566 dynamodb batch-write-item \
+	aws --no-paginate --no-cli-pager --endpoint-url http://localhost:4566 dynamodb batch-write-item \
     --request-items file://sample-dynamo-db.json
 
 populate-table-production:
-	aws dynamodb batch-write-item --request-items file://sample-dynamo-db.json
+	aws --no-paginate --no-cli-pager dynamodb batch-write-item --request-items file://sample-dynamo-db.json
 
 test: test-ui test-api
 
