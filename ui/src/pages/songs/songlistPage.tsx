@@ -38,6 +38,7 @@ export const SongListView = ({
   if (songs) {
     return SongListPanel(songs);
   } else if (!loadStarted) {
+    setLoadStarted(true);
     (async () => {
       const songsForTag = await getSongsForTagId(tagId);
       setSongs(songsForTag);

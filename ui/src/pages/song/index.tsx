@@ -118,7 +118,6 @@ export const SongPageWithParams = ({ getSong }: { getSong: GetSong }) => {
       <SongPageContainer>
         <SongPage getSong={getSong} songId={songId} />
       </SongPageContainer>
-      <SongControlPanel />
     </div>
   );
 };

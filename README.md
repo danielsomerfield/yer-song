@@ -1,17 +1,17 @@
 # TODO
 
-* Cloudfront / TLS to static assets
-* Custom domain name
-* Change template.yaml to default to production and have local override
-* Name registration
-    (possibly unique)
+## Features
+- Upvote
+- Queue up a song
 
-
-Views:
-- song view
-- available songs
+## Views
 - song queue
+- admin view
 
+## Automation
+* Generate API DNS so hard-coded value in .env file can be replaced
+
+# Other details
 
 Personas:
     - voter 

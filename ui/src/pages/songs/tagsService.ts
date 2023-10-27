@@ -22,9 +22,9 @@ export const createGetTagsByName = (
   httpClient: Axios = axios,
 ) => {
   return async (): Promise<Tags> => {
-    const url = `${configuration.songsAPIHostURL}/tags/${encodeURIComponent(
+    const url = `${configuration.songsAPIHostURL}/tagName/${encodeURIComponent(
       tagName,
-    )}`;
+    )}/tags`;
     const response = await httpClient.get(url);
 
     // //TODO: verify the object is structurally correct

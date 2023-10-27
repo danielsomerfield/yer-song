@@ -28,15 +28,15 @@ const BackToSongsButton = styled.button`
 export const SongControlPanel = () => {
   const navigate = useNavigate();
   const navigateToSelector = () => {
-    navigate("/songs");
+    navigate("/genres");
   };
 
   return (
     <>
       <MainPanel className={"SongControlPanel.MainPanel"}>
-        <VoteButton title={"Up Vote!"}>Up Vote!</VoteButton>
+        {/*<VoteButton title={"Up Vote!"}>Up Vote!</VoteButton>*/}
         <BackToSongsButton title={"Back to songs"} onClick={navigateToSelector}>
-          Back to songs
+          Browse
         </BackToSongsButton>
       </MainPanel>
     </>

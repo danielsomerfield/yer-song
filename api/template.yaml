@@ -1,10 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform:
-  - AWS::Serverless-2016-10-31
-  - "Fn:Transform":
-      Name: 'AWS::Include'
-      Parameters:
-        Location: asdf
+Transform: AWS::Serverless-2016-10-31
 
 Description: >
   API for Yer-Song App
@@ -49,7 +44,7 @@ Resources:
         Song:
           Type: Api
           Properties:
-            Path: /tags/{name}
+            Path: /tagName/{name}/tags
             Method: get
             RestApiId: !Ref SongByIdAPI
       Policies: AWSLambdaDynamoDBExecutionRole
@@ -145,6 +140,9 @@ Resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 100
+              WriteCapacityUnits: 100
 
 Outputs:
   SongByIdAPI:
