@@ -2,22 +2,23 @@ import { Song } from "../song";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { LoadingPanel } from "../../components/loadingPanel";
+import { ListItem } from "../../components/lists";
 
-type GetSongsForTagId = (id: string) => Song[];
+type GetSongsForTagId = (id: string) => Promise<Song[]>;
 
 const SongListPanel = (songs: Song[]) => {
   return (
     <div>
       {songs.map((s) => {
         return (
-          <div
+          <ListItem
             role={"listitem"}
             key={`song::${s.id}`}
             aria-label={`song: ${s.title}`}
             data-id={s.id}
           >
             {s.title}
-          </div>
+          </ListItem>
         );
       })}
     </div>
@@ -37,7 +38,10 @@ export const SongListView = ({
   if (songs) {
     return SongListPanel(songs);
   } else if (!loadStarted) {
-    setSongs(getSongsForTagId(tagId));
+    (async () => {
+      const songsForTag = await getSongsForTagId(tagId);
+      setSongs(songsForTag);
+    })();
     return <LoadingPanel />;
   } else {
     return <LoadingPanel />;
@@ -45,9 +49,9 @@ export const SongListView = ({
 };
 
 export const SongListPage = ({
-  getSongsForTag,
+  getSongsForTagId,
 }: {
-  getSongsForTag: GetSongsForTagId;
+  getSongsForTagId: GetSongsForTagId;
 }) => {
   const { tag } = useParams();
   console.log("The tag", tag);
@@ -58,7 +62,7 @@ export const SongListPage = ({
 
   return (
     <>
-      <SongListView getSongsForTagId={getSongsForTag} tagId={tag} />
+      <SongListView getSongsForTagId={getSongsForTagId} tagId={tag} />
     </>
   );
 };

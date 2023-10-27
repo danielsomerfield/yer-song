@@ -15,7 +15,7 @@ export const createGetSongsByTagIdLambda = (dependencies: Dependencies) => {
     const tagId = event.pathParameters?.["tagId"];
     if (!tagId) {
       // TODO: return 400
-      throw "NYI: no ";
+      throw "NYI: no tagId";
     }
     const page = await findSongsByTagId(tagId);
 

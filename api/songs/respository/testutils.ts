@@ -4,6 +4,7 @@ import { DynamoDB } from "@aws-sdk/client-dynamodb";
 export interface Dynamo {
   stop: () => Promise<void>;
   client(): DynamoDB;
+  endpoint: () => string;
 }
 
 const startContainer = async () => {
@@ -71,6 +72,7 @@ export const startDynamo: () => Promise<Dynamo> = async () => {
   await createSchema(client);
 
   return {
+    endpoint: () => endpoint,
     client: () => {
       return client;
     },

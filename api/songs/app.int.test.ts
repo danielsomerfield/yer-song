@@ -1,81 +1,23 @@
 import { defaultConfiguration, getAppDependencies } from "./app";
 import { v4 as uuidv4 } from "uuid";
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { DynamoDB } from "@aws-sdk/client-dynamodb";
-import { GenericContainer, StartedTestContainer, Wait } from "testContainers";
 import { afterEach } from "node:test";
 import { createGetSongLambda } from "./song/getSong";
 
 import { Song } from "./domain/songs";
 import { createGetTagsByNameLambda } from "./tags/getTags";
 import { Tags } from "./domain/tags";
+import { Dynamo, startDynamo } from "./respository/testutils";
 
 describe("the lambda", () => {
-  // TODO: refactor
-  let dynamoDBContainer: StartedTestContainer;
-
-  let client: DynamoDB;
-  let endpoint: string;
+  let dynamo: Dynamo;
 
   beforeEach(async () => {
-    dynamoDBContainer = await new GenericContainer("localstack/localstack")
-      .withExposedPorts(4566)
-      .withExposedPorts(4569)
-      .withWaitStrategy(Wait.forLogMessage(/.*Running on https.*/, 2))
-      .start();
-
-    const region = "us-west-2";
-    const port = dynamoDBContainer.getMappedPort(4566);
-    endpoint = `http://localhost:${port}`;
-    client = new DynamoDB({
-      endpoint,
-      region,
-      credentials: {
-        accessKeyId: "fake",
-        secretAccessKey: "fake",
-        sessionToken: "fake",
-      },
-    });
-
-    // TODO: refactor this with the makefile so we don't have three definitions of the same table
-    await client.createTable({
-      TableName: "song",
-      AttributeDefinitions: [
-        { AttributeName: "PK", AttributeType: "S" },
-        { AttributeName: "SK", AttributeType: "S" },
-        { AttributeName: "entityType", AttributeType: "S" },
-      ],
-      KeySchema: [
-        { AttributeName: "PK", KeyType: "HASH" },
-        { AttributeName: "SK", KeyType: "RANGE" },
-      ],
-      ProvisionedThroughput: { WriteCapacityUnits: 1, ReadCapacityUnits: 1 },
-      GlobalSecondaryIndexes: [
-        {
-          IndexName: "entityTypeGSI",
-          KeySchema: [
-            { AttributeName: "entityType", KeyType: "HASH" },
-            { AttributeName: "SK", KeyType: "RANGE" },
-          ],
-          Projection: {
-            ProjectionType: "ALL",
-          },
-          ProvisionedThroughput: {
-            ReadCapacityUnits: 1,
-            WriteCapacityUnits: 1,
-          },
-        },
-      ],
-    });
+    dynamo = await startDynamo();
   }, 60 * 1000);
 
-  afterEach(() => {
-    if (dynamoDBContainer) {
-      dynamoDBContainer.stop();
-    }
-    if (client) {
-      client.destroy();
-    }
+  afterEach(async () => {
+    await dynamo.stop();
   });
 
   it("loads a song from the path", async () => {
@@ -83,7 +25,7 @@ describe("the lambda", () => {
 
     const songName = "Money for Nothing";
     const artistName = "Dire Straights";
-    await client.putItem({
+    await dynamo.client().putItem({
       TableName: "song",
       Item: {
         PK: {
@@ -113,7 +55,7 @@ describe("the lambda", () => {
       getAppDependencies({
         ...defaultConfiguration,
         dynamodb: {
-          endpoint,
+          endpoint: dynamo.endpoint(),
           credentials: {
             accessKeyId: "fake",
             secretAccessKey: "fake",
@@ -168,7 +110,7 @@ describe("the lambda", () => {
 
     await Promise.all(
       genres.map((genre) =>
-        client.putItem({
+        dynamo.client().putItem({
           TableName: "song",
           Item: genre,
         })
@@ -184,7 +126,7 @@ describe("the lambda", () => {
       getAppDependencies({
         ...defaultConfiguration,
         dynamodb: {
-          endpoint,
+          endpoint: dynamo.endpoint(),
           credentials: {
             accessKeyId: "fake",
             secretAccessKey: "fake",

@@ -8,9 +8,9 @@ describe("the song list page", () => {
   });
 
   it("shows all songs for the tag", () => {
-    const getSongs = (tagId: string): Song[] => {
+    const getSongs = (tagId: string): Promise<Song[]> => {
       return tagId == "tag3212"
-        ? [
+        ? Promise.resolve([
             {
               id: "123",
               title: "Pleasant Valley Tuesday",
@@ -21,8 +21,8 @@ describe("the song list page", () => {
               title: "Miserable Hill Wednesday",
               artistName: "The Donkeys",
             },
-          ]
-        : [];
+          ])
+        : Promise.resolve([]);
     };
     render(<SongListView getSongsForTagId={getSongs} tagId={"tag3212"} />);
     const songItems = screen.getAllByRole("listitem");

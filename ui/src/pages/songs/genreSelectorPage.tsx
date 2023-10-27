@@ -3,22 +3,9 @@ import { Tag, Tags } from "./tagsService";
 import { LoadingPanel } from "../../components/loadingPanel";
 import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
+import { ListItem } from "../../components/lists";
 
 export type GetTags = () => Promise<Tags>;
-export const TagViewPanel = styled.div`
-  height: 6dvh;
-
-  &:hover {
-    background-color: lightblue;
-  }
-
-  font-size: 4dvh;
-  white-space: nowrap;
-  overflow: clip;
-  text-overflow: ellipsis;
-  text-align: left;
-  padding: 1dvh 0 1dvh 0;
-`;
 
 export const TagsPanel = styled.div`
   display: flex;
@@ -30,7 +17,7 @@ const TagsView = (tags: Tags, nav: NavigateFunction) => {
   const TagView = (tag: Tag, index: number) => {
     const tagValue = `${tag.name}=${tag.value}`;
     return (
-      <TagViewPanel
+      <ListItem
         aria-label={`tag::${tag.name}=${tag.value}`}
         key={`tag::${tagValue}`}
         onClick={() => nav(`/tags/${tag.id}/songs`)}
@@ -40,7 +27,7 @@ const TagsView = (tags: Tags, nav: NavigateFunction) => {
         role={"listitem"}
       >
         {tag.value}
-      </TagViewPanel>
+      </ListItem>
     );
   };
 
