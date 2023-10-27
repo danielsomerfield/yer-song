@@ -105,6 +105,9 @@
           "entityType": {
             "S": "song"
           },
+          "GSI1PK": {
+            "S":"t:genre:ClassicPopRock"
+          },
           "title": {
             "S": "Eleanor Rigby"
           },
@@ -137,6 +140,56 @@
           }
         }
       }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:64D74B18-8B56-4BB1-BC35-ECADBEC5EE09"
+          },
+          "SK": {
+            "S": "s:64D74B18-8B56-4BB1-BC35-ECADBEC5EE09"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S":"t:genre:JazzStandardsOldLoveSongs"
+          },
+          "title": {
+            "S": "Amor em Paz"
+          },
+          "artistName": {
+            "S": "A.C. Jobim"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:5FED4376-A701-4ADA-BED6-98F3FEF592EC"
+          },
+          "SK": {
+            "S": "s:5FED4376-A701-4ADA-BED6-98F3FEF592EC"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S":"t:genre:Contemporary"
+          },
+          "title": {
+            "S": "A Sky Full of Stars"
+          },
+          "artistName": {
+            "S": "Coldplay"
+          }
+        }
+      }
     }
+
+
   ]
 }
