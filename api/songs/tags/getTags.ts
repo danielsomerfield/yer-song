@@ -14,7 +14,7 @@ export const createGetTagsByNameLambda = (dependencies: Dependencies) => {
   ): Promise<APIGatewayProxyResult> => {
     const tagName = event.pathParameters?.["name"];
     if (!tagName) {
-      // TODO: return 400
+      // TODO (MVP): return 400
       throw "NYI: no tag name";
     }
     const page = await getTagsByName(tagName);

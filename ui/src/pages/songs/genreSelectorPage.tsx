@@ -63,7 +63,7 @@ export const GenreSelectorPage = ({
   return (
     <>
       {panel}
-      {/*{TODO: do we need any controls here? }*/}
+      {/*{TODO (MVP): do we need any controls here? }*/}
       {/*<SongControlPanel />*/}
     </>
   );

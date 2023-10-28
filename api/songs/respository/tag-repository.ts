@@ -38,7 +38,7 @@ export const createTagsRepository = (dynamoDB: DynamoDB) => {
         });
         return (items?.filter((i) => i != undefined) as Tag[]) || [];
       } catch (e) {
-        // TODO: get rid of this and catch above
+        // TODO (MVP):: get rid of this and catch above
         logger.error(e);
         throw e;
       }

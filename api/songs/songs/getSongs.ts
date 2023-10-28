@@ -14,7 +14,7 @@ export const createGetSongsByTagIdLambda = (dependencies: Dependencies) => {
   ): Promise<APIGatewayProxyResult> => {
     const tagId = event.pathParameters?.["tagId"];
     if (!tagId) {
-      // TODO: return 400
+      // TODO (MVP): return 400
       throw "NYI: no tagId";
     }
     const page = await findSongsByTagId(tagId);

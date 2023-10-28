@@ -26,8 +26,8 @@ export const createGetTagsByName = (
     )}/tags`;
     const response = await httpClient.get(url);
 
-    // //TODO: verify the object is structurally correct
-    // //TODO: verify the status code
+    // TODO: verify the object is structurally correct
+    // TODO (MVP): verify the status code
 
     return response.data.data as Tags;
   };

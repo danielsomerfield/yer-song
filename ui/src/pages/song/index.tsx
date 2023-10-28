@@ -50,7 +50,7 @@ interface Maybe<T> {
   exists: () => boolean;
 }
 
-// TODO: test the none case
+// TODO (MVP): test the none case
 const Maybe = {
   none: function <T>(): Maybe<T> {
     return {
@@ -89,7 +89,7 @@ export const SongPage = ({
   const [loadStarted, setLoadStarted] = useState(false);
 
   useEffect(() => {
-    // TODO: error handling
+    // TODO (MVP): error handling
     if (!loadStarted) {
       setLoadStarted(true);
       (async () => {

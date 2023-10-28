@@ -9,14 +9,19 @@
 
 ### View: Genre List ✔︎
 #### Action: Go to Songs for Genre ✔︎
+* Handle load failures
+* 
 
 ### View: Song by Genre ✔︎︎ ︎
+* Handle load failures
 #### Action: Back to Browse ✔︎  
 #### Action: Go to Song Details ✔︎
 * Handle missing tag case
 * Message if no songs found
+* Handle load failures
 
 ### View: Song Details ✔︎
+* Handle load failures
 #### Action: Back to Browse ✔︎ ︎
 #### Action: Add to playlist
 - Enforce vote limit

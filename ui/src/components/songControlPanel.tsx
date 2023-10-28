@@ -22,7 +22,7 @@ const BackToSongsButton = styled.button`
 export const SongControlPanel = (props: PropsWithChildren) => {
   const navigate = useNavigate();
 
-  // TODO: make this a register if not registered
+  // TODO (MVP): make this a register if not registered
   const navigateToSelector = () => {
     navigate("/genres");
   };

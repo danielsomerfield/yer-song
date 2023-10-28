@@ -61,7 +61,7 @@ export const SongListView = ({
   } else {
     panel = <LoadingPanel />;
   }
-  // TODO: handle load failure case
+  // TODO (MVP): handle load failure case
   return panel;
 };
 
@@ -73,7 +73,7 @@ export const SongListPage = ({
   const { tag } = useParams();
   console.log("The tag", tag);
   if (!tag) {
-    // TODO: what do we do here?
+    // TODO (MVP): what do we do here?
     throw "NYI: no tag";
   }
 
