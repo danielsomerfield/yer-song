@@ -12,27 +12,36 @@ const MainPanel = styled.div`
   right: 0;
 `;
 
-const BackToSongsButton = styled.button`
+const NavButton = styled.button`
   width: 90%;
   height: 12dvh;
   margin: 2dvh;
   font-size: 4dvh;
 `;
 
-export const SongControlPanel = (props: PropsWithChildren) => {
+export const NavPanel = (props: PropsWithChildren) => {
   const navigate = useNavigate();
 
   // TODO (MVP): make this a register if not registered
-  const navigateToSelector = () => {
-    navigate("/genres");
-  };
-
   return (
     <>
       <MainPanel className={"SongControlPanel.MainPanel"}>
-        <BackToSongsButton title={"Back to songs"} onClick={navigateToSelector}>
+        <NavButton
+          title={"Back to songs"}
+          onClick={() => {
+            navigate("/genres");
+          }}
+        >
           Browse
-        </BackToSongsButton>
+        </NavButton>
+        <NavButton
+          title={"Playlist"}
+          onClick={() => {
+            navigate("/playlist");
+          }}
+        >
+          Playlist
+        </NavButton>
         {props.children}
       </MainPanel>
     </>

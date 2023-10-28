@@ -11,7 +11,8 @@
     "integration": "jest --testRegex='.*int.test\\.ts$'",
     "lint": "eslint '*.ts' --quiet --fix",
     "compile": "tsc",
-    "test": "npm run compile && npm run unit && npm run integration"
+    "test": "npm run compile && npm run unit && npm run integration",
+    "unit:dev": "jest --watchAll --testRegex='.*(?<!int)\\.test\\.ts$'"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.429.0",

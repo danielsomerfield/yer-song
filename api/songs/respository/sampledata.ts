@@ -19,10 +19,10 @@ export const Songs = {
         S: SongIds.song1Id,
       },
       title: {
-        S: "Someone I used to know",
+        S: "Song 1",
       },
       artistName: {
-        S: "Gatchya",
+        S: "Artist 1",
       },
       GSI1PK: {
         S: GenreIds.genre1,
@@ -34,19 +34,25 @@ export const Songs = {
     TableName: "song",
     Item: {
       PK: {
-        S: SongIds.song3Id,
+        S: SongIds.song2Id,
       },
       SK: {
-        S: SongIds.song3Id,
+        S: SongIds.song2Id,
       },
       title: {
-        S: "I Love Saskatoon",
+        S: "Song 2",
       },
       artistName: {
-        S: "Randy No Man",
+        S: "Artist 2",
+      },
+      voteCount: {
+        N: "1",
       },
       GSI1PK: {
-        S: GenreIds.genre1,
+        S: GenreIds.genre2,
+      },
+      GSI2PK: {
+        S: "ON_PLAYLIST",
       },
     },
   },
@@ -60,13 +66,19 @@ export const Songs = {
         S: SongIds.song3Id,
       },
       title: {
-        S: "I Love Saskatoon",
+        S: "Song 3",
       },
       artistName: {
-        S: "Randy No Man",
+        S: "Artist 3",
+      },
+      voteCount: {
+        N: "4",
       },
       GSI1PK: {
         S: GenreIds.genre1,
+      },
+      GSI2PK: {
+        S: "ON_PLAYLIST",
       },
     },
   },

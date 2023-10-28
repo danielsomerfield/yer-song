@@ -1,5 +1,3 @@
-import React from "react";
-
-export const LoadingPanel = () => {
+export const LoadingMessagePanel = () => {
   return <div>Loading...</div>;
 };

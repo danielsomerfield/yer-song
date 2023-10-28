@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { LoadingPanel } from "../../components/loadingPanel";
-import { SongControlPanel } from "../../components/songControlPanel";
+import { LoadingMessagePanel } from "../../components/loadingPanel";
+import { NavPanel } from "../../components/navPanel";
 
 export interface Song {
   id: string;
@@ -104,7 +104,7 @@ export const SongPage = ({
   }, undefined);
 
   if (!song) {
-    return <LoadingPanel />;
+    return <LoadingMessagePanel />;
   }
 
   return song.exists() ? <SongView song={song.getValue()} /> : <SongNotFound />;
@@ -117,7 +117,7 @@ export const SongPageWithParams = ({ getSong }: { getSong: GetSong }) => {
     <div className={"SongWithParam"}>
       <SongPageContainer>
         <SongPage getSong={getSong} songId={songId} />
-        <SongControlPanel />
+        <NavPanel />
       </SongPageContainer>
     </div>
   );

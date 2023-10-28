@@ -6,14 +6,15 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { logger } from "../util/logger";
 
-import { Song, Songs } from "../domain/songs";
-import { getRequiredString } from "./repository";
+import { Paginated, Song, Songs, SongWithVotes } from "../domain/songs";
+import { getOptionalInt, getRequiredString } from "./repository";
 
 export type Maybe<T> = T | undefined;
 
 export interface SongRepository {
   getSongById: (id: string) => Promise<Maybe<Song>>;
   findSongsByTag: (tag: string) => Promise<Songs>;
+  findSongsWithVotes: () => Promise<Paginated<SongWithVotes>>;
 }
 
 export const createSongRepository = (client: DynamoDB): SongRepository => {
@@ -22,6 +23,7 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
       id: getRequiredString(maybeItem, "PK"),
       title: getRequiredString(maybeItem, "title"),
       artistName: getRequiredString(maybeItem, "artistName"),
+      voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
     };
   }
 
@@ -86,8 +88,41 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
       };
     }
   };
+
+  const findSongsWithVotes = async () => {
+    const maybeSongResponse = await client.send(
+      new QueryCommand({
+        TableName: "song",
+        IndexName: "GSI2",
+        KeyConditionExpression: "GSI2PK = :pk",
+        ExpressionAttributeValues: {
+          ":pk": {
+            S: "ON_PLAYLIST",
+          },
+        },
+      })
+    );
+
+    if (maybeSongResponse.Items) {
+      return {
+        page: maybeSongResponse.Items.map((i) => createSongFromRecord(i))
+          .filter((s) => s.voteCount > 0)
+          .sort((s1, s2) => {
+            return s2.voteCount - s1.voteCount;
+          }),
+        thisPage: "",
+      };
+    } else {
+      return {
+        page: [],
+        thisPage: "",
+      };
+    }
+  };
+
   return {
     getSongById,
     findSongsByTag,
+    findSongsWithVotes,
   };
 };

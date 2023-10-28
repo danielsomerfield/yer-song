@@ -5,6 +5,7 @@ import { DynamoDBClientConfig } from "@aws-sdk/client-dynamodb/dist-types/Dynamo
 import { createGetTagsByNameLambda } from "./tags/getTags";
 import { createTagsRepository } from "./respository/tag-repository";
 import { createGetSongsByTagIdLambda } from "./songs/getSongs";
+import { createGetPlaylist } from "./playlist/playlist";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -42,6 +43,7 @@ export const getAppDependencies = (
     allowedOrigins,
     getTagsByName: tagsRepository.getTagsByName,
     findSongsByTagId: songsRepository.findSongsByTag,
+    findSongsWithVotes: songsRepository.findSongsWithVotes,
   };
 };
 
@@ -52,3 +54,5 @@ export const getTags = createGetTagsByNameLambda(getAppDependencies());
 export const getSongsByTagId = createGetSongsByTagIdLambda(
   getAppDependencies()
 );
+
+export const getPlaylist = createGetPlaylist(getAppDependencies());

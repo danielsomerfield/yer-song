@@ -55,4 +55,20 @@ describe("The song repository", () => {
       artistName: Songs.song3.Item.artistName.S,
     });
   });
+
+  it("finds songs with votes > 0 ordered by vote count desc", async () => {
+    const songRepository = createSongRepository(dynamo.client());
+    const matches = await songRepository.findSongsWithVotes();
+    expect(matches.page.length).toEqual(2);
+    expect(matches.page[0]).toMatchObject({
+      id: SongIds.song3Id,
+      title: Songs.song3.Item.title.S,
+      artistName: Songs.song3.Item.artistName.S,
+    });
+    expect(matches.page[1]).toMatchObject({
+      id: SongIds.song2Id,
+      title: Songs.song2.Item.title.S,
+      artistName: Songs.song2.Item.artistName.S,
+    });
+  });
 });

@@ -3,7 +3,7 @@ import { Tag, Tags } from "./tagsService";
 import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
-import { LoadingPanel } from "../../components/loadingPanel";
+import { LoadingMessagePanel } from "../../components/loadingPanel";
 
 export type GetTags = () => Promise<Tags>;
 
@@ -59,7 +59,11 @@ export const GenreSelectorPage = ({
     }
   }, undefined);
 
-  const panel = tags ? <TagsView tags={tags} nav={nav} /> : <LoadingPanel />;
+  const panel = tags ? (
+    <TagsView tags={tags} nav={nav} />
+  ) : (
+    <LoadingMessagePanel />
+  );
   return (
     <>
       {panel}

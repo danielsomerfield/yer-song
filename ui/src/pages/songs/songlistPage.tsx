@@ -1,14 +1,9 @@
 import { Song } from "../song";
 import { MouseEventHandler, useState } from "react";
-import {
-  Navigate,
-  NavigateFunction,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import { LoadingPanel } from "../../components/loadingPanel";
+import { NavigateFunction, useParams } from "react-router-dom";
+import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { ListItem } from "../../components/lists";
-import { SongControlPanel } from "../../components/songControlPanel";
+import { NavPanel } from "../../components/navPanel";
 
 type GetSongsForTagId = (id: string) => Promise<Song[]>;
 
@@ -40,26 +35,27 @@ const SongListPanel = (songs: Song[], navigator: NavigateFunction) => {
 export const SongListView = ({
   getSongsForTagId,
   tagId,
+  nav,
 }: {
   getSongsForTagId: GetSongsForTagId;
   tagId: string;
+  nav: NavigateFunction;
 }) => {
   const [loadStarted, setLoadStarted] = useState(false);
   const [songs, setSongs] = useState<Song[] | undefined>(undefined);
-  const navigator = useNavigate();
 
   let panel;
   if (songs) {
-    panel = SongListPanel(songs, navigator);
+    panel = SongListPanel(songs, nav);
   } else if (!loadStarted) {
     setLoadStarted(true);
     (async () => {
       const songsForTag = await getSongsForTagId(tagId);
       setSongs(songsForTag);
     })();
-    panel = <LoadingPanel />;
+    panel = <LoadingMessagePanel />;
   } else {
-    panel = <LoadingPanel />;
+    panel = <LoadingMessagePanel />;
   }
   // TODO (MVP): handle load failure case
   return panel;
@@ -67,8 +63,10 @@ export const SongListView = ({
 
 export const SongListPage = ({
   getSongsForTagId,
+  nav,
 }: {
   getSongsForTagId: GetSongsForTagId;
+  nav: NavigateFunction;
 }) => {
   const { tag } = useParams();
   console.log("The tag", tag);
@@ -79,8 +77,9 @@ export const SongListPage = ({
 
   return (
     <>
-      <SongListView getSongsForTagId={getSongsForTagId} tagId={tag} />
-      <SongControlPanel />
+      <SongListView getSongsForTagId={getSongsForTagId} tagId={tag} nav={nav} />
+
+      <NavPanel />
     </>
   );
 };

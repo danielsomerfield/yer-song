@@ -185,6 +185,12 @@
           },
           "artistName": {
             "S": "Coldplay"
+          },
+          "voteCount": {
+            "N": "4"
+          },
+          "GSI2PK": {
+            "S": "ON_PLAYLIST"
           }
         }
       }

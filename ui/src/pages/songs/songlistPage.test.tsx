@@ -1,13 +1,14 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { SongListView } from "./songlistPage";
 import { Song } from "../song";
+import fn = jest.fn;
 
 describe("the song list page", () => {
   beforeEach(() => {
     cleanup();
   });
 
-  it("shows all songs for the tag", () => {
+  it("shows all songs for the tag", async () => {
     const getSongs = (tagId: string): Promise<Song[]> => {
       return tagId == "tag3212"
         ? Promise.resolve([
@@ -24,8 +25,15 @@ describe("the song list page", () => {
           ])
         : Promise.resolve([]);
     };
-    render(<SongListView getSongsForTagId={getSongs} tagId={"tag3212"} />);
-    const songItems = screen.getAllByRole("listitem");
+    render(
+      <SongListView
+        getSongsForTagId={getSongs}
+        tagId={"tag3212"}
+        nav={() => fn()}
+      />,
+    );
+    const songItems = await screen.findAllByRole("listitem");
+
     expect(songItems.length).toEqual(2);
     expect(
       songItems.map((i) => i.attributes.getNamedItem("aria-label")?.value),

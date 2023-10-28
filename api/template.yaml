@@ -112,6 +112,38 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
+
+
+  PlaylistFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.getPlaylist
+      Events:
+        Song:
+          Type: Api
+          Properties:
+            Path: /playlist
+            Method: get
+            RestApiId: !Ref SongByIdAPI
+      Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+    Connectors:
+      ReadFromSongs:
+        Properties:
+          Destination:
+            Id: SongTable
+          Permissions:
+            - Read
+
+  # Dependencies
+# TODO: I can't find any bloody way to prevent having to build this other than not use
+#   any of the Connectors and generate the policy by hand. Lame. Nor can I find a way to include
+#   an external definition.
   SongTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -122,6 +154,8 @@ Resources:
           - AttributeName: SK
             AttributeType: S
           - AttributeName: GSI1PK
+            AttributeType: S
+          - AttributeName: GSI2PK
             AttributeType: S
         KeySchema:
           - AttributeName: PK
@@ -141,8 +175,17 @@ Resources:
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
-              ReadCapacityUnits: 100
-              WriteCapacityUnits: 100
+              ReadCapacityUnits: 25
+              WriteCapacityUnits: 25
+          - IndexName: GSI2
+            KeySchema:
+              - AttributeName: GSI2PK
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 25
+              WriteCapacityUnits: 25
 
 Outputs:
   SongByIdAPI:
@@ -166,3 +209,9 @@ Outputs:
   SongsByTagIdFunctionIamRole:
     Description: "Implicit IAM Role"
     Value: !GetAtt SongsByTagIdFunctionRole.Arn
+  PlaylistFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt PlaylistFunction.Arn
+  PlaylistFunctionIamRole:
+    Description: "Implicit IAM Role"
+    Value: !GetAtt PlaylistFunctionRole.Arn

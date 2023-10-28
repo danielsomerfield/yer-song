@@ -1,5 +1,6 @@
 import { GenericContainer, Wait } from "testcontainers";
-import { DynamoDB } from "@aws-sdk/client-dynamodb";
+import { CreateTableCommandInput, DynamoDB } from "@aws-sdk/client-dynamodb";
+import * as fs from "fs";
 
 export interface Dynamo {
   stop: () => Promise<void>;
@@ -20,41 +21,13 @@ const startContainer = async () => {
 };
 
 const createSchema = async (client: DynamoDB) => {
-  await client.createTable({
-    TableName: "song",
-    AttributeDefinitions: [
-      { AttributeName: "PK", AttributeType: "S" },
-      { AttributeName: "SK", AttributeType: "S" },
-      { AttributeName: "GSI1PK", AttributeType: "S" },
-    ],
-    KeySchema: [
-      { AttributeName: "PK", KeyType: "HASH" },
-      { AttributeName: "SK", KeyType: "RANGE" },
-    ],
-    ProvisionedThroughput: { WriteCapacityUnits: 1, ReadCapacityUnits: 1 },
-    GlobalSecondaryIndexes: [
-      {
-        IndexName: "GSI1",
-        KeySchema: [
-          {
-            AttributeName: "GSI1PK",
-            KeyType: "HASH",
-          },
-          {
-            AttributeName: "SK",
-            KeyType: "RANGE",
-          },
-        ],
-        Projection: {
-          ProjectionType: "ALL",
-        },
-        ProvisionedThroughput: {
-          ReadCapacityUnits: 1,
-          WriteCapacityUnits: 1,
-        },
-      },
-    ],
-  });
+  const fileContents = fs.readFileSync(
+    `${__dirname}/../../tables/song.table.json`,
+    { encoding: "utf-8" }
+  );
+  const tableDefinition: CreateTableCommandInput = JSON.parse(fileContents);
+
+  await client.createTable(tableDefinition);
 };
 
 export const startDynamo: () => Promise<Dynamo> = async () => {

@@ -6,8 +6,10 @@ import { SongPageWithParams } from "./pages/song";
 import { configuration } from "./configuration";
 import * as TagService from "./pages/songs/tagsService";
 import * as SongService from "./services/songService";
+import * as PlaylistService from "./services/playListService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
+import { GetPlaylist, PlayListPage } from "./pages/playlist/playlist";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -47,6 +49,10 @@ const getSongsForTagIdFn = SongService.createGetSongsByTagId({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
+const getPlayListFn: GetPlaylist = PlaylistService.createGetPlaylist({
+  songsAPIHostURL: configuration.songsAPIHostURL,
+});
+
 function App() {
   const navigator = useNavigate();
 
@@ -72,7 +78,18 @@ function App() {
           />
           <Route
             path={"/tags/:tag/songs"}
-            element={<SongListPage getSongsForTagId={getSongsForTagIdFn} />}
+            element={
+              <SongListPage
+                getSongsForTagId={getSongsForTagIdFn}
+                nav={navigator}
+              />
+            }
+          />
+          <Route
+            path={"/playlist"}
+            element={
+              <PlayListPage getPlaylist={getPlayListFn} nav={navigator} />
+            }
           />
         </Routes>
       </AppContainer>

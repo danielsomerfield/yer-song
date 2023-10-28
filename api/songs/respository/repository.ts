@@ -11,3 +11,15 @@ export const getRequiredString = (
     return value;
   }
 };
+
+export const getOptionalInt = (
+  item: Record<string, AttributeValue>,
+  fieldName: string
+): number | undefined => {
+  const value = item?.[fieldName]?.N;
+  if (!value) {
+    return undefined;
+  } else {
+    return Number.parseInt(value);
+  }
+};

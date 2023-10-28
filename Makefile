@@ -37,12 +37,11 @@ start-api-local: build-api
 
 build-table-local: # TODO: make this only run if the table doesn't exist
 	aws --no-paginate --no-cli-pager --endpoint-url http://localhost:4566 dynamodb create-table \
-			--table-name song \
-			--attribute-definitions AttributeName=PK,AttributeType=S AttributeName=SK,AttributeType=S AttributeName=GSI1PK,AttributeType=S \
-			--key-schema AttributeName=PK,KeyType=HASH AttributeName=SK,KeyType=RANGE  \
-			--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-			--global-secondary-indexes file://./api/tables/song.swap.gsi.json
+		--cli-input-json file://./api/tables/song.table.json
 
+build-table-production: # TODO: make this only run if the table doesn't exist
+	aws --no-paginate --no-cli-pager dynamodb create-table \
+		--cli-input-json file://./api/tables/song.table.json
 
 start-local: start-api-local start-ui-local
 
