@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { PropsWithChildren } from "react";
 
 const MainPanel = styled.div`
   display: flex;
@@ -11,13 +12,6 @@ const MainPanel = styled.div`
   right: 0;
 `;
 
-const VoteButton = styled.button`
-  width: 90%;
-  height: 12dvh;
-  margin: 2dvh;
-  font-size: 4dvh;
-`;
-
 const BackToSongsButton = styled.button`
   width: 90%;
   height: 12dvh;
@@ -25,8 +19,10 @@ const BackToSongsButton = styled.button`
   font-size: 4dvh;
 `;
 
-export const SongControlPanel = () => {
+export const SongControlPanel = (props: PropsWithChildren) => {
   const navigate = useNavigate();
+
+  // TODO: make this a register if not registered
   const navigateToSelector = () => {
     navigate("/genres");
   };
@@ -34,10 +30,10 @@ export const SongControlPanel = () => {
   return (
     <>
       <MainPanel className={"SongControlPanel.MainPanel"}>
-        {/*<VoteButton title={"Up Vote!"}>Up Vote!</VoteButton>*/}
         <BackToSongsButton title={"Back to songs"} onClick={navigateToSelector}>
           Browse
         </BackToSongsButton>
+        {props.children}
       </MainPanel>
     </>
   );

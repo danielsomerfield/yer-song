@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { LoadingPanel } from "../../components/loadingPanel";
 import { ListItem } from "../../components/lists";
+import { SongControlPanel } from "../../components/songControlPanel";
 
 type GetSongsForTagId = (id: string) => Promise<Song[]>;
 
@@ -35,18 +36,21 @@ export const SongListView = ({
   const [loadStarted, setLoadStarted] = useState(false);
   const [songs, setSongs] = useState<Song[] | undefined>(undefined);
 
+  let panel;
   if (songs) {
-    return SongListPanel(songs);
+    panel = SongListPanel(songs);
   } else if (!loadStarted) {
     setLoadStarted(true);
     (async () => {
       const songsForTag = await getSongsForTagId(tagId);
       setSongs(songsForTag);
     })();
-    return <LoadingPanel />;
+    panel = <LoadingPanel />;
   } else {
-    return <LoadingPanel />;
+    panel = <LoadingPanel />;
   }
+  // TODO: handle load failure case
+  return panel;
 };
 
 export const SongListPage = ({
@@ -64,6 +68,7 @@ export const SongListPage = ({
   return (
     <>
       <SongListView getSongsForTagId={getSongsForTagId} tagId={tag} />
+      <SongControlPanel />
     </>
   );
 };

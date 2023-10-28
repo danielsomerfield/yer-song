@@ -1,5 +1,4 @@
 import axios, { Axios } from "axios";
-import { Song } from "../song";
 
 interface Configuration {
   songsAPIHostURL: string;

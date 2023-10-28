@@ -8,7 +8,6 @@ import * as TagService from "./pages/songs/tagsService";
 import * as SongService from "./services/songService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
-import { SongControlPanel } from "./pages/song/songControlPanel";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -76,7 +75,6 @@ function App() {
             element={<SongListPage getSongsForTagId={getSongsForTagIdFn} />}
           />
         </Routes>
-        <SongControlPanel />
       </AppContainer>
     </Screen>
   );

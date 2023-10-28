@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Tag, Tags } from "./tagsService";
-import { LoadingPanel } from "../../components/loadingPanel";
 import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
+import { SongControlPanel } from "../../components/songControlPanel";
+import { LoadingPanel } from "../../components/loadingPanel";
 
 export type GetTags = () => Promise<Tags>;
 
@@ -13,7 +14,7 @@ export const TagsPanel = styled.div`
   overflow: hidden;
 `;
 
-const TagsView = (tags: Tags, nav: NavigateFunction) => {
+const TagsView = ({ tags, nav }: { tags: Tags; nav: NavigateFunction }) => {
   const TagView = (tag: Tag, index: number) => {
     const tagValue = `${tag.name}=${tag.value}`;
     return (
@@ -59,9 +60,12 @@ export const GenreSelectorPage = ({
     }
   }, undefined);
 
-  if (!tags) {
-    return <LoadingPanel />;
-  }
-
-  return TagsView(tags, nav);
+  const panel = tags ? <TagsView tags={tags} nav={nav} /> : <LoadingPanel />;
+  return (
+    <>
+      {panel}
+      {/*{TODO: do we need any controls here? }*/}
+      {/*<SongControlPanel />*/}
+    </>
+  );
 };

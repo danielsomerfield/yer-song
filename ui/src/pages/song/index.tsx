@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { SongControlPanel } from "./songControlPanel";
 import { LoadingPanel } from "../../components/loadingPanel";
 
 export interface Song {
