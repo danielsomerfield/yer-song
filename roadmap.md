@@ -17,11 +17,13 @@
 * Message if no songs found
 
 ### View: Song Details ✔︎
-#### Action: Back to Browse
-#### Action: Up vote
-- Enforce vote limit
+#### Action: Back to Browse ✔︎ ︎
 #### Action: Add to playlist
 - Enforce vote limit
+- Only show if not on playist
+#### Action: Up vote
+- Enforce vote limit
+- Only show if on playist
 
 ### View: Registration
 #### Action: Submit registration

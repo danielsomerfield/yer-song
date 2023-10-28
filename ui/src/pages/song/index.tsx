@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { LoadingPanel } from "../../components/loadingPanel";
+import { SongControlPanel } from "../../components/songControlPanel";
 
 export interface Song {
   id: string;
@@ -116,6 +117,7 @@ export const SongPageWithParams = ({ getSong }: { getSong: GetSong }) => {
     <div className={"SongWithParam"}>
       <SongPageContainer>
         <SongPage getSong={getSong} songId={songId} />
+        <SongControlPanel />
       </SongPageContainer>
     </div>
   );
