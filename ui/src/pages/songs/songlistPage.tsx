@@ -1,24 +1,35 @@
 import { Song } from "../song";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { MouseEventHandler, useState } from "react";
+import {
+  Navigate,
+  NavigateFunction,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { LoadingPanel } from "../../components/loadingPanel";
 import { ListItem } from "../../components/lists";
 import { SongControlPanel } from "../../components/songControlPanel";
 
 type GetSongsForTagId = (id: string) => Promise<Song[]>;
 
-const SongListPanel = (songs: Song[]) => {
+const SongListPanel = (songs: Song[], navigator: NavigateFunction) => {
+  // TODO: add test for navigation
+
   return (
     <div>
-      {songs.map((s) => {
+      {songs.map((song) => {
+        const goToSong: MouseEventHandler = () => {
+          navigator(`/songs/${song.id}`);
+        };
         return (
           <ListItem
+            onClick={goToSong}
             role={"listitem"}
-            key={`song::${s.id}`}
-            aria-label={`song: ${s.title}`}
-            data-id={s.id}
+            key={`song::${song.id}`}
+            aria-label={`song: ${song.title}`}
+            data-id={song.id}
           >
-            {s.title}
+            {song.title}
           </ListItem>
         );
       })}
@@ -35,10 +46,11 @@ export const SongListView = ({
 }) => {
   const [loadStarted, setLoadStarted] = useState(false);
   const [songs, setSongs] = useState<Song[] | undefined>(undefined);
+  const navigator = useNavigate();
 
   let panel;
   if (songs) {
-    panel = SongListPanel(songs);
+    panel = SongListPanel(songs, navigator);
   } else if (!loadStarted) {
     setLoadStarted(true);
     (async () => {

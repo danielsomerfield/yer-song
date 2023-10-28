@@ -3,7 +3,6 @@ import { Tag, Tags } from "./tagsService";
 import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
-import { SongControlPanel } from "../../components/songControlPanel";
 import { LoadingPanel } from "../../components/loadingPanel";
 
 export type GetTags = () => Promise<Tags>;

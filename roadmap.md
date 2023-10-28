@@ -11,8 +11,10 @@
 #### Action: Go to Songs for Genre ✔︎
 
 ### View: Song by Genre ✔︎︎ ︎
-#### Action: Back to Browse  ✔︎︎ ︎
-#### Action: Go to Song Details
+#### Action: Back to Browse ✔︎  
+#### Action: Go to Song Details ✔︎
+* Handle missing tag case
+* Message if no songs found
 
 ### View: Song Details ✔︎
 #### Action: Back to Browse
@@ -50,6 +52,9 @@
 - contemporary
 - movie/stage
 - jazz
+
+# Refactor
+- Extract list component
 
 # Automation
 * Generate API DNS so hard-coded value in .env file and Makefile can be replaced
