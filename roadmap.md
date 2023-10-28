@@ -65,3 +65,8 @@
 
 # Automation
 * Generate API DNS so hard-coded value in .env file and Makefile can be replaced
+* Because AWS SAM is lame, it's very hard to re-use table definitions in:
+  1. tests
+  2. production deploy
+  3. local deploy
+  As a result there's a lot of redundancy in the tables. There has to be a way to fix this.
