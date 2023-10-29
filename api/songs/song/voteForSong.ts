@@ -13,6 +13,7 @@ export const createVoteForSongLambda = (dependencies: Dependencies) => {
   ): Promise<APIGatewayProxyResult> => {
     const songId = event.pathParameters?.["songId"];
     if (songId) {
+      // TODO (MVP): prevent record if the song doesn't exist
       const updateCount = await incrementSongVotes(songId);
       if (updateCount >= 1) {
         return generateHeaders(event.headers, allowedOrigins, 200, {

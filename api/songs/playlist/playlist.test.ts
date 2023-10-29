@@ -1,11 +1,11 @@
 import { describe, it } from "@jest/globals";
-import { Paginated, SongWithVotes } from "../domain/songs";
+import { Paginated, Songs } from "../domain/songs";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import * as Playlist from "./playlist";
 
 describe("getPlaylist", () => {
   it("return the playlist", async () => {
-    const songs: Paginated<SongWithVotes> = {
+    const songs: Songs = {
       thisPage: "",
       nextPage: "",
       page: [
@@ -34,9 +34,7 @@ describe("getPlaylist", () => {
       headers: { origin: "" },
     } as unknown as APIGatewayProxyEvent;
 
-    const findSongsWithVotes: () => Promise<
-      Paginated<SongWithVotes>
-    > = async () => {
+    const findSongsWithVotes: () => Promise<Songs> = async () => {
       return songs;
     };
 

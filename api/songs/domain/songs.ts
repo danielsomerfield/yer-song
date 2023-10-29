@@ -2,9 +2,6 @@ export interface Song {
   id: string;
   title: string;
   artistName: string;
-}
-
-export interface SongWithVotes extends Song {
   voteCount: number;
 }
 

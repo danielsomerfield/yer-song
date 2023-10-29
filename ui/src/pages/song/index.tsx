@@ -8,6 +8,7 @@ export interface Song {
   id: string;
   title: string;
   artistName: string;
+  voteCount: number;
 }
 
 const Title = styled.h1`
@@ -36,20 +37,29 @@ export const AddOrVoteButton = styled.button`
 export const AddOrVoteButtonPanel = ({
   songId,
   voteForSong,
+  isOnPlaylist,
 }: {
   songId: string;
   voteForSong: VoteForSong;
+  isOnPlaylist: boolean;
 }) => {
+  const buttonText = isOnPlaylist ? "Up vote" : "Add to playlist";
   return (
     <AddOrVoteButton
       onClick={async () => {
         await voteForSong(songId);
       }}
     >
-      Add to playlist!
+      {buttonText}
     </AddOrVoteButton>
   );
 };
+
+export const OnPlayListPanel = styled.div`
+  font-size: 1.25em;
+  text-align: center;
+  font-style: italic;
+`;
 
 export const SongView = ({
   song,
@@ -58,6 +68,13 @@ export const SongView = ({
   song: Song;
   voteForSong: VoteForSong;
 }) => {
+  const isOnPlaylist = song.voteCount > 0;
+  const onList = isOnPlaylist ? (
+    <OnPlayListPanel>On playlist</OnPlayListPanel>
+  ) : (
+    <div></div>
+  );
+
   return (
     <>
       <div>
@@ -69,8 +86,13 @@ export const SongView = ({
         </ArtistNme>
       </div>
       <div>
-        <AddOrVoteButtonPanel songId={song.id} voteForSong={voteForSong} />
+        <AddOrVoteButtonPanel
+          songId={song.id}
+          voteForSong={voteForSong}
+          isOnPlaylist={isOnPlaylist}
+        />
       </div>
+      {onList}
     </>
   );
 };

@@ -16,11 +16,13 @@ describe("the song list page", () => {
               id: "123",
               title: "Pleasant Valley Tuesday",
               artistName: "The Monkeyz",
+              voteCount: 0,
             },
             {
               id: "345",
               title: "Miserable Hill Wednesday",
               artistName: "The Donkeys",
+              voteCount: 0,
             },
           ])
         : Promise.resolve([]);

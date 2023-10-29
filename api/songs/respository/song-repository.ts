@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { logger } from "../util/logger";
 
-import { Paginated, Song, Songs, SongWithVotes } from "../domain/songs";
+import { Paginated, Song, Songs } from "../domain/songs";
 import { getOptionalInt, getRequiredString } from "./repository";
 
 export type Maybe<T> = T | undefined;
@@ -14,7 +14,7 @@ export type Maybe<T> = T | undefined;
 export interface SongRepository {
   getSongById: (id: string) => Promise<Maybe<Song>>;
   findSongsByTag: (tag: string) => Promise<Songs>;
-  findSongsWithVotes: () => Promise<Paginated<SongWithVotes>>;
+  findSongsWithVotes: () => Promise<Paginated<Song>>;
   addVoteToSong: (id: string) => Promise<number>;
 }
 

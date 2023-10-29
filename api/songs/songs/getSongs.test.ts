@@ -13,11 +13,13 @@ describe("getSongsByTag", () => {
               id: "id1",
               title: "Song 1",
               artistName: "Artist 1",
+              voteCount: 0,
             },
             {
               id: "id2",
               title: "Song 2",
               artistName: "Artist 2",
+              voteCount: 0,
             },
           ],
           thisPage: "0",

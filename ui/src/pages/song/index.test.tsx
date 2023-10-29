@@ -8,7 +8,12 @@ describe("the song page", () => {
   });
   describe("the song view", () => {
     it("renders a song", () => {
-      const song = { id: "song1", title: "Song 1", artistName: "The Artist" };
+      const song = {
+        id: "song1",
+        title: "Song 1",
+        artistName: "The Artist",
+        voteCount: 0,
+      };
       render(
         <SongView
           song={song}
@@ -33,6 +38,7 @@ describe("the song page", () => {
           id: "song1",
           title: "Title 1",
           artistName: "Artist 1",
+          voteCount: 0,
         });
       };
 

@@ -27,7 +27,7 @@ describe("song lambda", () => {
     const lambda = createGetSongLambda({
       allowedOrigins: new Set([expectedOrigin, "http://anotherAllowed.com"]),
       findSongById: () =>
-        Promise.resolve({ id: "", title: "", artistName: "" }),
+        Promise.resolve({ id: "", title: "", artistName: "", voteCount: 0 }),
     });
     const response = await lambda(event);
     expect(findHeaderByName(response, "Access-Control-Allow-Origin")).toEqual(
@@ -55,6 +55,7 @@ describe("song lambda", () => {
           id: id,
           title: `name-${id}`,
           artistName: `artist-${id}`,
+          voteCount: 0,
         });
       },
       allowedOrigins: new Set(["http://allowed"]),
@@ -70,6 +71,7 @@ describe("song lambda", () => {
         id: songId,
         title: `name-${songId}`,
         artistName: `artist-${songId}`,
+        voteCount: 0,
       },
     });
   });

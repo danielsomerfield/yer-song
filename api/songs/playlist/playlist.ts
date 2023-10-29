@@ -1,13 +1,13 @@
-import { Paginated, SongWithVotes } from "../domain/songs";
+import { Paginated, Songs } from "../domain/songs";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { generateHeadersForDataResponse } from "../http/headers";
 import { logger } from "../util/logger";
 
 export type Playlist = {
-  songs: Paginated<SongWithVotes>;
+  songs: Songs;
 };
 
-export type FindSongsWithVotes = () => Promise<Paginated<SongWithVotes>>;
+export type FindSongsWithVotes = () => Promise<Songs>;
 
 export interface Dependencies {
   allowedOrigins: Set<string>;

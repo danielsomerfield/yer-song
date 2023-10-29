@@ -25,8 +25,6 @@ export const createGetSongsByTagId = (
       tagId,
     )}/songs`;
     const response = await httpClient.get(url);
-    const data = response.data;
-    console.log(data);
-    return data.data.page as Song[];
+    return response.data.data.page as Song[];
   };
 };

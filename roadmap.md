@@ -13,7 +13,6 @@
 #### Action: Go to Songs for Genre ✔︎
 * Handle load failures
 
-
 ### View: Song for Genre ✔︎︎ ︎
 * Handle load failures
 #### Action: Back to Playlist ✔︎
@@ -30,14 +29,14 @@
 #### Action: Back to Playlist︎ ✔︎
 #### Action: Add to playlist / Upvote ✔︎
 - Enforce vote limit
+  - Requires registration
 - Limit how many times song can be queued (possibly not MVP)
-- Disable button if already voted (possibly not MVP)
-- 
+
 ### View: Registration
 #### Action: Submit registration
 
 ### View: Playlist ✔︎
-#### Action: Up vote
+#### Action: Up vote 
 #### Action: Back to Browse
 
 ## Persona: Moderator
@@ -56,6 +55,7 @@
 * Theme
 
 ## General
+* Refreshes when playlist changes
 * Filter out (rather than fail) bad data in DB (MVP)
 * General error handler for failures (MVP)
 * Push user to registration page if not registered (MVP)
