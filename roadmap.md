@@ -28,6 +28,7 @@
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist︎ ✔︎
 #### Action: Add to playlist / Upvote ✔︎
+- On vote, update button text
 - Enforce vote limit
   - Requires registration
 - Limit how many times song can be queued (possibly not MVP)
