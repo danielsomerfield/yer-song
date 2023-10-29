@@ -84,7 +84,7 @@
           "entityType": {
             "S": "song"
           },
-          "Title": {
+          "title": {
             "S": "American Woman"
           },
           "artistName": {

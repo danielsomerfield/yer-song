@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Maybe } from "../util/maybe";
 
 import { Song } from "../domain/songs";
-import { generateHeadersForSuccessRequest } from "../http/headers";
+import { generateHeadersForDataResponse } from "../http/headers";
 
 export interface Dependencies {
   findSongById: (id: string) => Promise<Maybe<Song>>;
@@ -18,7 +18,7 @@ export const createGetSongLambda = (dependencies: Dependencies) => {
     if (id) {
       const maybeSong = await findSongById(id);
 
-      return generateHeadersForSuccessRequest(
+      return generateHeadersForDataResponse(
         maybeSong,
         event.headers,
         allowedOrigins

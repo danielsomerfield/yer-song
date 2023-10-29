@@ -7,6 +7,7 @@ import { configuration } from "./configuration";
 import * as TagService from "./pages/songs/tagsService";
 import * as SongService from "./services/songService";
 import * as PlaylistService from "./services/playListService";
+import * as VotingService from "./services/votingService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
 import { GetPlaylist, PlayListPage } from "./pages/playlist/playlist";
@@ -53,6 +54,10 @@ const getPlayListFn: GetPlaylist = PlaylistService.createGetPlaylist({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
+const voteForSongFn = VotingService.createVoteForSong({
+  songsAPIHostURL: configuration.songsAPIHostURL,
+});
+
 function App() {
   const navigator = useNavigate();
 
@@ -68,7 +73,12 @@ function App() {
           <Route index element={<Home />} />
           <Route
             path={"/songs/:songId"}
-            element={<SongPageWithParams getSong={getSongForIdFn} />}
+            element={
+              <SongPageWithParams
+                getSong={getSongForIdFn}
+                voteForSong={voteForSongFn}
+              />
+            }
           />
           <Route
             path={"/genres"}

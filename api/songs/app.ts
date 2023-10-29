@@ -6,6 +6,7 @@ import { createGetTagsByNameLambda } from "./tags/getTags";
 import { createTagsRepository } from "./respository/tag-repository";
 import { createGetSongsByTagIdLambda } from "./songs/getSongs";
 import { createGetPlaylist } from "./playlist/playlist";
+import { createVoteForSongLambda } from "./song/voteForSong";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -44,6 +45,7 @@ export const getAppDependencies = (
     getTagsByName: tagsRepository.getTagsByName,
     findSongsByTagId: songsRepository.findSongsByTag,
     findSongsWithVotes: songsRepository.findSongsWithVotes,
+    incrementSongVotes: songsRepository.addVoteToSong,
   };
 };
 
@@ -56,3 +58,4 @@ export const getSongsByTagId = createGetSongsByTagIdLambda(
 );
 
 export const getPlaylist = createGetPlaylist(getAppDependencies());
+export const voteForSong = createVoteForSongLambda(getAppDependencies());

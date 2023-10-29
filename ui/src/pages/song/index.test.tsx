@@ -1,5 +1,6 @@
 import { SongPage, SongView } from "./index";
 import { cleanup, render, screen } from "@testing-library/react";
+import fn = jest.fn;
 
 describe("the song page", () => {
   beforeEach(() => {
@@ -8,7 +9,14 @@ describe("the song page", () => {
   describe("the song view", () => {
     it("renders a song", () => {
       const song = { id: "song1", title: "Song 1", artistName: "The Artist" };
-      render(<SongView song={song} />);
+      render(
+        <SongView
+          song={song}
+          voteForSong={async () => {
+            throw "Not expected";
+          }}
+        />,
+      );
       expect(
         screen.getByRole("heading", { name: "song-title" }),
       ).toHaveTextContent("Song 1");
@@ -27,7 +35,10 @@ describe("the song page", () => {
           artistName: "Artist 1",
         });
       };
-      render(<SongPage getSong={fakeFetch} songId={"song1"} />);
+
+      render(
+        <SongPage getSong={fakeFetch} songId={"song1"} voteForSong={fn()} />,
+      );
 
       await screen.findByRole("heading", { name: "song-title" });
       expect(

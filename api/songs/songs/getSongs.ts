@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Songs } from "../domain/songs";
-import { generateHeadersForSuccessRequest } from "../http/headers";
+import { generateHeadersForDataResponse } from "../http/headers";
 
 export interface Dependencies {
   allowedOrigins: Set<string>;
@@ -19,10 +19,6 @@ export const createGetSongsByTagIdLambda = (dependencies: Dependencies) => {
     }
     const page = await findSongsByTagId(tagId);
 
-    return generateHeadersForSuccessRequest(
-      page,
-      event.headers,
-      allowedOrigins
-    );
+    return generateHeadersForDataResponse(page, event.headers, allowedOrigins);
   };
 };

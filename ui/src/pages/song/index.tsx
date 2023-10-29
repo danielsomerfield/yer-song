@@ -24,9 +24,40 @@ const ArtistNme = styled.h1`
   text-align: center;
 `;
 
-export type GetSong = (id: string) => Promise<Song | undefined>;
+type GetSong = (id: string) => Promise<Song | undefined>;
+type VoteForSong = (id: string) => Promise<void>;
 
-export const SongView = ({ song }: { song: Song }) => {
+export const AddOrVoteButton = styled.button`
+  height: 12dvh;
+  margin: 6dvh;
+  font-size: 4dvh;
+`;
+
+export const AddOrVoteButtonPanel = ({
+  songId,
+  voteForSong,
+}: {
+  songId: string;
+  voteForSong: VoteForSong;
+}) => {
+  return (
+    <AddOrVoteButton
+      onClick={async () => {
+        await voteForSong(songId);
+      }}
+    >
+      Add to playlist!
+    </AddOrVoteButton>
+  );
+};
+
+export const SongView = ({
+  song,
+  voteForSong,
+}: {
+  song: Song;
+  voteForSong: VoteForSong;
+}) => {
   return (
     <>
       <div>
@@ -36,6 +67,9 @@ export const SongView = ({ song }: { song: Song }) => {
         <ArtistNme role={"heading"} aria-level={2} aria-label={"artist-name"}>
           {song.artistName}
         </ArtistNme>
+      </div>
+      <div>
+        <AddOrVoteButtonPanel songId={song.id} voteForSong={voteForSong} />
       </div>
     </>
   );
@@ -81,9 +115,11 @@ export const SongPageContainer = styled.div`
 export const SongPage = ({
   getSong,
   songId,
+  voteForSong,
 }: {
   getSong: GetSong;
   songId?: string;
+  voteForSong: VoteForSong;
 }) => {
   const [song, setSong] = useState<Maybe<Song> | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
@@ -107,16 +143,26 @@ export const SongPage = ({
     return <LoadingMessagePanel />;
   }
 
-  return song.exists() ? <SongView song={song.getValue()} /> : <SongNotFound />;
+  return song.exists() ? (
+    <SongView song={song.getValue()} voteForSong={voteForSong} />
+  ) : (
+    <SongNotFound />
+  );
 };
 
 // TODO: can we make this injection less redundant?
-export const SongPageWithParams = ({ getSong }: { getSong: GetSong }) => {
+export const SongPageWithParams = ({
+  getSong,
+  voteForSong,
+}: {
+  getSong: GetSong;
+  voteForSong: VoteForSong;
+}) => {
   const { songId } = useParams();
   return (
     <div className={"SongWithParam"}>
       <SongPageContainer>
-        <SongPage getSong={getSong} songId={songId} />
+        <SongPage getSong={getSong} songId={songId} voteForSong={voteForSong} />
         <NavPanel />
       </SongPageContainer>
     </div>

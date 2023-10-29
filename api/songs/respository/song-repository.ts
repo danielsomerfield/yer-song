@@ -15,6 +15,7 @@ export interface SongRepository {
   getSongById: (id: string) => Promise<Maybe<Song>>;
   findSongsByTag: (tag: string) => Promise<Songs>;
   findSongsWithVotes: () => Promise<Paginated<SongWithVotes>>;
+  addVoteToSong: (id: string) => Promise<number>;
 }
 
 export const createSongRepository = (client: DynamoDB): SongRepository => {
@@ -120,9 +121,44 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
     }
   };
 
+  const addVoteToSong = async (id: string) => {
+    const updated = await client.updateItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: id,
+        },
+        SK: {
+          S: id,
+        },
+      },
+      ReturnValues: "UPDATED_NEW",
+      ExpressionAttributeValues: {
+        ":increment": {
+          N: "1",
+        },
+        ":zero": {
+          N: "0",
+        },
+        ":playlist": {
+          S: "ON_PLAYLIST",
+        },
+      },
+      UpdateExpression:
+        "SET voteCount = if_not_exists(voteCount, :zero) + :increment, GSI2PK = :playlist",
+    });
+    const value = updated.Attributes?.["voteCount"];
+    if (value && value.N) {
+      return Number.parseInt(value.N);
+    } else {
+      throw "Update failed. Something went wrong";
+    }
+  };
+
   return {
     getSongById,
     findSongsByTag,
     findSongsWithVotes,
+    addVoteToSong,
   };
 };

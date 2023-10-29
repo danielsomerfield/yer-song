@@ -1,6 +1,7 @@
 import { Paginated, SongWithVotes } from "../domain/songs";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { generateHeadersForSuccessRequest } from "../http/headers";
+import { generateHeadersForDataResponse } from "../http/headers";
+import { logger } from "../util/logger";
 
 export type Playlist = {
   songs: Paginated<SongWithVotes>;
@@ -18,14 +19,19 @@ export const createGetPlaylist = (dependencies: Dependencies) => {
   return async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
-    const page = await findSongsWithVotes();
-    const playlist: Playlist = {
-      songs: page,
-    };
-    return generateHeadersForSuccessRequest(
-      playlist,
-      event.headers,
-      allowedOrigins
-    );
+    try {
+      const page = await findSongsWithVotes();
+      const playlist: Playlist = {
+        songs: page,
+      };
+      return generateHeadersForDataResponse(
+        playlist,
+        event.headers,
+        allowedOrigins
+      );
+    } catch (e) {
+      logger.error(e);
+      throw e;
+    }
   };
 };

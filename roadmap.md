@@ -25,15 +25,14 @@
 
 ### View: Song Details ✔︎
 * Handle load failures
+* Show status (on play list / not on playlist)
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist︎ ✔︎
-#### Action: Add to playlist
+#### Action: Add to playlist / Upvote ✔︎
 - Enforce vote limit
-- Only show if not on playist
-#### Action: Up vote
-- Enforce vote limit
-- Only show if on playist
-
+- Limit how many times song can be queued (possibly not MVP)
+- Disable button if already voted (possibly not MVP)
+- 
 ### View: Registration
 #### Action: Submit registration
 
@@ -43,11 +42,13 @@
 
 ## Persona: Moderator
 ### View: Playlist (with control)
+* Show who voted for what (possibly not MVP)
 #### Action: Move up
 #### Action: Move down
-#### Action: Remove
+#### Action: Mark as played
 
-### Persona: Playlist view (projection) d
+
+### Persona: Playlist view (projection)
 ### View: Playlist
 
 ## Tasks
@@ -55,10 +56,12 @@
 * Theme
 
 ## General
-* Push user to registration page if not registered
-* Log in as admin
-* Better loading view
-* Add error boundaries
+* Filter out (rather than fail) bad data in DB (MVP)
+* General error handler for failures (MVP)
+* Push user to registration page if not registered (MVP)
+* Log in as admin  (MVP)
+* Better loading view  (MVP)
+* Add error boundaries  (MVP)
 * Caches (not MVP)
 
 ## Music generes:

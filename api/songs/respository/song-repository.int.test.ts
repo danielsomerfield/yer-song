@@ -71,4 +71,28 @@ describe("The song repository", () => {
       artistName: Songs.song2.Item.artistName.S,
     });
   });
+
+  describe("voting", () => {
+    it("sets songs with no votes to 1", async () => {
+      const songRepository = createSongRepository(dynamo.client());
+      await songRepository.addVoteToSong(SongIds.song1Id);
+      const songsWithVotes = await songRepository.findSongsWithVotes();
+      const song1 = songsWithVotes.page.filter(
+        (s) => s.id == SongIds.song1Id
+      )[0];
+      expect(song1).toBeDefined();
+      expect(song1.voteCount).toEqual(1);
+    });
+
+    it("increment songs with votes already", async () => {
+      const songRepository = createSongRepository(dynamo.client());
+      await songRepository.addVoteToSong(SongIds.song2Id);
+      const songsWithVotes = await songRepository.findSongsWithVotes();
+      const song2 = songsWithVotes.page.filter(
+        (s) => s.id == SongIds.song2Id
+      )[0];
+      expect(song2).toBeDefined();
+      expect(song2.voteCount).toEqual(2);
+    });
+  });
 });

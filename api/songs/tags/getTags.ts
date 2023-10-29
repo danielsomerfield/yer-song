@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Tag } from "../domain/tags";
-import { generateHeadersForSuccessRequest } from "../http/headers";
+import { generateHeadersForDataResponse } from "../http/headers";
 
 export interface Dependencies {
   getTagsByName: (name: string) => Promise<Tag[]>;
@@ -19,7 +19,7 @@ export const createGetTagsByNameLambda = (dependencies: Dependencies) => {
     }
     const page = await getTagsByName(tagName);
 
-    return generateHeadersForSuccessRequest(
+    return generateHeadersForDataResponse(
       { page },
       event.headers,
       allowedOrigins
