@@ -1,6 +1,10 @@
 import { APIGatewayProxyEventHeaders } from "aws-lambda/trigger/api-gateway-proxy";
 import { APIGatewayProxyResult } from "aws-lambda";
 
+export interface CORSEnabled {
+  allowedOrigins: Set<string>;
+}
+
 export const generateHeaders = (
   headers: APIGatewayProxyEventHeaders,
   allowedOrigins: Set<string>,
@@ -29,8 +33,9 @@ export const generateHeaders = (
 export const generateHeadersForDataResponse = (
   data: unknown,
   headers: APIGatewayProxyEventHeaders,
-  allowedOrigins: Set<string>
+  allowedOrigins: Set<string>,
+  status = "OK"
 ): APIGatewayProxyResult => {
   const statusCode = 200;
-  return generateHeaders(headers, allowedOrigins, statusCode, { data });
+  return generateHeaders(headers, allowedOrigins, statusCode, { data, status });
 };

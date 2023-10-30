@@ -7,6 +7,9 @@ import { createTagsRepository } from "./respository/tag-repository";
 import { createGetSongsByTagIdLambda } from "./songs/getSongs";
 import { createGetPlaylist } from "./playlist/playlist";
 import { createVoteForSongLambda } from "./song/voteForSong";
+import { createRegisterUserLambda } from "./user/registration";
+import { UserInput } from "./domain/user";
+import { createUserRepository } from "./respository/user-repository";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -39,6 +42,7 @@ export const getAppDependencies = (
   const allowedOrigins = new Set(configuration.allowOrigin.split(","));
   const tagsRepository = createTagsRepository(dynamoClient);
   const songsRepository = createSongRepository(dynamoClient);
+  const userRepository = createUserRepository(dynamoClient);
   return {
     findSongById: songsRepository.getSongById,
     allowedOrigins,
@@ -46,6 +50,7 @@ export const getAppDependencies = (
     findSongsByTagId: songsRepository.findSongsByTag,
     findSongsWithVotes: songsRepository.findSongsWithVotes,
     incrementSongVotes: songsRepository.addVoteToSong,
+    insertUser: userRepository.insertUser,
   };
 };
 
@@ -59,3 +64,5 @@ export const getSongsByTagId = createGetSongsByTagIdLambda(
 
 export const getPlaylist = createGetPlaylist(getAppDependencies());
 export const voteForSong = createVoteForSongLambda(getAppDependencies());
+
+export const registerUser = createRegisterUserLambda(getAppDependencies());

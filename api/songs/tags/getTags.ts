@@ -1,11 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Tag } from "../domain/tags";
-import { generateHeadersForDataResponse } from "../http/headers";
+import { CORSEnabled, generateHeadersForDataResponse } from "../http/headers";
 import { logger } from "../util/logger";
 
-export interface Dependencies {
+export interface Dependencies extends CORSEnabled {
   getTagsByName: (name: string) => Promise<Tag[]>;
-  allowedOrigins: Set<string>;
 }
 
 export const createGetTagsByNameLambda = (dependencies: Dependencies) => {

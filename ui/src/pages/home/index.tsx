@@ -52,6 +52,7 @@ export const Home = () => {
                     onInput={(e) => {
                       setValid(e.currentTarget.checkValidity());
                     }}
+                    placeholder={"Enter your full name"}
                   />
                 </FormRow>
                 <ButtonRow>

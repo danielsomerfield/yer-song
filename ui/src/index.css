@@ -74,3 +74,8 @@ input:valid {
   border: solid lightgray;
 }
 
+input::placeholder {
+  font-size: smaller;
+  font-style: italic;
+}
+

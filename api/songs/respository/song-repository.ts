@@ -23,14 +23,12 @@ export interface SongRepository {
 }
 
 export const createSongRepository = (client: DynamoDB): SongRepository => {
-  function createSongFromRecord(maybeItem: Record<string, AttributeValue>) {
-    return {
-      id: getRequiredString(maybeItem, "PK"),
-      title: getRequiredString(maybeItem, "title"),
-      artistName: getStringOrDefault(maybeItem, "artistName", "unknown"),
-      voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
-    };
-  }
+  const createSongFromRecord = (maybeItem: Record<string, AttributeValue>) => ({
+    id: getRequiredString(maybeItem, "PK"),
+    title: getRequiredString(maybeItem, "title"),
+    artistName: getStringOrDefault(maybeItem, "artistName", "unknown"),
+    voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
+  });
 
   const getSongById = async (id: string) => {
     try {
