@@ -6,7 +6,9 @@
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist ✔︎
 * hidden if not registered
-#### Action: Register
+#### Action: Register ✔︎
+* Not giving feedback yet on registration success / failure
+* Not yet validating that user is registered to let them do other things
 
 ### View: Genre List (Browse) ✔︎
 #### Action: Back to Playlist
