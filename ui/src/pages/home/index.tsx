@@ -1,7 +1,6 @@
-import { NavPanel } from "../../components/navPanel";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Label } from "@radix-ui/react-label";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import styled from "styled-components";
 
 const FormStyle = styled.div``;
@@ -9,7 +8,8 @@ const FormStyle = styled.div``;
 const FormRow = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 5vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
 `;
 
 const RegisterButton = styled.button`
@@ -20,11 +20,23 @@ const RegisterForm = ({ children }: PropsWithChildren) => {
   return <FormStyle>{children}</FormStyle>;
 };
 
+const ButtonRow = styled(FormRow)`
+  flex-flow: row-reverse;
+`;
+
 export const Home = () => {
+  const [valid, setValid] = useState(false);
+  const [formShowing, setFormShowing] = useState(true);
+  const submitRegistration = () => {
+    setFormShowing(false);
+    console.log("Submitting registration");
+  };
+
+  // TODO: test coverage for this logic
   return (
     <>
       <div>Home</div>
-      <Dialog.Root modal={true} open={false}>
+      <Dialog.Root modal={true} open={formShowing}>
         <Dialog.Portal>
           <Dialog.Overlay className="DialogOverlay">
             <Dialog.Content className="DialogContent">
@@ -33,11 +45,23 @@ export const Home = () => {
                   <Label className="formLabel" htmlFor={"emailAddress"}>
                     Name
                   </Label>
-                  <input id={"emailAddress"} />
+                  <input
+                    id={"name"}
+                    required={true}
+                    minLength={2}
+                    onInput={(e) => {
+                      setValid(e.currentTarget.checkValidity());
+                    }}
+                  />
                 </FormRow>
-                <FormRow>
-                  <RegisterButton>Register</RegisterButton>
-                </FormRow>
+                <ButtonRow>
+                  <RegisterButton
+                    onClick={submitRegistration}
+                    disabled={!valid}
+                  >
+                    Register
+                  </RegisterButton>
+                </ButtonRow>
               </RegisterForm>
             </Dialog.Content>
           </Dialog.Overlay>

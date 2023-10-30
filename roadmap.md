@@ -33,7 +33,7 @@
   - Requires registration
 - Limit how many times song can be queued (possibly not MVP)
 
-### View: Registration
+### View: Registration (on home page) ✔︎︎ ︎
 #### Action: Submit registration
 
 ### View: Playlist ✔︎

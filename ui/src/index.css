@@ -36,7 +36,7 @@ code {
 
 input {
   margin-top: 1vh;
-  height: 5vh;
+  height: 6vh;
   font-size: 5vh;
 }
 
@@ -54,7 +54,7 @@ input {
 
 button {
   font-size: 4vh;
-  margin: 1vh;
+  margin: 1vh 1vh 0 0;
 }
 
 .DialogContent {
@@ -62,7 +62,15 @@ button {
   background: white;
   padding: 2vh;
   border-radius: 1vh;
-  max-width: 90%;
+  max-width: 80%;
 }
 
+input:invalid {
+  border: dashed red;
+  background: rgba(255,250,21,0.24)  ;
+}
+
+input:valid {
+  border: solid lightgray;
+}
 
