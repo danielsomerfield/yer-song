@@ -29,9 +29,8 @@ type GetSong = (id: string) => Promise<Song | undefined>;
 type VoteForSong = (id: string) => Promise<void>;
 
 export const AddOrVoteButton = styled.button`
-  height: 12dvh;
-  margin: 6dvh;
-  font-size: 4dvh;
+  height: 12vh;
+  margin: 6vh;
 `;
 
 export const AddOrVoteButtonPanel = ({
@@ -131,7 +130,7 @@ const Maybe = {
 };
 
 export const SongPageContainer = styled.div`
-  font-size: 3dvh;
+  font-size: 3vh;
 `;
 
 export const SongPage = ({

@@ -11,14 +11,15 @@ import * as VotingService from "./services/votingService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
 import { GetPlaylist, PlayListPage } from "./pages/playlist/playlist";
+import { RegisterPage } from "./pages/register";
 
 const AppContainer = styled.div`
   text-align: center;
-  display: grid;
   flex-direction: column;
   flex-wrap: nowrap;
   border: 1px solid green;
   height: 100%;
+  overflow-y: hidden;
 `;
 
 const AppHeader = styled.header`
@@ -35,7 +36,7 @@ const Screen = styled.div`
 `;
 
 const Branding = styled.h1`
-  font-size: 5dvh;
+  font-size: 5vh;
 `;
 
 const getSongForIdFn = SongService.createSongForIdFn({
@@ -101,6 +102,7 @@ function App() {
               <PlayListPage getPlaylist={getPlayListFn} nav={navigator} />
             }
           />
+          <Route path={"/register"} element={<RegisterPage />} />
         </Routes>
       </AppContainer>
     </Screen>

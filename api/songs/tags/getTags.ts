@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Tag } from "../domain/tags";
 import { generateHeadersForDataResponse } from "../http/headers";
+import { logger } from "../util/logger";
 
 export interface Dependencies {
   getTagsByName: (name: string) => Promise<Tag[]>;
@@ -17,12 +18,16 @@ export const createGetTagsByNameLambda = (dependencies: Dependencies) => {
       // TODO (MVP): return 400
       throw "NYI: no tag name";
     }
-    const page = await getTagsByName(tagName);
-
-    return generateHeadersForDataResponse(
-      { page },
-      event.headers,
-      allowedOrigins
-    );
+    try {
+      const page = await getTagsByName(tagName);
+      return generateHeadersForDataResponse(
+        { page },
+        event.headers,
+        allowedOrigins
+      );
+    } catch (e) {
+      logger.error(e);
+      throw e;
+    }
   };
 };

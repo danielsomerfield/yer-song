@@ -1,0 +1,580 @@
+{
+  "song": [
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Movie, TV, & Stage"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Classic Pop & Rock"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:JazzStandardsOldLoveSongs"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Jazz Standards and Old Love Songs"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "t:genre"
+          },
+          "SK": {
+            "S": "t:genre:Contemporary"
+          },
+          "entityType": {
+            "S": "tag"
+          },
+          "tag": {
+            "S": "genre:Contemporary"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:843c1a6f-2e60-4e2b-8fa3-e8a144b9c7f1"
+          },
+          "SK": {
+            "S": "s:843c1a6f-2e60-4e2b-8fa3-e8a144b9c7f1"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Accidentally in Love"
+          },
+          "artistName": {
+            "S": "Counting Crows: Shrek 2"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:f288f98c-f331-42fb-af01-b42d280ed75b"
+          },
+          "SK": {
+            "S": "s:f288f98c-f331-42fb-af01-b42d280ed75b"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "All I Ask of You"
+          },
+          "artistName": {
+            "S": "Phantom of the Opera"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:dbcb889e-8128-457b-a56a-7a902d5304fa"
+          },
+          "SK": {
+            "S": "s:dbcb889e-8128-457b-a56a-7a902d5304fa"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Always Remember Us This Way"
+          },
+          "artistName": {
+            "S": "Lady Gaga: A Star is Born"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:29b8e9d3-f6aa-461b-aff0-ad7f65bc6c41"
+          },
+          "SK": {
+            "S": "s:29b8e9d3-f6aa-461b-aff0-ad7f65bc6c41"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Baby Shark"
+          },
+          "artistName": {
+            "S": "Silly Kid’s Singalong Song"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:7a9fcfe3-7754-494a-8be1-399f3bf9a820"
+          },
+          "SK": {
+            "S": "s:7a9fcfe3-7754-494a-8be1-399f3bf9a820"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Be Our Guest"
+          },
+          "artistName": {
+            "S": "Beauty & The Beast"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:9017a121-f118-40ba-91f3-da578bde4d6e"
+          },
+          "SK": {
+            "S": "s:9017a121-f118-40ba-91f3-da578bde4d6e"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Bella Notte"
+          },
+          "artistName": {
+            "S": "Lady & The Tramp"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:7e7a0b5d-565e-4480-b84f-cbbde379d153"
+          },
+          "SK": {
+            "S": "s:7e7a0b5d-565e-4480-b84f-cbbde379d153"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Can You Feel the Love Tonight"
+          },
+          "artistName": {
+            "S": "Lion King"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:9980e949-f04c-48e8-a918-13d56c6d9b10"
+          },
+          "SK": {
+            "S": "s:9980e949-f04c-48e8-a918-13d56c6d9b10"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Cantina Band"
+          },
+          "artistName": {
+            "S": "Star Wars IV: A New Hope"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:33ddf2d7-7699-4d26-b1d2-7bb2f3db79f1"
+          },
+          "SK": {
+            "S": "s:33ddf2d7-7699-4d26-b1d2-7bb2f3db79f1"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Concerning Hobbits"
+          },
+          "artistName": {
+            "S": "Lord of the Rings"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:27338ac6-9103-4a3e-afb6-02bb2369cb8b"
+          },
+          "SK": {
+            "S": "s:27338ac6-9103-4a3e-afb6-02bb2369cb8b"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Edelweiss"
+          },
+          "artistName": {
+            "S": "The Sound of Music"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:ed2bbfc1-c4a5-4b3b-b1bc-c566cb667437"
+          },
+          "SK": {
+            "S": "s:ed2bbfc1-c4a5-4b3b-b1bc-c566cb667437"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Forces of Attraction"
+          },
+          "artistName": {
+            "S": "The Theory of Everything"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:88a6b50b-bfa4-4884-9f48-cf99b22ab24c"
+          },
+          "SK": {
+            "S": "s:88a6b50b-bfa4-4884-9f48-cf99b22ab24c"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "From Now On"
+          },
+          "artistName": {
+            "S": "The Greatest Showman"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:280987a7-0953-41f8-9465-25fa6eb5d7e3"
+          },
+          "SK": {
+            "S": "s:280987a7-0953-41f8-9465-25fa6eb5d7e3"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Gabriele’s Oboe aka Nella Fantasia"
+          },
+          "artistName": {
+            "S": "The Mission – Ennio Morricone"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:7af8ba9d-2ce8-47a6-b7bc-b2eaebbf0b3b"
+          },
+          "SK": {
+            "S": "s:7af8ba9d-2ce8-47a6-b7bc-b2eaebbf0b3b"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Game of Thrones"
+          },
+          "artistName": {
+            "S": "Main Theme"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:3d2d71ae-2876-440e-a697-fdfb58bae4a4"
+          },
+          "SK": {
+            "S": "s:3d2d71ae-2876-440e-a697-fdfb58bae4a4"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Happy"
+          },
+          "artistName": {
+            "S": "Despicable Me 2 - Pharrell"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:45c374cc-33c1-40bf-bea9-ec312a974fcb"
+          },
+          "SK": {
+            "S": "s:45c374cc-33c1-40bf-bea9-ec312a974fcb"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "How Far I’ll Go"
+          },
+          "artistName": {
+            "S": "Moana"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:31ab3cbc-d007-485e-8939-7cb49d5fe00e"
+          },
+          "SK": {
+            "S": "s:31ab3cbc-d007-485e-8939-7cb49d5fe00e"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "I Dreamed a Dream"
+          },
+          "artistName": {
+            "S": "Les Miserables"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:67d9e4b3-c304-4d86-a400-a148fc575ee4"
+          },
+          "SK": {
+            "S": "s:67d9e4b3-c304-4d86-a400-a148fc575ee4"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "I See the Light"
+          },
+          "artistName": {
+            "S": "Tangled"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:6ca5bb3b-7be7-499f-bbae-bc8318a91f94"
+          },
+          "SK": {
+            "S": "s:6ca5bb3b-7be7-499f-bbae-bc8318a91f94"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Ice Dance"
+          },
+          "artistName": {
+            "S": "Edward Scissorhands"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:1e094a3f-246a-44a3-bdb5-98944b4e45e8"
+          },
+          "SK": {
+            "S": "s:1e094a3f-246a-44a3-bdb5-98944b4e45e8"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "I’m Kissing You"
+          },
+          "artistName": {
+            "S": "Romeo and Juliet - Des’ree"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:f88180f0-5f21-4540-91a0-d8f20d3f5dc5"
+          },
+          "SK": {
+            "S": "s:f88180f0-5f21-4540-91a0-d8f20d3f5dc5"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Journey"
+          },
+          "artistName": {
+            "S": "Destiny 2 videogame"
+          }
+        }
+      }
+    }
+  ]
+}

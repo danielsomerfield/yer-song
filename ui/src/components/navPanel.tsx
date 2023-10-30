@@ -14,9 +14,9 @@ const MainPanel = styled.div`
 
 const NavButton = styled.button`
   width: 90%;
-  height: 12dvh;
-  margin: 2dvh;
-  font-size: 4dvh;
+  min-height: 12vh;
+  margin: 2vh;
+  font-size: 4vh;
 `;
 
 export const NavPanel = (props: PropsWithChildren) => {

@@ -41,6 +41,8 @@
 #### Action: Back to Browse ✔︎
 #### Action: Back to Song on click
 * Handle load failures
+* Show who originally added
+
 
 ## Persona: Moderator
 ### View: Playlist (with control)
@@ -58,6 +60,7 @@
 * Theme
 
 ## General
+* Show toast when something changes (like a vote) (MVP)
 * Refreshes when playlist changes (MVP)
 * Filter out (rather than fail) bad data in DB (MVP)
 * General error handler for failures (MVP)
@@ -66,12 +69,7 @@
 * Better loading view  (MVP)
 * Add error boundaries  (MVP)
 * Caches (not MVP)
-
-## Music generes:
-- classic pop/rock
-- contemporary
-- movie/stage
-- jazz
+* More consistent accessibility
 
 # Refactor
 - Extract list component

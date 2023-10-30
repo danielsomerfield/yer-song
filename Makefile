@@ -45,12 +45,19 @@ build-table-production: # TODO: make this only run if the table doesn't exist
 
 start-local: start-api-local start-ui-local
 
-populate-table-local:
-	aws --no-paginate --no-cli-pager --endpoint-url http://localhost:4566 dynamodb batch-write-item \
-    --request-items file://sample-dynamo-db.json
+populate-table-local: seed/*
+	for file in $^; do \
+	  	aws --no-paginate --no-cli-pager --endpoint-url http://localhost:4566 dynamodb batch-write-item \
+	      --request-items file://$${file}; \
+  	done
 
-populate-table-production:
-	aws --no-paginate --no-cli-pager dynamodb batch-write-item --request-items file://sample-dynamo-db.json
+
+
+populate-table-production: seed/*
+	for file in $^; do \
+	  	aws --no-paginate --no-cli-pager dynamodb batch-write-item \
+	      --request-items file://$${file}; \
+  	done
 
 test: test-ui test-api
 

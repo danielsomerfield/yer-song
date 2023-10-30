@@ -1,5 +1,18 @@
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 
+export const getStringOrDefault = (
+  item: Record<string, AttributeValue>,
+  fieldName: string,
+  defaultValue: string
+) => {
+  const value = item?.[fieldName]?.S;
+  if (!value) {
+    return defaultValue;
+  } else {
+    return value;
+  }
+};
+
 export const getRequiredString = (
   item: Record<string, AttributeValue>,
   fieldName: string

@@ -7,7 +7,11 @@ import {
 import { logger } from "../util/logger";
 
 import { Paginated, Song, Songs } from "../domain/songs";
-import { getOptionalInt, getRequiredString } from "./repository";
+import {
+  getOptionalInt,
+  getRequiredString,
+  getStringOrDefault,
+} from "./repository";
 
 export type Maybe<T> = T | undefined;
 
@@ -23,7 +27,7 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
     return {
       id: getRequiredString(maybeItem, "PK"),
       title: getRequiredString(maybeItem, "title"),
-      artistName: getRequiredString(maybeItem, "artistName"),
+      artistName: getStringOrDefault(maybeItem, "artistName", "unknown"),
       voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
     };
   }

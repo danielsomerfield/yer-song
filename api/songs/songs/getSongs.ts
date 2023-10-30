@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Songs } from "../domain/songs";
 import { generateHeadersForDataResponse } from "../http/headers";
+import { logger } from "../util/logger";
 
 export interface Dependencies {
   allowedOrigins: Set<string>;
@@ -15,10 +16,19 @@ export const createGetSongsByTagIdLambda = (dependencies: Dependencies) => {
     const tagId = event.pathParameters?.["tagId"];
     if (!tagId) {
       // TODO (MVP): return 400
+      logger.error("No rag id", tagId);
       throw "NYI: no tagId";
     }
-    const page = await findSongsByTagId(tagId);
-
-    return generateHeadersForDataResponse(page, event.headers, allowedOrigins);
+    try {
+      const page = await findSongsByTagId(tagId);
+      return generateHeadersForDataResponse(
+        page,
+        event.headers,
+        allowedOrigins
+      );
+    } catch (e) {
+      logger.error(e);
+      throw e;
+    }
   };
 };

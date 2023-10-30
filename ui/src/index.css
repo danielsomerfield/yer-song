@@ -5,10 +5,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
+  font-size: 4vh;
 }
 
 body {
-  /*height: 100%;*/
   position: absolute;
   left: 0;
   right: 0;
@@ -27,3 +27,42 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.formLabel {
+  font-size: 4vh;
+  text-align: left;
+  margin-top: 2vh;
+}
+
+input {
+  margin-top: 1vh;
+  height: 5vh;
+  font-size: 5vh;
+}
+
+.DialogOverlay {
+  background: rgba(0 0 0 / 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+}
+
+button {
+  font-size: 4vh;
+  margin: 1vh;
+}
+
+.DialogContent {
+  min-width: 0;
+  background: white;
+  padding: 2vh;
+  border-radius: 1vh;
+  max-width: 90%;
+}
+
+

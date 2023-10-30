@@ -4,14 +4,21 @@ import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { ListItem } from "../../components/lists";
 import { NavPanel } from "../../components/navPanel";
+import styled from "styled-components";
 
 type GetSongsForTagId = (id: string) => Promise<Song[]>;
+
+const SongListPanelWrapper = styled.div`
+  overflow-y: scroll;
+  height: 80%;
+  //flex: inherit;
+`;
 
 const SongListPanel = (songs: Song[], navigator: NavigateFunction) => {
   // TODO: add test for navigation
 
   return (
-    <div>
+    <SongListPanelWrapper className={"SongListPage.SongListPanelWrapper"}>
       {songs.map((song) => {
         const goToSong: MouseEventHandler = () => {
           navigator(`/songs/${song.id}`);
@@ -28,7 +35,7 @@ const SongListPanel = (songs: Song[], navigator: NavigateFunction) => {
           </ListItem>
         );
       })}
-    </div>
+    </SongListPanelWrapper>
   );
 };
 

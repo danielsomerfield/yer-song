@@ -1,16 +1,15 @@
 import styled from "styled-components";
 
 export const ListItem = styled.div`
-  height: 6dvh;
+  height: 6vh;
 
   &:hover {
     background-color: lightblue;
   }
 
-  font-size: 4dvh;
   white-space: nowrap;
   overflow: clip;
   text-overflow: ellipsis;
   text-align: left;
-  padding: 1dvh 0 1dvh 0;
+  padding: 1vh 0 1vh 0;
 `;
