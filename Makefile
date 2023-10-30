@@ -33,7 +33,7 @@ start-ui-local:
 
 start-api-local: build-api
 	cd api; \
-	DOCKER_HOST=unix:///Users/danielsomerfield/.docker/run/docker.sock sam local start-api --docker-network lambda_local
+	DOCKER_HOST=unix:~/.docker/run/docker.sock sam local start-api --docker-network lambda_local
 
 build-table-local: # TODO: make this only run if the table doesn't exist
 	aws --no-paginate --no-cli-pager --endpoint-url http://localhost:4566 dynamodb create-table \
