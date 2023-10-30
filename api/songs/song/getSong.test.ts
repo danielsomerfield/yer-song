@@ -1,22 +1,9 @@
 import { describe, expect, it } from "@jest/globals";
 import { createGetSongLambda } from "./getSong";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { verifyCORSHeaders } from "../http/headers.testing";
 
 describe("song lambda", () => {
-  const findHeaderByName = (
-    result: APIGatewayProxyResult,
-    name: string
-  ): string => {
-    const found = Object.entries(result.headers || {}).filter(
-      (e) => name.toLowerCase() == e[0].toLowerCase()
-    );
-    if (found.length == 1) {
-      return found[0][1].toString().toLowerCase();
-    } else {
-      throw `Expected one matching item, but found, ${found}`;
-    }
-  };
-
   it("generate headers when they match expected UI host", async () => {
     const expectedOrigin = "http://the-ui-host";
     const event = {
@@ -30,17 +17,7 @@ describe("song lambda", () => {
         Promise.resolve({ id: "", title: "", artistName: "", voteCount: 0 }),
     });
     const response = await lambda(event);
-    expect(findHeaderByName(response, "Access-Control-Allow-Origin")).toEqual(
-      expectedOrigin
-    );
-    expect(
-      findHeaderByName(response, "Access-Control-Allow-Methods").split(",")
-    ).toContain("get");
-    expect(
-      findHeaderByName(response, "Access-Control-Allow-Methods")
-        .split(",")
-        .map((x) => x.trim())
-    ).toContain("options");
+    verifyCORSHeaders(response, expectedOrigin);
   });
 
   it("return song with existing id", async () => {

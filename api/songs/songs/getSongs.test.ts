@@ -2,9 +2,12 @@ import { describe, it } from "@jest/globals";
 import { Songs } from "../domain/songs";
 import { createGetSongsByTagIdLambda } from "./getSongs";
 import { APIGatewayProxyEvent } from "aws-lambda";
+import { verifyCORSHeaders } from "../http/headers.testing";
 
 describe("getSongsByTag", () => {
   const matchingTagId = "t:tag1=value1";
+  const origin = "https://example.com";
+
   const findSongsByTagId = async (tagId: string): Promise<Songs> => {
     return tagId == matchingTagId
       ? {
@@ -29,13 +32,13 @@ describe("getSongsByTag", () => {
 
   const getSongsByTagId = createGetSongsByTagIdLambda({
     findSongsByTagId,
-    allowedOrigins: new Set(["http://whatever.com"]),
+    allowedOrigins: new Set([origin]),
   });
 
   it("returns a paginated list of songs base from the tag", async () => {
     const event = {
       pathParameters: { tagId: matchingTagId },
-      headers: { origin: "" },
+      headers: { origin },
     } as unknown as APIGatewayProxyEvent;
 
     const result = await getSongsByTagId(event);
@@ -49,12 +52,13 @@ describe("getSongsByTag", () => {
       "Artist 1",
       "Artist 2",
     ]);
+    verifyCORSHeaders(result, origin);
   });
 
   it("returns nothing if there is no match", async () => {
     const event = {
       pathParameters: { tagId: "not-a-match" },
-      headers: { origin: "" },
+      headers: { origin },
     } as unknown as APIGatewayProxyEvent;
 
     const result = await getSongsByTagId(event);
@@ -62,5 +66,6 @@ describe("getSongsByTag", () => {
     expect(result.body).toBeDefined();
     const songs = JSON.parse(result.body).data as Songs;
     expect(songs.page.length).toEqual(0);
+    verifyCORSHeaders(result, origin);
   });
 });

@@ -2,6 +2,7 @@ import { describe, it } from "@jest/globals";
 import { Paginated, Songs } from "../domain/songs";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import * as Playlist from "./playlist";
+import { verifyCORSHeaders } from "../http/headers.testing";
 
 describe("getPlaylist", () => {
   it("return the playlist", async () => {
@@ -30,8 +31,10 @@ describe("getPlaylist", () => {
       ],
     };
 
+    const origin = "https://example.com";
+
     const event = {
-      headers: { origin: "" },
+      headers: { origin },
     } as unknown as APIGatewayProxyEvent;
 
     const findSongsWithVotes: () => Promise<Songs> = async () => {
@@ -40,7 +43,7 @@ describe("getPlaylist", () => {
 
     const dependencies: Playlist.Dependencies = {
       findSongsWithVotes: findSongsWithVotes,
-      allowedOrigins: new Set(""),
+      allowedOrigins: new Set([origin]),
     };
 
     const getPlaylist = Playlist.createGetPlaylist(dependencies);
@@ -67,5 +70,7 @@ describe("getPlaylist", () => {
         voteCount: 1,
       },
     ]);
+
+    verifyCORSHeaders(result, origin);
   });
 });

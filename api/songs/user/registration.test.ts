@@ -4,8 +4,11 @@ import fn = jest.fn;
 import MockedFn = jest.MockedFn;
 
 import { UserInput } from "../domain/user";
+import { verifyCORSHeaders } from "../http/headers.testing";
 
 describe("the registration process", () => {
+  const origin = "https://example.com";
+
   it("saves a user record", async () => {
     const newUserId = "generatedId";
     const newUserName = "Bob the bob";
@@ -14,7 +17,7 @@ describe("the registration process", () => {
       (user: UserInput) => Promise<{ id: string; name: string }>
     > = fn();
     const dependencies: Registration.Dependencies = {
-      allowedOrigins: new Set([""]),
+      allowedOrigins: new Set([origin]),
       insertUser: insertUserMock,
     };
 
@@ -24,7 +27,7 @@ describe("the registration process", () => {
     });
 
     const event = {
-      headers: { origin: "" },
+      headers: { origin },
       body: `{ "name": "${newUserName}" }`,
     } as unknown as APIGatewayProxyEvent;
 
@@ -44,5 +47,7 @@ describe("the registration process", () => {
         name: newUserName,
       },
     });
+
+    verifyCORSHeaders(response, origin);
   });
 });

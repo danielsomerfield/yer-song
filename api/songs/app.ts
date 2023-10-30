@@ -8,7 +8,6 @@ import { createGetSongsByTagIdLambda } from "./songs/getSongs";
 import { createGetPlaylist } from "./playlist/playlist";
 import { createVoteForSongLambda } from "./song/voteForSong";
 import { createRegisterUserLambda } from "./user/registration";
-import { UserInput } from "./domain/user";
 import { createUserRepository } from "./respository/user-repository";
 
 const getDynamoEndpoint = () => {
