@@ -38,11 +38,12 @@
 
 ### View: Registration (on home page) ✔︎︎ ︎
 #### Action: Submit registration ✔︎
+* Disallow name that has already been used
 
 ### View: Playlist ✔︎
 #### Action: Up vote 
 #### Action: Back to Browse ✔︎
-#### Action: Back to Song on click
+#### Action: Back to Song on click ✔︎
 * Handle load failures
 * Show who originally added
 

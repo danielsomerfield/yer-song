@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
@@ -27,10 +27,13 @@ const PlaylistView = ({
   playlist: Playlist;
   nav: NavigateFunction;
 }) => {
-  const SongView = (song: Song, index: number) => {
+  const SongView = (song: Song, i: number) => {
+    const goToSong: MouseEventHandler = () => {
+      nav(`/songs/${song.id}`);
+    };
     return (
       <ListItem
-        // onClick={}
+        onClick={goToSong}
         role={"listitem"}
         key={`song::${song.id}`}
         aria-label={`song: ${song.title}`}

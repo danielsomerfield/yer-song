@@ -59,4 +59,6 @@ describe("the registration process", () => {
 
     verifyCORSHeaders(response, origin);
   });
+
+  //   TODO (mvp): prevent registration for existing user
 });

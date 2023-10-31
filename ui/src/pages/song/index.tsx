@@ -46,7 +46,7 @@ export const AddOrVoteButtonPanel = ({
   voteForSong: VoteForSong;
   isOnPlaylist: boolean;
 }) => {
-  const buttonText = isOnPlaylist ? "Up vote" : "Add to playlist";
+  const buttonText = isOnPlaylist ? "Up vote" : "Request";
   return (
     <AddOrVoteButton
       onClick={async () => {
