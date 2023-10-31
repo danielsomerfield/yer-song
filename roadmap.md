@@ -37,7 +37,7 @@
 - Limit how many times song can be queued (possibly not MVP)
 
 ### View: Registration (on home page) ✔︎︎ ︎
-#### Action: Submit registration
+#### Action: Submit registration ✔︎
 
 ### View: Playlist ✔︎
 #### Action: Up vote 
@@ -67,7 +67,7 @@
 * Refreshes when playlist changes (MVP)
 * Filter out (rather than fail) bad data in DB (MVP)
 * General error handler for failures (MVP)
-* Push user to registration page if not registered (MVP)
+* Push user to registration page if not registered (MVP) ✔︎
 * Log in as admin  (MVP)
 * Better loading view  (MVP)
 * Add error boundaries  (MVP)
