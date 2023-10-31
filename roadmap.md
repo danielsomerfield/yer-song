@@ -9,6 +9,7 @@
 #### Action: Register ✔︎
 * Not giving feedback yet on registration success / failure
 * Not yet validating that user is registered to let them do other things
+* Return key submits form
 
 ### View: Genre List (Browse) ✔︎
 #### Action: Back to Playlist

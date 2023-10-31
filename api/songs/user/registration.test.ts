@@ -3,11 +3,12 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import fn = jest.fn;
 import MockedFn = jest.MockedFn;
 
-import { UserInput } from "../domain/user";
+import { User, UserInput } from "../domain/user";
 import { verifyCORSHeaders } from "../http/headers.testing";
 
 describe("the registration process", () => {
   const origin = "https://example.com";
+  const theToken = "the token";
 
   it("saves a user record", async () => {
     const newUserId = "generatedId";
@@ -16,15 +17,21 @@ describe("the registration process", () => {
     const insertUserMock: MockedFn<
       (user: UserInput) => Promise<{ id: string; name: string }>
     > = fn();
+
+    const generateToken: MockedFn<(user: User) => Promise<string>> = fn();
+
     const dependencies: Registration.Dependencies = {
       allowedOrigins: new Set([origin]),
       insertUser: insertUserMock,
+      generateToken,
     };
 
     insertUserMock.mockResolvedValueOnce({
       id: newUserId,
       name: newUserName,
     });
+
+    generateToken.mockResolvedValueOnce(theToken);
 
     const event = {
       headers: { origin },
@@ -43,10 +50,12 @@ describe("the registration process", () => {
     expect(JSON.parse(response.body)).toMatchObject({
       status: "OK",
       data: {
-        id: newUserId,
-        name: newUserName,
+        user: { id: newUserId, name: newUserName },
+        token: theToken,
       },
     });
+
+    expect(generateToken).toBeCalledWith({ id: newUserId, name: newUserName });
 
     verifyCORSHeaders(response, origin);
   });

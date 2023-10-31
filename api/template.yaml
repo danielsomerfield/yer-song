@@ -13,6 +13,10 @@ Parameters:
     Description: The origin the server allows for CORS purposes
     Type: String
     Default: "http://localhost:3001"
+  DeploySecret:
+    Description: Configuration for the token validation
+    Type: String
+    Default: ""
 
 Globals:
   Function:
@@ -25,6 +29,7 @@ Globals:
       Variables:
         API_ENDPOINT: !Ref DynamoDbEndpoint
         ALLOW_ORIGIN: !Ref AllowOrigin
+        AUTHZ_SECRET: !Ref DeploySecret
 
 Resources:
   SongByIdAPI:
@@ -32,9 +37,9 @@ Resources:
     Properties:
       StageName: "Prod"
       Cors:
-        AllowMethods: "'GET,OPTIONS'"
+        AllowMethods: "'GET,OPTIONS,POST'"
         AllowOrigin: !Sub "'${AllowOrigin}'"
-        AllowHeaders: "'Content-Type'"
+        AllowHeaders: "'Content-Type, Authorization'"
 
   TagsFunction:
     Type: AWS::Serverless::Function

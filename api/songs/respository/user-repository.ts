@@ -9,7 +9,7 @@ export const createUserRepository = (
   const insertUser = async (input: UserInput): Promise<User> => {
     // TODO: make sure we don't get the same user twice
 
-    const id = idGen();
+    const id = `u:${idGen()}`;
     await client.putItem({
       TableName: "song",
       Item: {

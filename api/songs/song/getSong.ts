@@ -2,11 +2,13 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Maybe } from "../util/maybe";
 
 import { Song } from "../domain/songs";
-import { generateHeadersForDataResponse } from "../http/headers";
+import {
+  CORSEnabled,
+  generateResponseHeadersForDataResponse,
+} from "../http/headers";
 
-export interface Dependencies {
+export interface Dependencies extends CORSEnabled {
   findSongById: (id: string) => Promise<Maybe<Song>>;
-  allowedOrigins: Set<string>;
 }
 
 export const createGetSongLambda = (dependencies: Dependencies) => {
@@ -18,7 +20,7 @@ export const createGetSongLambda = (dependencies: Dependencies) => {
     if (id) {
       const maybeSong = await findSongById(id);
 
-      return generateHeadersForDataResponse(
+      return generateResponseHeadersForDataResponse(
         maybeSong,
         event.headers,
         allowedOrigins

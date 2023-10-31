@@ -1,6 +1,6 @@
 import axios, { Axios } from "axios";
 import { Song } from "../pages/song";
-import { createGetForId } from "../http/serviceClient";
+import { createGet } from "../http/serviceClient";
 
 interface Configuration {
   songsAPIHostURL: string;
@@ -10,21 +10,20 @@ export const createSongForIdFn = (
   configuration: Configuration,
   httpClient: Axios = axios,
 ) => {
-  return createGetForId<Song>(
-    `${configuration.songsAPIHostURL}/songs`,
-    httpClient,
-  );
+  return async (id: string): Promise<Song> => {
+    return createGet<Song>(configuration, `/songs/${id}`, httpClient)();
+  };
 };
 
 export const createGetSongsByTagId = (
   configuration: Configuration,
   httpClient: Axios = axios,
 ) => {
-  return async (tagId: string) => {
-    const url = `${configuration.songsAPIHostURL}/tags/${encodeURI(
-      tagId,
-    )}/songs`;
-    const response = await httpClient.get(url);
-    return response.data.data.page as Song[];
+  return async (tagId: string): Promise<{ page: Song[] }> => {
+    return createGet<{ page: Song[] }>(
+      configuration,
+      `/tags/${tagId}/songs`,
+      httpClient,
+    )();
   };
 };

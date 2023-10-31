@@ -6,7 +6,9 @@ import { createUserRepository } from "./user-repository";
 describe("The tag repository", () => {
   let dynamo: Dynamo;
 
-  const userId = "u:user1";
+  const userIdSuffix = "user1";
+  const userId = `u:${userIdSuffix}`;
+
   const name = "User 1";
 
   beforeEach(async () => {
@@ -18,7 +20,10 @@ describe("The tag repository", () => {
   });
 
   it("loads tags based on their name", async () => {
-    const tagsRepository = createUserRepository(dynamo.client(), () => userId);
+    const tagsRepository = createUserRepository(
+      dynamo.client(),
+      () => userIdSuffix
+    );
     const user = await tagsRepository.insertUser({ name });
     expect(user).toBeDefined();
     expect(user).toMatchObject({

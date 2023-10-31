@@ -1,5 +1,7 @@
 .PHONY: build build-api build-ui-production deploy-api start-api-local start-ui-local start-local
 
+DEPLOY_SECRET := $(shell cat ./.authz_secret)
+
 build-production: build-api build-ui-production
 
 build-ui-production:
@@ -20,7 +22,7 @@ deploy-infrastructure:
 deploy-api: build-api
 	pwd;
 	cd api; \
-	sam deploy --parameter-overrides=AllowOrigin="https://yersong.danielsomerfield.com" DynamoDbEndpoint="''"
+	sam deploy --parameter-overrides=AllowOrigin="https://yersong.danielsomerfield.com" DynamoDbEndpoint="''" AuthzSecret="${DEPLOY_SECRET}"
 
 deploy-ui: build-ui-production
 	aws s3 cp ui/build/ s3://yer-song-ui-production/ --recursive
@@ -33,7 +35,7 @@ start-ui-local:
 
 start-api-local: build-api
 	cd api; \
-	DOCKER_HOST=unix:~/.docker/run/docker.sock sam local start-api --docker-network lambda_local
+	AUTHZ_SECRET="LOCAL_SECRET" DOCKER_HOST=unix:~/.docker/run/docker.sock sam local start-api --docker-network lambda_local
 
 build-table-local: # TODO: make this only run if the table doesn't exist
 	aws --no-paginate --no-cli-pager --endpoint-url http://localhost:4566 dynamodb create-table \

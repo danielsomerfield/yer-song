@@ -6,7 +6,10 @@ import { ListItem } from "../../components/lists";
 import { NavPanel } from "../../components/navPanel";
 import styled from "styled-components";
 
-type GetSongsForTagId = (id: string) => Promise<Song[]>;
+interface Songs {
+  page: Song[];
+}
+type GetSongsForTagId = (id: string) => Promise<Songs>;
 
 const SongListPanelWrapper = styled.div`
   overflow-y: scroll;
@@ -58,7 +61,7 @@ export const SongListView = ({
     setLoadStarted(true);
     (async () => {
       const songsForTag = await getSongsForTagId(tagId);
-      setSongs(songsForTag);
+      setSongs(songsForTag.page);
     })();
     panel = <LoadingMessagePanel />;
   } else {

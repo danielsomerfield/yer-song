@@ -1,4 +1,3 @@
-import { defaultConfiguration, getAppDependencies } from "./app";
 import { v4 as uuidv4 } from "uuid";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { afterEach } from "node:test";
@@ -8,6 +7,7 @@ import { Song } from "./domain/songs";
 import { createGetTagsByNameLambda } from "./tags/getTags";
 import { Tags } from "./domain/tags";
 import { Dynamo, startDynamo } from "./respository/testutils";
+import { getAppDependencies } from "./inject";
 
 describe("the lambda", () => {
   let dynamo: Dynamo;
@@ -48,12 +48,14 @@ describe("the lambda", () => {
 
     const event = {
       pathParameters: { id: songId },
-      headers: { origin: "localhost" },
     } as unknown as APIGatewayProxyEvent;
 
     const getSong = createGetSongLambda(
       getAppDependencies({
-        ...defaultConfiguration,
+        authorization: {
+          secret: "fakeSecret",
+        },
+        allowOrigin: "https://example.com",
         dynamodb: {
           endpoint: dynamo.endpoint(),
           credentials: {
@@ -124,7 +126,10 @@ describe("the lambda", () => {
 
     const getTagsByName = createGetTagsByNameLambda(
       getAppDependencies({
-        ...defaultConfiguration,
+        authorization: {
+          secret: "fakeSecret",
+        },
+        allowOrigin: "https://example.com",
         dynamodb: {
           endpoint: dynamo.endpoint(),
           credentials: {

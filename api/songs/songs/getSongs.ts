@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Songs } from "../domain/songs";
-import { generateHeadersForDataResponse } from "../http/headers";
+import { generateResponseHeadersForDataResponse } from "../http/headers";
 import { logger } from "../util/logger";
 
 export interface Dependencies {
@@ -21,7 +21,7 @@ export const createGetSongsByTagIdLambda = (dependencies: Dependencies) => {
     }
     try {
       const page = await findSongsByTagId(tagId);
-      return generateHeadersForDataResponse(
+      return generateResponseHeadersForDataResponse(
         page,
         event.headers,
         allowedOrigins

@@ -11,6 +11,10 @@ export interface Song {
   voteCount: number;
 }
 
+export interface Songs {
+  page: Song[];
+}
+
 const Title = styled.h1`
   font-size: 2em;
   text-align: center;

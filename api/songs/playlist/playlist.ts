@@ -1,6 +1,6 @@
 import { Paginated, Songs } from "../domain/songs";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { generateHeadersForDataResponse } from "../http/headers";
+import { generateResponseHeadersForDataResponse } from "../http/headers";
 import { logger } from "../util/logger";
 
 export type Playlist = {
@@ -24,7 +24,7 @@ export const createGetPlaylist = (dependencies: Dependencies) => {
       const playlist: Playlist = {
         songs: page,
       };
-      return generateHeadersForDataResponse(
+      return generateResponseHeadersForDataResponse(
         playlist,
         event.headers,
         allowedOrigins

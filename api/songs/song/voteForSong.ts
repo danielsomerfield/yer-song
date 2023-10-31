@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { generateHeaders } from "../http/headers";
+import { generateResponseHeaders } from "../http/headers";
 
 export interface Dependencies {
   incrementSongVotes: (songId: string) => Promise<number>;
@@ -16,7 +16,7 @@ export const createVoteForSongLambda = (dependencies: Dependencies) => {
       // TODO (MVP): prevent record if the song doesn't exist
       const updateCount = await incrementSongVotes(songId);
       if (updateCount >= 1) {
-        return generateHeaders(event.headers, allowedOrigins, 200, {
+        return generateResponseHeaders(event.headers, allowedOrigins, 200, {
           status: "OK",
         });
       } else {

@@ -8,10 +8,11 @@ import * as TagService from "./pages/songs/tagsService";
 import * as SongService from "./services/songService";
 import * as PlaylistService from "./services/playListService";
 import * as VotingService from "./services/votingService";
+import * as UserService from "./services/userService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
 import { GetPlaylist, PlayListPage } from "./pages/playlist/playlist";
-import { RegisterPage } from "./pages/register";
+import { RegisterUser } from "./services/userService";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -59,6 +60,10 @@ const voteForSongFn = VotingService.createVoteForSong({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
+const registerUserFn: RegisterUser = UserService.createRegisterUser({
+  songsAPIHostURL: configuration.songsAPIHostURL,
+});
+
 function App() {
   const navigator = useNavigate();
 
@@ -71,7 +76,7 @@ function App() {
       </AppHeader>
       <AppContainer className={"AppContainer"}>
         <Routes>
-          <Route index element={<Home />} />
+          <Route index element={<Home registerUser={registerUserFn} />} />
           <Route
             path={"/songs/:songId"}
             element={
@@ -102,7 +107,6 @@ function App() {
               <PlayListPage getPlaylist={getPlayListFn} nav={navigator} />
             }
           />
-          <Route path={"/register"} element={<RegisterPage />} />
         </Routes>
       </AppContainer>
     </Screen>

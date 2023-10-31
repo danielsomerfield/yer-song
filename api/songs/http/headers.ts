@@ -1,17 +1,32 @@
 import { APIGatewayProxyEventHeaders } from "aws-lambda/trigger/api-gateway-proxy";
 import { APIGatewayProxyResult } from "aws-lambda";
+import { Maybe } from "../util/maybe";
 
 export interface CORSEnabled {
   allowedOrigins: Set<string>;
 }
 
-export const generateHeaders = (
-  headers: APIGatewayProxyEventHeaders,
+export const getHeaderByName = (
+  headers: APIGatewayProxyEventHeaders | undefined,
+  name: string
+): Maybe<boolean | number | string> => {
+  const found = Object.entries(headers || {}).filter(
+    (e) => name.toLowerCase() == e[0].toLowerCase()
+  );
+  if (found.length == 1) {
+    return found[0][1];
+  } else {
+    return undefined;
+  }
+};
+
+export const generateResponseHeaders = (
+  requestHeaders: APIGatewayProxyEventHeaders,
   allowedOrigins: Set<string>,
   statusCode: number,
   body: unknown
 ) => {
-  const originValues = Object.entries(headers)
+  const originValues = Object.entries(requestHeaders || {})
     .filter((e) => e[0].toLowerCase() == "origin")
     .map((e) => e[1]);
   const originValue: string =
@@ -22,7 +37,7 @@ export const generateHeaders = (
     statusCode: statusCode,
     headers: {
       "content-type": "application/json",
-      "access-control-allow-headers": "Content-Type",
+      "access-control-allow-headers": "Content-Type, Authorization",
       "access-control-allow-origin": allowed,
       "access-control-allow-methods": "GET, OPTIONS",
     },
@@ -30,12 +45,15 @@ export const generateHeaders = (
   };
 };
 
-export const generateHeadersForDataResponse = (
+export const generateResponseHeadersForDataResponse = (
   data: unknown,
-  headers: APIGatewayProxyEventHeaders,
+  requestHeaders: APIGatewayProxyEventHeaders,
   allowedOrigins: Set<string>,
   status = "OK"
 ): APIGatewayProxyResult => {
   const statusCode = 200;
-  return generateHeaders(headers, allowedOrigins, statusCode, { data, status });
+  return generateResponseHeaders(requestHeaders, allowedOrigins, statusCode, {
+    data,
+    status,
+  });
 };

@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { SongListView } from "./songlistPage";
-import { Song } from "../song";
+import { Song, Songs } from "../song";
 import fn = jest.fn;
 
 describe("the song list page", () => {
@@ -9,23 +9,25 @@ describe("the song list page", () => {
   });
 
   it("shows all songs for the tag", async () => {
-    const getSongs = (tagId: string): Promise<Song[]> => {
+    const getSongs = (tagId: string): Promise<Songs> => {
       return tagId == "tag3212"
-        ? Promise.resolve([
-            {
-              id: "123",
-              title: "Pleasant Valley Tuesday",
-              artistName: "The Monkeyz",
-              voteCount: 0,
-            },
-            {
-              id: "345",
-              title: "Miserable Hill Wednesday",
-              artistName: "The Donkeys",
-              voteCount: 0,
-            },
-          ])
-        : Promise.resolve([]);
+        ? Promise.resolve({
+            page: [
+              {
+                id: "123",
+                title: "Pleasant Valley Tuesday",
+                artistName: "The Monkeyz",
+                voteCount: 0,
+              },
+              {
+                id: "345",
+                title: "Miserable Hill Wednesday",
+                artistName: "The Donkeys",
+                voteCount: 0,
+              },
+            ],
+          })
+        : Promise.resolve({ page: [] });
     };
     render(
       <SongListView

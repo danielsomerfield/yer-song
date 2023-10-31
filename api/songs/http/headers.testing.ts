@@ -1,7 +1,7 @@
 import { APIGatewayProxyResult } from "aws-lambda";
 import { expect } from "@jest/globals";
 
-export const findHeaderByName = (
+export const findHeadersFromResult = (
   result: APIGatewayProxyResult,
   name: string
 ): string => {
@@ -21,7 +21,7 @@ export const supportsExpectedCORSMethods = (
 ) => {
   expectedMethods.forEach((method) => {
     expect(
-      findHeaderByName(response, "Access-Control-Allow-Methods")
+      findHeadersFromResult(response, "Access-Control-Allow-Methods")
         .split(",")
         .map((x) => x.trim())
     ).toContain(method);
@@ -32,9 +32,9 @@ export const verifyCORSHeaders = (
   response: APIGatewayProxyResult,
   expectedOrigin: string
 ) => {
-  expect(findHeaderByName(response, "Access-Control-Allow-Origin")).toEqual(
-    expectedOrigin
-  );
+  expect(
+    findHeadersFromResult(response, "Access-Control-Allow-Origin")
+  ).toEqual(expectedOrigin);
   const expectedMethods = ["options", "get"];
   supportsExpectedCORSMethods(expectedMethods, response);
 };
