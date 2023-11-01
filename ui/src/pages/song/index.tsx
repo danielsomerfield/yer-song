@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
-import { NavPanel } from "../../components/navPanel";
+import { BackButton, NavButton, NavPanel } from "../../components/navPanel";
 import { SongWithVotes } from "../../domain/song";
 import { CurrentUser } from "../../services/userService";
 
@@ -209,10 +209,12 @@ export const SongPageWithParams = ({
   getSong,
   voteForSong,
   currentUser,
+  nav,
 }: {
   getSong: GetSong;
   voteForSong: VoteForSong;
   currentUser: CurrentUser;
+  nav: NavigateFunction;
 }) => {
   const { songId } = useParams();
   return (
@@ -224,7 +226,9 @@ export const SongPageWithParams = ({
           voteForSong={voteForSong}
           currentUser={currentUser}
         />
-        <NavPanel />
+        <NavPanel nav={nav}>
+          <BackButton />
+        </NavPanel>
       </SongPageContainer>
     </div>
   );

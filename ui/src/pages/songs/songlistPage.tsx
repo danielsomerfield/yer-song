@@ -1,8 +1,12 @@
-import { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { ListItem } from "../../components/lists";
-import { NavPanel } from "../../components/navPanel";
+import {
+  BackButton,
+  NavPanel,
+  setBackButtonLocation,
+} from "../../components/navPanel";
 import styled from "styled-components";
 import { Song } from "../../domain/song";
 
@@ -84,11 +88,13 @@ export const SongListPage = ({
     throw "NYI: no tag";
   }
 
+  setBackButtonLocation(window.location.pathname);
+
   return (
     <>
       <SongListView getSongsForTagId={getSongsForTagId} tagId={tag} nav={nav} />
 
-      <NavPanel />
+      <NavPanel nav={nav} />
     </>
   );
 };

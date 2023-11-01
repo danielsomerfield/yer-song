@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
-import { NavPanel } from "../../components/navPanel";
+import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
 import { Song } from "../../domain/song";
 
 type Playlist = {
@@ -65,6 +65,7 @@ export const PlayListPage = ({
 
   // TODO: refactor this loading pattern out. It's always the same
   useEffect(() => {
+    setBackButtonLocation("/playlist");
     if (!playlist) {
       if (!loadStarted) {
         setLoadStarted(true);
@@ -83,8 +84,11 @@ export const PlayListPage = ({
   );
   return (
     <>
+      <div aria-label={"page-title"} role={"heading"}>
+        Play list
+      </div>
       {panel}
-      <NavPanel />
+      <NavPanel nav={nav} />
     </>
   );
 };

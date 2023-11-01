@@ -30,7 +30,9 @@
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist︎ ✔︎
 #### Action: Add to playlist / Upvote ✔︎
-#### Action: Go back to playlist or browse
+#### Action: Go back to playlist or browse ✔︎
+  - Clean up "back" hack
+#### Misc
 - On vote, update button text ✔︎
 - Enforce vote limit ✔︎
 - Limit how many times song can be queued (possibly not MVP)
@@ -74,6 +76,9 @@
 * Add error boundaries  (MVP)
 * Caches (not MVP)
 * More consistent accessibility
+* Song and genre pagination
+* Nav:
+  * hide or disable buttons on the page you are on already
 
 # Refactor
 - Extract list component

@@ -84,6 +84,7 @@ function App() {
                 getSong={getSongForIdFn}
                 voteForSong={voteForSongFn}
                 currentUser={currentUser}
+                nav={navigator}
               />
             }
           />
