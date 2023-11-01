@@ -5,16 +5,9 @@ import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
 import { Song } from "../../domain/song";
+import { GetPlaylist, Playlist } from "../../domain/playlist";
 
-type Playlist = {
-  songs: {
-    page: Song[];
-  };
-};
-
-export type GetPlaylist = () => Promise<Playlist>;
-
-export const SongsPanel = styled.div`
+const SongsPanel = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;

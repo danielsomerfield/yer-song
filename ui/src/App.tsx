@@ -11,8 +11,10 @@ import * as VotingService from "./services/votingService";
 import * as UserService from "./services/userService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
-import { GetPlaylist, PlayListPage } from "./pages/playlist/playlist";
+import { PlayListPage } from "./pages/playlist/playlist";
 import { currentUser, RegisterUser } from "./services/userService";
+import AdminPage from "./pages/admin";
+import { GetPlaylist } from "./domain/playlist";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -108,6 +110,10 @@ function App() {
             element={
               <PlayListPage getPlaylist={getPlayListFn} nav={navigator} />
             }
+          />
+          <Route
+            path={"/admin"}
+            element={<AdminPage getPlaylist={getPlayListFn} />}
           />
         </Routes>
       </AppContainer>
