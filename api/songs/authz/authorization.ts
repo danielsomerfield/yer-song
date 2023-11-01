@@ -26,7 +26,7 @@ export const createAuthorization = (
 
   const requireUser = (lambda: Lambda): Lambda => {
     return async (event: APIGatewayProxyEvent) => {
-      const authHeaderValue = getHeaderByName(event.headers, "authorization");
+      const authHeaderValue = getHeaderByName(event.headers, "x-token");
       if (authHeaderValue) {
         const authHeaderString = authHeaderValue.toString();
         const token =

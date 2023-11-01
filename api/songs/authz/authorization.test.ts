@@ -42,7 +42,7 @@ describe("authorization", () => {
       lambda.mockResolvedValue({ statusCode: 200 } as APIGatewayProxyResult);
       const lambdaWithUserRequirements = authorization.requireUser(lambda);
       const event = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { "x-token": `Bearer ${token}` },
       } as unknown as APIGatewayProxyEvent;
 
       const response = await lambdaWithUserRequirements(event);

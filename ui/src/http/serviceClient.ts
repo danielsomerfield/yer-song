@@ -23,7 +23,7 @@ export const createGet = <T>(
   return async (): Promise<T> => {
     const url = `${configuration.songsAPIHostURL}/${path}`;
     const response = await httpClient.get(url, {
-      headers: { Authorization: `Bearer ${getToken()}` },
+      headers: { "x-token": `Bearer ${getToken()}` },
     });
 
     if (response.status >= 400) {
@@ -47,7 +47,7 @@ export const createPost = <T>(
       url,
       {},
       {
-        headers: { Authorization: `Bearer ${getToken()}` },
+        headers: { "x-token": `Bearer ${getToken()}` },
       },
     );
     if (response.status >= 400) {

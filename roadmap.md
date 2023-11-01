@@ -31,6 +31,7 @@
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist︎ ✔︎
 #### Action: Add to playlist / Upvote ✔︎
+#### Action: Go back to playlist or browse
 - On vote, update button text
 - Enforce vote limit
   - Requires registration

@@ -1,6 +1,6 @@
 .PHONY: build build-api build-ui-production deploy-api start-api-local start-ui-local start-local
 
-DEPLOY_SECRET := $(shell cat ./.authz_secret)
+AUTHZ_SECRET := $(shell cat ./.authz_secret)
 
 build-production: build-api build-ui-production
 
@@ -22,7 +22,7 @@ deploy-infrastructure:
 deploy-api: build-api
 	pwd;
 	cd api; \
-	sam deploy --parameter-overrides=AllowOrigin="https://yersong.danielsomerfield.com" DynamoDbEndpoint="''" AuthzSecret="${DEPLOY_SECRET}"
+	sam deploy --parameter-overrides AllowOrigin="https://yersong.danielsomerfield.com" DynamoDbEndpoint="''" AuthzSecret="'${AUTHZ_SECRET}'"
 
 deploy-ui: build-ui-production
 	aws s3 cp ui/build/ s3://yer-song-ui-production/ --recursive
