@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User } from "./users";
 
 export interface Song {
   id: string;
@@ -11,10 +11,6 @@ export interface SongWithVotes extends Song {
   voters: User[];
 }
 
-export type Songs = Paginated<Song>;
-
-export interface Paginated<T> {
-  thisPage: string;
-  nextPage?: string;
-  page: T[];
+export interface Songs {
+  page: Song[];
 }

@@ -1,5 +1,5 @@
 import { describe, it } from "@jest/globals";
-import { Paginated, Songs } from "../domain/songs";
+import { Songs } from "../domain/songs";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import * as Playlist from "./playlist";
 import { verifyCORSHeaders } from "../http/headers.testing";

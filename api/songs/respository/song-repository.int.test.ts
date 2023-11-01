@@ -1,7 +1,7 @@
 import { describe, it } from "@jest/globals";
 import { afterEach } from "node:test";
 import { createSongRepository } from "./song-repository";
-import { GenreIds, SongIds, Songs } from "./sampledata";
+import { GenreIds, SongIds, Songs, Users } from "./sampledata";
 import { Dynamo, startDynamo } from "./testutils";
 
 describe("The song repository", () => {
@@ -64,18 +64,52 @@ describe("The song repository", () => {
       id: SongIds.song3Id,
       title: Songs.song3.Item.title.S,
       artistName: Songs.song3.Item.artistName.S,
+      voters: [
+        {
+          id: Users.user1.M.id.S,
+          name: Users.user1.M.name.S,
+        },
+        {
+          id: Users.user2.M.id.S,
+          name: Users.user2.M.name.S,
+        },
+        {
+          id: Users.user3.M.id.S,
+          name: Users.user3.M.name.S,
+        },
+        {
+          id: Users.user4.M.id.S,
+          name: Users.user4.M.name.S,
+        },
+      ],
+      voteCount: 4,
     });
     expect(matches.page[1]).toMatchObject({
       id: SongIds.song2Id,
       title: Songs.song2.Item.title.S,
       artistName: Songs.song2.Item.artistName.S,
+      voters: [
+        {
+          id: Users.user2.M.id.S,
+          name: Users.user2.M.name.S,
+        },
+      ],
+      voteCount: 1,
     });
   });
 
   describe("voting", () => {
+    const voter = {
+      id: Users.user1.M.id.S,
+      name: Users.user1.M.name.S,
+    };
+
     it("sets songs with no votes to 1", async () => {
       const songRepository = createSongRepository(dynamo.client());
-      await songRepository.addVoteToSong(SongIds.song1Id);
+      await songRepository.addVoteToSong({
+        songId: SongIds.song1Id,
+        voter,
+      });
       const songsWithVotes = await songRepository.findSongsWithVotes();
       const song1 = songsWithVotes.page.filter(
         (s) => s.id == SongIds.song1Id
@@ -86,13 +120,14 @@ describe("The song repository", () => {
 
     it("increment songs with votes already", async () => {
       const songRepository = createSongRepository(dynamo.client());
-      await songRepository.addVoteToSong(SongIds.song2Id);
+      await songRepository.addVoteToSong({ songId: SongIds.song2Id, voter });
       const songsWithVotes = await songRepository.findSongsWithVotes();
       const song2 = songsWithVotes.page.filter(
         (s) => s.id == SongIds.song2Id
       )[0];
       expect(song2).toBeDefined();
       expect(song2.voteCount).toEqual(2);
+      // TODO: test adding a second voter
     });
   });
 });

@@ -1,13 +1,8 @@
 import axios, { Axios } from "axios";
 import { Configuration } from "../configuration";
-
-export interface UserInput {
-  name: string;
-}
-
-export interface User extends UserInput {
-  id: string;
-}
+import { User, UserInput } from "../domain/users";
+import { getToken } from "../http/tokenStore";
+import { jwtDecode } from "jwt-decode";
 
 export interface UserRegistration {
   user: UserInput;
@@ -23,7 +18,14 @@ export const createRegisterUser = (
   return async (user: UserInput) => {
     const url = `${configuration.songsAPIHostURL}/users`;
     const response = await httpClient.post(url, user);
-    console.log("data in service", response.data);
     return response.data.data as UserRegistration;
   };
 };
+
+export const currentUser = (): User | undefined => {
+  const token = getToken();
+  // TODO: validate fields
+  return token ? jwtDecode<User>(token) : undefined;
+};
+
+export type CurrentUser = typeof currentUser;

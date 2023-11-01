@@ -7,7 +7,7 @@ import { createRegisterUserLambda } from "./user/registration";
 import { getAppDependencies } from "./inject";
 
 const auth = () => {
-  return getAppDependencies().authorization;
+  return getAppDependencies().authRules;
 };
 
 export const getSong = auth().requireUser(
@@ -25,6 +25,7 @@ export const getSongsByTagId = auth().requireUser(
 export const getPlaylist = auth().requireUser(
   createGetPlaylist(getAppDependencies())
 );
+
 export const voteForSong = auth().requireUser(
   createVoteForSongLambda(getAppDependencies())
 );

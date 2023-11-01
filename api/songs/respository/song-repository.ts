@@ -6,28 +6,37 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { logger } from "../util/logger";
 
-import { Paginated, Song, Songs } from "../domain/songs";
+import { Paginated, Song, Songs, SongWithVotes } from "../domain/songs";
 import {
   getOptionalInt,
   getRequiredString,
   getStringOrDefault,
 } from "./repository";
+import { Vote } from "../song/voteForSong";
 
-export type Maybe<T> = T | undefined;
+const createVotersList = (maybeItem: Record<string, AttributeValue>) => {
+  const voterRecords = maybeItem["voters"];
+  if (voterRecords) {
+    return voterRecords.L?.map((vRecord) => {
+      const userRecord = vRecord.M;
+      // TODO: look for malformed user records and filter them out
+      return {
+        id: userRecord?.["id"].S,
+        name: userRecord?.["name"].S,
+      };
+    });
+  } else {
+    return [];
+  }
+};
 
-export interface SongRepository {
-  getSongById: (id: string) => Promise<Maybe<Song>>;
-  findSongsByTag: (tag: string) => Promise<Songs>;
-  findSongsWithVotes: () => Promise<Paginated<Song>>;
-  addVoteToSong: (id: string) => Promise<number>;
-}
-
-export const createSongRepository = (client: DynamoDB): SongRepository => {
+export const createSongRepository = (client: DynamoDB) => {
   const createSongFromRecord = (maybeItem: Record<string, AttributeValue>) => ({
     id: getRequiredString(maybeItem, "PK"),
     title: getRequiredString(maybeItem, "title"),
     artistName: getStringOrDefault(maybeItem, "artistName", "unknown"),
     voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
+    voters: createVotersList(maybeItem),
   });
 
   const getSongById = async (id: string) => {
@@ -123,15 +132,15 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
     }
   };
 
-  const addVoteToSong = async (id: string) => {
-    const updated = await client.updateItem({
+  const addVoteToSong = async (vote: Vote) => {
+    await client.updateItem({
       TableName: "song",
       Key: {
         PK: {
-          S: id,
+          S: vote.songId,
         },
         SK: {
-          S: id,
+          S: vote.songId,
         },
       },
       ReturnValues: "UPDATED_NEW",
@@ -149,12 +158,40 @@ export const createSongRepository = (client: DynamoDB): SongRepository => {
       UpdateExpression:
         "SET voteCount = if_not_exists(voteCount, :zero) + :increment, GSI2PK = :playlist",
     });
-    const value = updated.Attributes?.["voteCount"];
-    if (value && value.N) {
-      return Number.parseInt(value.N);
-    } else {
-      throw "Update failed. Something went wrong";
-    }
+    await client.updateItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: vote.songId,
+        },
+        SK: {
+          S: vote.songId,
+        },
+      },
+      ReturnValues: "UPDATED_NEW",
+      ExpressionAttributeValues: {
+        ":voter": {
+          L: [
+            {
+              M: {
+                id: {
+                  S: vote.voter.id,
+                },
+                name: {
+                  S: vote.voter.name,
+                },
+              },
+            },
+          ],
+        },
+        ":empty": {
+          L: [],
+        },
+      },
+
+      UpdateExpression:
+        "SET voters = list_append(if_not_exists(voters, :empty), :voter)",
+    });
   };
 
   return {

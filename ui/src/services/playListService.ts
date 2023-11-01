@@ -1,6 +1,6 @@
 import axios, { Axios } from "axios";
-import { Song } from "../pages/song";
 import { createGet } from "../http/serviceClient";
+import { Song } from "../domain/song";
 
 interface Configuration {
   songsAPIHostURL: string;

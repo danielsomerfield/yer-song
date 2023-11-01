@@ -1,3 +1,46 @@
+export const Users = {
+  user1: {
+    M: {
+      id: {
+        S: "u:user1",
+      },
+      name: {
+        S: "user 1",
+      },
+    },
+  },
+  user2: {
+    M: {
+      id: {
+        S: "u:user2",
+      },
+      name: {
+        S: "user 2",
+      },
+    },
+  },
+  user3: {
+    M: {
+      id: {
+        S: "u:user3",
+      },
+      name: {
+        S: "user 3",
+      },
+    },
+  },
+  user4: {
+    M: {
+      id: {
+        S: "u:user4",
+      },
+      name: {
+        S: "user 4",
+      },
+    },
+  },
+};
+
 export const SongIds = {
   song1Id: `s:song1`,
   song2Id: `s:song2`,
@@ -54,6 +97,7 @@ export const Songs = {
       GSI2PK: {
         S: "ON_PLAYLIST",
       },
+      voters: { L: [Users.user2] },
     },
   },
   song3: {
@@ -74,6 +118,7 @@ export const Songs = {
       voteCount: {
         N: "4",
       },
+      voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
       GSI1PK: {
         S: GenreIds.genre1,
       },

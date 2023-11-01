@@ -3,17 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { NavPanel } from "../../components/navPanel";
-
-export interface Song {
-  id: string;
-  title: string;
-  artistName: string;
-  voteCount: number;
-}
-
-export interface Songs {
-  page: Song[];
-}
+import { SongWithVotes } from "../../domain/song";
+import { CurrentUser } from "../../services/userService";
 
 const Title = styled.h1`
   font-size: 2em;
@@ -29,7 +20,7 @@ const ArtistNme = styled.h1`
   text-align: center;
 `;
 
-type GetSong = (id: string) => Promise<Song | undefined>;
+type GetSong = (id: string) => Promise<SongWithVotes | undefined>;
 type VoteForSong = (id: string) => Promise<void>;
 
 export const AddOrVoteButton = styled.button`
@@ -38,19 +29,29 @@ export const AddOrVoteButton = styled.button`
 `;
 
 export const AddOrVoteButtonPanel = ({
-  songId,
+  song,
   voteForSong,
   isOnPlaylist,
+  currentUser,
 }: {
-  songId: string;
+  song: SongWithVotes;
   voteForSong: VoteForSong;
   isOnPlaylist: boolean;
+  currentUser: CurrentUser;
 }) => {
   const buttonText = isOnPlaylist ? "Up vote" : "Request";
+  const disableButton =
+    song.voters.filter((v) => v.id == currentUser()?.id).length > 0;
   return (
     <AddOrVoteButton
-      onClick={async () => {
-        await voteForSong(songId);
+      disabled={disableButton}
+      aria-label={"vote-button"}
+      role={"button"}
+      onClick={async (evt) => {
+        const button = evt.currentTarget;
+        button.disabled = true;
+        // TODO (MVP): refresh the vote count
+        await voteForSong(song.id);
       }}
     >
       {buttonText}
@@ -58,8 +59,8 @@ export const AddOrVoteButtonPanel = ({
   );
 };
 
-export const OnPlayListPanel = styled.div`
-  font-size: 1.25em;
+const OnPlayListPanel = styled.div`
+  font-size: 1em;
   text-align: center;
   font-style: italic;
 `;
@@ -67,13 +68,25 @@ export const OnPlayListPanel = styled.div`
 export const SongView = ({
   song,
   voteForSong,
+  currentUser,
 }: {
-  song: Song;
+  song: SongWithVotes;
   voteForSong: VoteForSong;
+  currentUser: CurrentUser;
 }) => {
   const isOnPlaylist = song.voteCount > 0;
+
+  // TODO: this is a tricky condition so good to add some better testing
+  const voterName =
+    song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
+
   const onList = isOnPlaylist ? (
-    <OnPlayListPanel>On playlist</OnPlayListPanel>
+    <OnPlayListPanel aria-label={"on-playlist"} role={"note"}>
+      On playlist with {song.voteCount} votes
+      <div aria-label={"requested-by"} role={"note"}>
+        {voterName ? `Requested by ${voterName}` : ""}
+      </div>
+    </OnPlayListPanel>
   ) : (
     <div></div>
   );
@@ -90,9 +103,10 @@ export const SongView = ({
       </div>
       <div>
         <AddOrVoteButtonPanel
-          songId={song.id}
+          song={song}
           voteForSong={voteForSong}
           isOnPlaylist={isOnPlaylist}
+          currentUser={currentUser}
         />
       </div>
       {onList}
@@ -141,14 +155,20 @@ export const SongPage = ({
   getSong,
   songId,
   voteForSong,
+  currentUser,
 }: {
   getSong: GetSong;
   songId?: string;
   voteForSong: VoteForSong;
+  currentUser: CurrentUser;
 }) => {
-  const [song, setSong] = useState<Maybe<Song> | undefined>(undefined);
+  const [song, setSong] = useState<Maybe<SongWithVotes> | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
 
+  const resetSong = () => {
+    setSong(undefined);
+    setLoadStarted(false);
+  };
   useEffect(() => {
     // TODO (MVP): error handling
     if (!loadStarted) {
@@ -167,9 +187,18 @@ export const SongPage = ({
   if (!song) {
     return <LoadingMessagePanel />;
   }
+  const voteFn: VoteForSong = async (id: string) => {
+    await voteForSong(id);
+    // TODO: the resetload could be a little more elegant
+    resetSong();
+  };
 
   return song.exists() ? (
-    <SongView song={song.getValue()} voteForSong={voteForSong} />
+    <SongView
+      song={song.getValue()}
+      voteForSong={voteFn}
+      currentUser={currentUser}
+    />
   ) : (
     <SongNotFound />
   );
@@ -179,15 +208,22 @@ export const SongPage = ({
 export const SongPageWithParams = ({
   getSong,
   voteForSong,
+  currentUser,
 }: {
   getSong: GetSong;
   voteForSong: VoteForSong;
+  currentUser: CurrentUser;
 }) => {
   const { songId } = useParams();
   return (
     <div className={"SongWithParam"}>
       <SongPageContainer>
-        <SongPage getSong={getSong} songId={songId} voteForSong={voteForSong} />
+        <SongPage
+          getSong={getSong}
+          songId={songId}
+          voteForSong={voteForSong}
+          currentUser={currentUser}
+        />
         <NavPanel />
       </SongPageContainer>
     </div>

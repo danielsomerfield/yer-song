@@ -5,7 +5,6 @@
 ### View: Home ✔︎
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist ✔︎
-* hidden if not registered
 #### Action: Register ✔︎
 * Not giving feedback yet on registration success / failure
 * Not yet validating that user is registered to let them do other things
@@ -32,9 +31,8 @@
 #### Action: Back to Playlist︎ ✔︎
 #### Action: Add to playlist / Upvote ✔︎
 #### Action: Go back to playlist or browse
-- On vote, update button text
-- Enforce vote limit
-  - Requires registration
+- On vote, update button text ✔︎
+- Enforce vote limit ✔︎
 - Limit how many times song can be queued (possibly not MVP)
 
 ### View: Registration (on home page) ✔︎︎ ︎
@@ -65,6 +63,7 @@
 * Theme
 
 ## General
+* CORS headers for error conditions
 * Show toast when something changes (like a vote) (MVP)
 * Refreshes when playlist changes (MVP)
 * Filter out (rather than fail) bad data in DB (MVP)

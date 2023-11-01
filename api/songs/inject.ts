@@ -4,7 +4,10 @@ import { DynamoDBClientConfig } from "@aws-sdk/client-dynamodb/dist-types/Dynamo
 import { createTagsRepository } from "./respository/tag-repository";
 import { createUserRepository } from "./respository/user-repository";
 import { AuthConfiguration, createAuthorization } from "./authz/authorization";
-import { createGenerateToken } from "./authz/token";
+import {
+  createGenerateToken,
+  createGetIdentityFromRequest,
+} from "./authz/token";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -62,6 +65,10 @@ export const getAppDependencies = (
   const songsRepository = createSongRepository(dynamoClient);
   const userRepository = createUserRepository(dynamoClient);
 
+  const getIdentityFromRequest = createGetIdentityFromRequest(
+    configuration.authorization.secret
+  );
+
   const generateToken = createGenerateToken({
     secret: configuration.authorization.secret,
   });
@@ -72,12 +79,10 @@ export const getAppDependencies = (
     getTagsByName: tagsRepository.getTagsByName,
     findSongsByTagId: songsRepository.findSongsByTag,
     findSongsWithVotes: songsRepository.findSongsWithVotes,
-    incrementSongVotes: songsRepository.addVoteToSong,
+    insertVote: songsRepository.addVoteToSong,
     insertUser: userRepository.insertUser,
-    authorization: createAuthorization(
-      { allowedOrigins },
-      getAuthConfiguration()
-    ),
+    authRules: createAuthorization({ allowedOrigins }, getAuthConfiguration()),
     generateToken: generateToken,
+    getIdentityFromRequest,
   };
 };

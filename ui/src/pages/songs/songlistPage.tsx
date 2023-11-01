@@ -1,10 +1,10 @@
-import { Song } from "../song";
 import { MouseEventHandler, useState } from "react";
 import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { ListItem } from "../../components/lists";
 import { NavPanel } from "../../components/navPanel";
 import styled from "styled-components";
+import { Song } from "../../domain/song";
 
 interface Songs {
   page: Song[];
@@ -79,7 +79,6 @@ export const SongListPage = ({
   nav: NavigateFunction;
 }) => {
   const { tag } = useParams();
-  console.log("The tag", tag);
   if (!tag) {
     // TODO (MVP): what do we do here?
     throw "NYI: no tag";

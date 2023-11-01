@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
-import { Song } from "../song";
 import { NavPanel } from "../../components/navPanel";
+import { Song } from "../../domain/song";
 
 type Playlist = {
   songs: {
@@ -70,7 +70,6 @@ export const PlayListPage = ({
         setLoadStarted(true);
         (async () => {
           const playlist = await getPlaylist();
-          console.log("playlist", playlist);
           setPlaylist(playlist);
         })();
       }

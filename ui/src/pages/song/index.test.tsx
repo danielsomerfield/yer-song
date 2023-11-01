@@ -1,8 +1,18 @@
 import { SongPage, SongView } from "./index";
-import { cleanup, render, screen } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import fn = jest.fn;
+import { CurrentUser } from "../../services/userService";
+import MockedFunction = jest.MockedFunction;
 
 describe("the song page", () => {
+  const currentUser: MockedFunction<CurrentUser> = fn();
+
   beforeEach(() => {
     cleanup();
   });
@@ -13,6 +23,7 @@ describe("the song page", () => {
         title: "Song 1",
         artistName: "The Artist",
         voteCount: 0,
+        voters: [],
       };
       render(
         <SongView
@@ -20,6 +31,7 @@ describe("the song page", () => {
           voteForSong={async () => {
             throw "Not expected";
           }}
+          currentUser={currentUser}
         />,
       );
       expect(
@@ -39,11 +51,17 @@ describe("the song page", () => {
           title: "Title 1",
           artistName: "Artist 1",
           voteCount: 0,
+          voters: [],
         });
       };
 
       render(
-        <SongPage getSong={fakeFetch} songId={"song1"} voteForSong={fn()} />,
+        <SongPage
+          getSong={fakeFetch}
+          songId={"song1"}
+          voteForSong={fn()}
+          currentUser={currentUser}
+        />,
       );
 
       await screen.findByRole("heading", { name: "song-title" });
@@ -51,5 +69,106 @@ describe("the song page", () => {
         screen.getByRole("heading", { name: "song-title" }),
       ).toHaveTextContent("Title 1");
     });
+
+    it("disables the vote button when the vote is registered", async () => {
+      const fakeFetch = () => {
+        return Promise.resolve({
+          id: "song1",
+          title: "Title 1",
+          artistName: "Artist 1",
+          voteCount: 0,
+          voters: [],
+        });
+      };
+
+      render(
+        <SongPage
+          getSong={fakeFetch}
+          songId={"song1"}
+          voteForSong={fn()}
+          currentUser={currentUser}
+        />,
+      );
+
+      const button: HTMLButtonElement = await screen.findByRole("button", {
+        name: "vote-button",
+      });
+      fireEvent.click(button);
+
+      await waitFor(async () => {
+        expect(button.disabled).toEqual(true);
+      });
+    });
+
+    // TODO: re-enable button if submit fails
+  });
+
+  it("shows the 'first' voter (or requester) when there is one", async () => {
+    const fakeFetch = () => {
+      return Promise.resolve({
+        id: "song1",
+        title: "Title 1",
+        artistName: "Artist 1",
+        voteCount: 1,
+        voters: [
+          {
+            id: "user123",
+            name: "User 123",
+          },
+        ],
+      });
+    };
+
+    render(
+      <SongPage
+        getSong={fakeFetch}
+        songId={"song1"}
+        voteForSong={fn()}
+        currentUser={currentUser}
+      />,
+    );
+
+    await screen.findByRole("heading", { name: "song-title" });
+    expect(
+      screen.getByRole("note", { name: "requested-by" }),
+    ).toHaveTextContent("User 123");
+  });
+
+  it("disables the vote button if this user has already voted", async () => {
+    currentUser.mockReturnValue({
+      id: "user123",
+      name: "User 123",
+    });
+
+    const fakeFetch = () => {
+      return Promise.resolve({
+        id: "song1",
+        title: "Title 1",
+        artistName: "Artist 1",
+        voteCount: 1,
+        voters: [
+          {
+            id: "user123",
+            name: "User 123",
+          },
+        ],
+      });
+    };
+
+    render(
+      <SongPage
+        getSong={fakeFetch}
+        songId={"song1"}
+        voteForSong={fn()}
+        currentUser={currentUser}
+      />,
+    );
+
+    await screen.findByRole("heading", { name: "song-title" });
+
+    const button: HTMLButtonElement = await screen.findByRole("button", {
+      name: "vote-button",
+    });
+    expect(button.disabled).toEqual(true);
   });
 });

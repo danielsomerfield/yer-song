@@ -12,7 +12,7 @@ import * as UserService from "./services/userService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
 import { GetPlaylist, PlayListPage } from "./pages/playlist/playlist";
-import { RegisterUser } from "./services/userService";
+import { currentUser, RegisterUser } from "./services/userService";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -83,6 +83,7 @@ function App() {
               <SongPageWithParams
                 getSong={getSongForIdFn}
                 voteForSong={voteForSongFn}
+                currentUser={currentUser}
               />
             }
           />
