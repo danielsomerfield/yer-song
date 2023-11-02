@@ -67,16 +67,20 @@
 * Theme
 
 ## General
-* CORS headers for error conditions
-* Show toast when something changes (like a vote) (MVP)
-* Refreshes when playlist changes (MVP)
+* CORS headers for error conditions (MVP)
 * Filter out (rather than fail) bad data in DB (MVP)
 * General error handler for failures (MVP)
-* Push user to registration page if not registered (MVP) ✔︎
 * Log in as admin  (MVP)
 * Better loading view  (MVP)
-* Add error boundaries  (MVP)
-* Caches (not MVP)
+* * Add error boundaries  (MVP)
+* Refreshes when playlist changes (MVP) ✔︎
+* Push user to registration page if not registered (MVP) ✔︎
+* Show toast when something changes (like a vote)
+  * Playlist vote ✔︎
+  * Song view vote ✔︎
+
+## Future General
+* Caches
 * More consistent accessibility
 * Song and genre pagination
 * Nav:

@@ -79,3 +79,16 @@ input::placeholder {
   font-style: italic;
 }
 
+/*Toast styling*/
+.Toast {
+  font-size: 4vh;
+  padding: 1vh;
+  list-style-type: none;
+  z-index: 10;
+  position: absolute;
+  background: lightblue;
+  top: 0;
+  left: 0;
+  right: 0;
+/*  Fade the toast in and out */
+}

@@ -5,6 +5,7 @@ import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { BackButton, NavPanel } from "../../components/navPanel";
 import { SongWithVotes } from "../../domain/song";
 import { CurrentUser } from "../../services/userService";
+import * as Toast from "@radix-ui/react-toast";
 
 const Title = styled.h1`
   font-size: 2em;
@@ -28,16 +29,18 @@ export const AddOrVoteButton = styled.button`
   margin: 6vh;
 `;
 
-export const AddOrVoteButtonPanel = ({
+const AddOrVoteButtonPanel = ({
   song,
   voteForSong,
   isOnPlaylist,
   currentUser,
+  showToast = () => undefined,
 }: {
   song: SongWithVotes;
   voteForSong: VoteForSong;
   isOnPlaylist: boolean;
   currentUser: CurrentUser;
+  showToast: () => void;
 }) => {
   const buttonText = isOnPlaylist ? "Up vote" : "Request";
   const disableButton =
@@ -50,7 +53,9 @@ export const AddOrVoteButtonPanel = ({
       onClick={async (evt) => {
         const button = evt.currentTarget;
         button.disabled = true;
+
         await voteForSong(song.id);
+        showToast();
       }}
     >
       {buttonText}
@@ -68,10 +73,12 @@ export const SongView = ({
   song,
   voteForSong,
   currentUser,
+  showToast = () => undefined,
 }: {
   song: SongWithVotes;
   voteForSong: VoteForSong;
   currentUser: CurrentUser;
+  showToast?: () => void;
 }) => {
   const isOnPlaylist = song.voteCount > 0;
 
@@ -106,6 +113,7 @@ export const SongView = ({
           voteForSong={voteForSong}
           isOnPlaylist={isOnPlaylist}
           currentUser={currentUser}
+          showToast={showToast}
         />
       </div>
       {onList}
@@ -163,6 +171,7 @@ export const SongPage = ({
 }) => {
   const [song, setSong] = useState<Maybe<SongWithVotes> | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
 
   const resetSong = () => {
     setSong(undefined);
@@ -188,16 +197,33 @@ export const SongPage = ({
   }
   const voteFn: VoteForSong = async (id: string) => {
     await voteForSong(id);
-    // TODO: the resetload could be a little more elegant
+    // TODO: the reset could be a little more elegant
     resetSong();
   };
 
   return song.exists() ? (
-    <SongView
-      song={song.getValue()}
-      voteForSong={voteFn}
-      currentUser={currentUser}
-    />
+    <>
+      <SongView
+        song={song.getValue()}
+        voteForSong={voteFn}
+        currentUser={currentUser}
+        showToast={() => {
+          setToastOpen(true);
+        }}
+      />
+      {/*TODO: Refactor this toast code*/}
+      <Toast.Root
+        className={"Toast"}
+        open={toastOpen}
+        onOpenChange={setToastOpen}
+      >
+        <Toast.Description>
+          {song?.getValue()?.voters.length > 0
+            ? "Your vote has been added"
+            : "Your song has been added to the playlist"}
+        </Toast.Description>
+      </Toast.Root>
+    </>
   ) : (
     <SongNotFound />
   );
@@ -225,6 +251,7 @@ export const SongPageWithParams = ({
           voteForSong={voteForSong}
           currentUser={currentUser}
         />
+
         <NavPanel nav={nav}>
           <BackButton />
         </NavPanel>

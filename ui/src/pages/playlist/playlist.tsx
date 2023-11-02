@@ -7,6 +7,7 @@ import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
 import { SongWithVotes } from "../../domain/song";
 import { GetPlaylist, Playlist } from "../../domain/playlist";
 import { currentUser, CurrentUser } from "../../services/userService";
+import * as Toast from "@radix-ui/react-toast";
 
 type VoteForSong = (id: string) => Promise<void>;
 
@@ -37,11 +38,13 @@ const PlaylistView = ({
   nav,
   currentUser,
   voteForSong,
+  showToast,
 }: {
   playlist: Playlist;
   nav: NavigateFunction;
   voteForSong: VoteForSong;
   currentUser: CurrentUser;
+  showToast: () => void;
 }) => {
   const SongView = (song: SongWithVotes, i: number) => {
     const goToSong: MouseEventHandler = () => {
@@ -68,6 +71,7 @@ const PlaylistView = ({
                 const button = evt.currentTarget;
                 button.disabled = true;
                 await voteForSong(song.id);
+                showToast();
                 // TODO: do a refresh
               }}
             >
@@ -99,6 +103,7 @@ export const PlayListPage = ({
 }) => {
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
 
   // TODO: refactor this loading pattern out. It's always the same
   useEffect(() => {
@@ -120,6 +125,9 @@ export const PlayListPage = ({
       nav={nav}
       currentUser={currentUser}
       voteForSong={voteForSong}
+      showToast={() => {
+        setToastOpen(true);
+      }}
     />
   ) : (
     <LoadingMessagePanel />
@@ -130,6 +138,14 @@ export const PlayListPage = ({
         Playlist
       </div>
       {panel}
+      {/*TODO: Refactor this toast code*/}
+      <Toast.Root
+        className={"Toast"}
+        open={toastOpen}
+        onOpenChange={setToastOpen}
+      >
+        <Toast.Description>Your vote has been added</Toast.Description>
+      </Toast.Root>
       <NavPanel nav={nav} />
     </>
   );
