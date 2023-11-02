@@ -26,7 +26,7 @@
 
 ### View: Song Details ✔︎
 * Handle load failures
-* Show status (on play list / not on playlist)
+* Show status (on play list / not on playlist) ✔︎
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist︎ ✔︎
 #### Action: Add to playlist / Upvote ✔︎
@@ -42,16 +42,16 @@
 * Disallow name that has already been used
 
 ### View: Playlist ✔︎
-#### Action: Up vote 
+#### Action: Up vote  ✔︎
 #### Action: Back to Browse ✔︎
 #### Action: Back to Song on click ✔︎
 * Handle load failures
-* Show who originally added
+* Show who originally added 
 
 
 ## Persona: Moderator
-### View: Playlist (with control)
-* Show who voted for what (possibly not MVP)
+### View: Playlist (with control) ✔︎
+* Show who voted for what (possibly not MVP) 
 #### Action: Move up
 #### Action: Move down
 #### Action: Mark as played
