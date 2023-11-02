@@ -12,4 +12,6 @@ export const ListItem = styled.div`
   text-overflow: ellipsis;
   text-align: left;
   padding: 1vh 0 1vh 0;
+  display: flex;
+  flex-direction: row;
 `;

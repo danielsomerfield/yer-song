@@ -4,11 +4,7 @@ import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
-import {
-  BackButton,
-  NavPanel,
-  setBackButtonLocation,
-} from "../../components/navPanel";
+import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
 
 export type GetTags = () => Promise<Tags>;
 

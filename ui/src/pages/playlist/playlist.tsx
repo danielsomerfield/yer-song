@@ -4,8 +4,11 @@ import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
-import { Song } from "../../domain/song";
+import { SongWithVotes } from "../../domain/song";
 import { GetPlaylist, Playlist } from "../../domain/playlist";
+import { currentUser, CurrentUser } from "../../services/userService";
+
+type VoteForSong = (id: string) => Promise<void>;
 
 const SongsPanel = styled.div`
   display: flex;
@@ -13,26 +16,65 @@ const SongsPanel = styled.div`
   overflow: hidden;
 `;
 
+const UpVoteButton = styled.button`
+  margin: 0 1vh 0 0;
+`;
+
+const SongRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-column-gap: 3vh;
+  width: 100%;
+`;
+
+const SongTitle = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const PlaylistView = ({
   playlist,
   nav,
+  currentUser,
+  voteForSong,
 }: {
   playlist: Playlist;
   nav: NavigateFunction;
+  voteForSong: VoteForSong;
+  currentUser: CurrentUser;
 }) => {
-  const SongView = (song: Song, i: number) => {
+  const SongView = (song: SongWithVotes, i: number) => {
     const goToSong: MouseEventHandler = () => {
       nav(`/songs/${song.id}`);
     };
+
+    const disableButton =
+      song.voters.filter((v) => v.id == currentUser()?.id).length > 0;
+
     return (
       <ListItem
-        onClick={goToSong}
         role={"listitem"}
         key={`song::${song.id}`}
         aria-label={`song: ${song.title}`}
         data-id={song.id}
       >
-        {song.title}
+        <SongRow>
+          <SongTitle onClick={goToSong}>{song.title}</SongTitle>
+          <div>
+            <UpVoteButton
+              disabled={disableButton}
+              onClick={async (evt) => {
+                console.log("Voting for a song");
+                const button = evt.currentTarget;
+                button.disabled = true;
+                await voteForSong(song.id);
+                // TODO: do a refresh
+              }}
+            >
+              Up vote
+            </UpVoteButton>
+          </div>
+        </SongRow>
       </ListItem>
     );
   };
@@ -48,9 +90,11 @@ const PlaylistView = ({
 
 export const PlayListPage = ({
   getPlaylist,
+  voteForSong,
   nav,
 }: {
   getPlaylist: GetPlaylist;
+  voteForSong: VoteForSong;
   nav: NavigateFunction;
 }) => {
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
@@ -71,14 +115,19 @@ export const PlayListPage = ({
   }, undefined);
 
   const panel = playlist ? (
-    <PlaylistView playlist={playlist} nav={nav} />
+    <PlaylistView
+      playlist={playlist}
+      nav={nav}
+      currentUser={currentUser}
+      voteForSong={voteForSong}
+    />
   ) : (
     <LoadingMessagePanel />
   );
   return (
     <>
       <div aria-label={"page-title"} role={"heading"}>
-        Play list
+        Playlist
       </div>
       {panel}
       <NavPanel nav={nav} />

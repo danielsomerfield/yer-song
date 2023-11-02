@@ -73,12 +73,17 @@ function App() {
     <Screen className={"screen"}>
       <AppHeader className="App-header">
         <Branding>
-          <div>John and Julie's Wedding!</div>
+          <div>
+            <a href={"/"}>John and Julie's Wedding!</a>
+          </div>
         </Branding>
       </AppHeader>
       <AppContainer className={"AppContainer"}>
         <Routes>
-          <Route index element={<Home registerUser={registerUserFn} />} />
+          <Route
+            index
+            element={<Home registerUser={registerUserFn} nav={navigator} />}
+          />
           <Route
             path={"/songs/:songId"}
             element={
@@ -108,7 +113,11 @@ function App() {
           <Route
             path={"/playlist"}
             element={
-              <PlayListPage getPlaylist={getPlayListFn} nav={navigator} />
+              <PlayListPage
+                getPlaylist={getPlayListFn}
+                nav={navigator}
+                voteForSong={voteForSongFn}
+              />
             }
           />
           <Route

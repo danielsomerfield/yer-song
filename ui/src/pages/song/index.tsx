@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
-import { BackButton, NavButton, NavPanel } from "../../components/navPanel";
+import { BackButton, NavPanel } from "../../components/navPanel";
 import { SongWithVotes } from "../../domain/song";
 import { CurrentUser } from "../../services/userService";
 
@@ -50,7 +50,6 @@ export const AddOrVoteButtonPanel = ({
       onClick={async (evt) => {
         const button = evt.currentTarget;
         button.disabled = true;
-        // TODO (MVP): refresh the vote count
         await voteForSong(song.id);
       }}
     >

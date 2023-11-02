@@ -14,7 +14,7 @@ const SongsPanel = styled.div`
   display: grid;
   justify-content: left;
   grid-column-gap: 3vh;
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: 1fr 1fr auto auto;
   text-align: left;
 `;
 
@@ -40,7 +40,7 @@ const SongItemRow = ({ song }: PropsWithChildren & { song: SongWithVotes }) => {
       <RequestedBy>
         {song.voters.length > 0 ? song.voters[0].name : "unknown"}
       </RequestedBy>
-
+      <div>{song.voteCount}</div>
       <SongItemControls />
     </>
   );
@@ -65,8 +65,8 @@ const PlayListControls = ({ playlist }: { playlist: Playlist }) => {
       <SongsPanel role={"list"} aria-label={"song-panel"}>
         <div>Song</div>
         <div>Requested by</div>
+        <div>Votes</div>
         <div></div>
-
         {playlist.songs.page.map((song, i) => SongView(song))}
       </SongsPanel>
     </div>
