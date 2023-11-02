@@ -54,7 +54,7 @@
 * Show who voted for what (possibly not MVP) 
 #### Action: Move up
 #### Action: Move down
-#### Action: Mark as played
+#### Action: Remove (Mark as played)  ✔︎
 
 
 ### Persona: Playlist view (projection) ✔︎
