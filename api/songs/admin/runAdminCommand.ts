@@ -1,11 +1,15 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import {
+  CORSEnabled,
+  generateResponseHeadersForDataResponse,
+} from "../http/headers";
 
-type Dependencies = {
+interface Dependencies extends CORSEnabled {
   clearVotes: (id: string) => Promise<void>;
-};
+}
 
 export const createRunAdminCommandLambda = (dependencies: Dependencies) => {
-  const { clearVotes } = dependencies;
+  const { clearVotes, allowedOrigins } = dependencies;
 
   const removeSongCommand = async (songId: string) => {
     await clearVotes(songId);
@@ -37,9 +41,10 @@ export const createRunAdminCommandLambda = (dependencies: Dependencies) => {
       await toExecute(resource);
     }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ status: "OK" }),
-    };
+    return generateResponseHeadersForDataResponse(
+      {},
+      event.headers,
+      allowedOrigins
+    );
   };
 };
