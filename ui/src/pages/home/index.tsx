@@ -13,7 +13,6 @@ export const Home = ({
 }) => {
   return (
     <>
-      <p>TODO: welcome text</p>
       <RegistrationForm registerUser={registerUser} />
       <NavPanel nav={nav} />
     </>

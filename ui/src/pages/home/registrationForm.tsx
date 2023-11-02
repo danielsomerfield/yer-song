@@ -49,6 +49,10 @@ export const RegistrationForm = ({
     });
   };
 
+  // TODO: fix this hack
+  if (!formShowing) {
+    window.location.href = "/playlist";
+  }
   return (
     <Dialog.Root modal={true} open={formShowing}>
       <Dialog.Portal>
