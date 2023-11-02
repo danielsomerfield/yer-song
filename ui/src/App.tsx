@@ -29,6 +29,9 @@ const AppContainer = styled.div`
 
 const AppHeader = styled.header`
   text-align: center;
+  background-image: linear-gradient(to bottom right, #6500A3, #2E518A);
+  border-radius: 25px 25px 0 0;
+  border-bottom: 1vh solid #44006F;
 `;
 
 const Screen = styled.div`
@@ -42,6 +45,7 @@ const Screen = styled.div`
 
 const Branding = styled.h1`
   font-size: 5vh;
+  color: white;
 `;
 
 const getSongForIdFn = SongService.createSongForIdFn({
@@ -77,7 +81,7 @@ function App() {
         {" "}
         <Branding>
           <div>
-            <a href={"/"}>John and Julie's Wedding!</a>
+            John and Julie's Wedding!
           </div>
         </Branding>
       </AppHeader>

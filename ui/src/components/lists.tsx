@@ -1,17 +1,40 @@
+import { PropsWithChildren, ComponentProps } from "react";
 import styled from "styled-components";
 
-export const ListItem = styled.div`
-  height: 6vh;
-
+const ListItemContent = styled.div`
   &:hover {
-    background-color: lightblue;
+    opacity: 0.8;
   }
 
   white-space: nowrap;
-  overflow: clip;
+  overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
-  padding: 1vh 0 1vh 0;
-  display: flex;
-  flex-direction: row;
+  padding: 2% 2% 2% 2%;
+
+  background-color: white;
+  margin: 2px;
+  border-radius: 10px;
+  opacity: 1.0;
 `;
+
+const ListItemContainer = styled.div`
+  background: linear-gradient(to right, #B640FF, #90E7B3);
+  border-radius: 15px;
+  margin: 1vh;
+  padding: 0.3vh;
+`;
+
+export const ListItem = (
+  props: PropsWithChildren & ComponentProps<"div"> ,
+) => {
+  return (
+    <div { ...props }>
+      <ListItemContainer>
+        <ListItemContent>
+          { props.children }
+        </ListItemContent>
+      </ListItemContainer>
+    </div>
+  );
+};
