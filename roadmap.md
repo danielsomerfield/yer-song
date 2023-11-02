@@ -57,8 +57,10 @@
 #### Action: Mark as played
 
 
-### Persona: Playlist view (projection)
-### View: Playlist
+### Persona: Playlist view (projection) ✔︎
+### View: Playlist ✔︎
+* New songs aren't last (necessarily) because of natural song sort order when vote count is the same
+* Get rid of mouse-over ︎  ✔︎
 
 ## Tasks
 * Add complete song list

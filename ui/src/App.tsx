@@ -15,6 +15,7 @@ import { PlayListPage } from "./pages/playlist/playlist";
 import { currentUser, RegisterUser } from "./services/userService";
 import AdminPage from "./pages/admin";
 import { GetPlaylist } from "./domain/playlist";
+import { KioskPlaylist } from "./pages/kiosk";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -120,6 +121,11 @@ function App() {
               />
             }
           />
+          <Route
+            path={"/kiosk"}
+            element={<KioskPlaylist getPlaylist={getPlayListFn} />}
+          />
+
           <Route
             path={"/admin"}
             element={<AdminPage getPlaylist={getPlayListFn} />}
