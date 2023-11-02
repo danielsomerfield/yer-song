@@ -169,7 +169,7 @@ resource "aws_cloudfront_distribution" "spa_cdn" {
       }
     }
 
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
 
     min_ttl     = 0
     // TODO: increase this once we've stabilized or have configured invalidation
