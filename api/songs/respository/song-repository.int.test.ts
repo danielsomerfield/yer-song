@@ -130,4 +130,26 @@ describe("The song repository", () => {
       // TODO: test adding a second voter
     });
   });
+
+  describe("mutation", () => {
+    it("updates song records with vote data", async () => {
+      const songRepository = createSongRepository(dynamo.client());
+      await songRepository.clearVotes(SongIds.song2Id);
+
+      const songRecord = await dynamo.client().getItem({
+        Key: {
+          PK: Songs.song2.Item.PK,
+          SK: Songs.song2.Item.SK,
+        },
+        TableName: "song",
+      });
+
+      expect(songRecord).toBeDefined();
+      expect(songRecord.Item?.["voteCount"].N).toBeUndefined();
+      expect(songRecord.Item?.["GSI2PK"]).toBeUndefined();
+      expect(songRecord.Item?.["voters"]).toBeUndefined();
+    });
+
+    // TODO: test non-zeroing out case
+  });
 });

@@ -68,7 +68,7 @@ const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
       <SongsPanel role={"list"} aria-label={"tag-list"}>
         <SongRow>
           <TableColumnHeader>Title</TableColumnHeader>
-          <TableColumnHeader>Submitted by</TableColumnHeader>
+          <TableColumnHeader>Requester</TableColumnHeader>
           <TableColumnHeader>Votes</TableColumnHeader>
         </SongRow>
 

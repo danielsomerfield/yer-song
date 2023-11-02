@@ -84,5 +84,6 @@ export const getAppDependencies = (
     authRules: createAuthorization({ allowedOrigins }, getAuthConfiguration()),
     generateToken: generateToken,
     getIdentityFromRequest,
+    clearVotes: songsRepository.clearVotes,
   };
 };

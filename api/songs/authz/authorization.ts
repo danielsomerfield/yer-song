@@ -45,7 +45,14 @@ export const createAuthorization = (
     };
   };
 
+  const requireAdmin = (lambda: Lambda): Lambda => {
+    return async (event: APIGatewayProxyEvent) => {
+      return lambda(event);
+    };
+  };
+
   return {
     requireUser,
+    requireAdmin,
   };
 };

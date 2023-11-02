@@ -194,10 +194,34 @@ export const createSongRepository = (client: DynamoDB) => {
     });
   };
 
+  const clearVotes = async (id: string): Promise<void> => {
+    await client.updateItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: id,
+        },
+        SK: {
+          S: id,
+        },
+      },
+      ReturnValues: "UPDATED_NEW",
+      ExpressionAttributeValues: {
+        ":voteCount": {
+          S: "0",
+        },
+      },
+      UpdateExpression: "SET voteCount = :voteCount REMOVE GSI2PK, voters",
+    });
+
+    // throw "NYI: need to remove votes";
+  };
+
   return {
     getSongById,
     findSongsByTag,
     findSongsWithVotes,
     addVoteToSong,
+    clearVotes,
   };
 };

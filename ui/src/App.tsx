@@ -17,6 +17,7 @@ import AdminPage from "./pages/admin";
 import { GetPlaylist } from "./domain/playlist";
 import { KioskPlaylist } from "./pages/kiosk";
 import * as Toast from "@radix-ui/react-toast";
+import { AdminService, createAdminService } from "./pages/admin/adminService";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -69,6 +70,10 @@ const voteForSongFn = VotingService.createVoteForSong({
 });
 
 const registerUserFn: RegisterUser = UserService.createRegisterUser({
+  songsAPIHostURL: configuration.songsAPIHostURL,
+});
+
+const adminService: AdminService = createAdminService({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
@@ -135,7 +140,12 @@ function App() {
 
             <Route
               path={"/admin"}
-              element={<AdminPage getPlaylist={getPlayListFn} />}
+              element={
+                <AdminPage
+                  getPlaylist={getPlayListFn}
+                  adminService={adminService}
+                />
+              }
             />
           </Routes>
           <Toast.Viewport />
