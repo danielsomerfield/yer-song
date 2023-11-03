@@ -116,6 +116,10 @@ export const PlayListPage = ({
           const playlist = await getPlaylist();
           setPlaylist(playlist);
         })();
+        setInterval(async () => {
+          const playlist = await getPlaylist();
+          setPlaylist(playlist);
+        }, 1000 * 20);
       }
     }
   }, undefined);

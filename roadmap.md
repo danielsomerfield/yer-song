@@ -14,18 +14,19 @@
 #### Action: Back to Playlist
 #### Action: Go to Songs for Genre ✔︎
 * Handle load failures
+* Scrolling for when there are more genres
 
 ### View: Song for Genre ✔︎︎ ︎
-* Handle load failures
+
 #### Action: Back to Playlist ✔︎
 #### Action: Back to Browse ✔︎  
 #### Action: Go to Song Details ✔︎
-* Handle missing tag case
+* Handle missing tag case (MVP)
 * Message if no songs found  ✔︎
-* Handle load failures
+* Handle load failures (MVP)
 
 ### View: Song Details ✔︎
-* Handle load failures
+* Handle load failures (MVP)
 * Show status (on play list / not on playlist) ✔︎
 #### Action: Back to Browse ✔︎
 #### Action: Back to Playlist︎ ✔︎
@@ -33,6 +34,7 @@
 #### Action: Go back to playlist or browse ✔︎
   - Clean up "back" hack
 #### Misc
+- Refresh on playlist change (MVP)
 - On vote, update button text ✔︎
 - Enforce vote limit ✔︎
 - Limit how many times song can be queued
@@ -45,7 +47,8 @@
 #### Action: Up vote  ✔︎
 #### Action: Back to Browse ✔︎
 #### Action: Back to Song on click ✔︎
-* Handle load failures
+* Refresh on playlist change (MVP) ✔︎
+* Handle load failures (MVP)
 * Show who originally added  ✔︎
 
 
@@ -74,7 +77,7 @@
 * General error handler for failures (MVP)
 * Log in as admin  (MVP)
 * Better loading view  (MVP)
-* * Add error boundaries  (MVP)
+* Add error boundaries  (MVP)
 * Refreshes when playlist changes (MVP) ✔︎
 * Push user to registration page if not registered (MVP) ✔︎
 * Show toast when something changes (like a vote)
