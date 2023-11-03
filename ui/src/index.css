@@ -62,7 +62,7 @@ button {
 
 button:disabled,
 button[disabled] {
-  opacity: 0.5;
+  background-color: rgb(183, 179, 179);
 }
 
 button svg {
@@ -81,7 +81,7 @@ button svg {
 .back-button {
   display: flex;
   align-items: center;
-  background-color: #dcc2ed;
+  background-color: #dbdee0;
   border-color: #d1F1E4
 }
 
