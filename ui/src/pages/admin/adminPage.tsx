@@ -108,6 +108,8 @@ const PlayListControls = ({
         position: "absolute",
         overflow: "hidden",
         height: "95%",
+        width: "90%",
+        margin: "1vh",
       }}
     >
       <SongsTitlePanel>
