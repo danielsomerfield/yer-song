@@ -38,6 +38,9 @@ const PlayListControls = ({
   const SongItemRow = ({
     song,
   }: PropsWithChildren & { song: SongWithVotes }) => {
+    const songIndex = playlist.songs.page.findIndex((s) => s.id == song.id);
+    const isBottom = songIndex >= playlist.songs.page.length - 1;
+    const isTop = songIndex <= 0;
     const SongItemControls = ({ song }: { song: SongWithVotes }) => {
       return (
         <div>
@@ -47,23 +50,25 @@ const PlayListControls = ({
               await adminService.removeFromPlaylist(song.id);
             }}
           >
-            Remove
+            [ x ]
           </SongAdminButton>
           <SongAdminButton
             key={`button-up-${song.id}`}
+            disabled={isTop}
             onClick={async () => {
               await adminService.moveUpOnPlaylist(song.id);
             }}
           >
-            Up
+            &uarr;
           </SongAdminButton>
           <SongAdminButton
             key={`button-down-${song.id}`}
+            disabled={song.voteCount <= 1 || isBottom}
             onClick={async () => {
               await adminService.moveDownOnPlaylist(song.id);
             }}
           >
-            Down
+            &darr;
           </SongAdminButton>
         </div>
       );

@@ -127,7 +127,16 @@ describe("The song repository", () => {
       )[0];
       expect(song2).toBeDefined();
       expect(song2.voteCount).toEqual(2);
-      // TODO: test adding a second voter
+    });
+
+    it("increments by more than one", async () => {
+      const songRepository = createSongRepository(dynamo.client());
+      await songRepository.addVoteToSong({ songId: SongIds.song2Id, voter }, 5);
+      const songsWithVotes = await songRepository.findSongsWithVotes();
+      const song2 = songsWithVotes.page.filter(
+        (s) => s.id == SongIds.song2Id
+      )[0];
+      expect(song2.voteCount).toEqual(6);
     });
   });
 

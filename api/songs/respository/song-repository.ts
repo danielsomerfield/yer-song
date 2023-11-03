@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { logger } from "../util/logger";
 
-import { Paginated, Song, Songs, SongWithVotes } from "../domain/songs";
+import { Song, Songs, SongWithVotes } from "../domain/songs";
 import {
   getOptionalInt,
   getRequiredString,
@@ -39,7 +39,7 @@ export const createSongRepository = (client: DynamoDB) => {
     voters: createVotersList(maybeItem),
   });
 
-  const getSongById = async (id: string) => {
+  const getSongById = async (id: string): Promise<Song | undefined> => {
     try {
       const maybeSongResponse = await client.send(
         new GetItemCommand({
@@ -132,7 +132,7 @@ export const createSongRepository = (client: DynamoDB) => {
     }
   };
 
-  const addVoteToSong = async (vote: Vote) => {
+  const addVoteToSong = async (vote: Vote, increment = 1) => {
     await client.updateItem({
       TableName: "song",
       Key: {
@@ -146,7 +146,7 @@ export const createSongRepository = (client: DynamoDB) => {
       ReturnValues: "UPDATED_NEW",
       ExpressionAttributeValues: {
         ":increment": {
-          N: "1",
+          N: increment.toString(),
         },
         ":zero": {
           N: "0",
@@ -208,7 +208,7 @@ export const createSongRepository = (client: DynamoDB) => {
       ReturnValues: "UPDATED_NEW",
       ExpressionAttributeValues: {
         ":voteCount": {
-          S: "0",
+          N: "0",
         },
       },
       UpdateExpression: "SET voteCount = :voteCount REMOVE GSI2PK, voters",

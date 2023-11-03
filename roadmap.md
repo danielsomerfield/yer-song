@@ -49,13 +49,15 @@
 * Show who originally added 
 
 
-## Persona: Moderator
+## Persona: Admin
 ### View: Playlist (with control) ✔︎
 * Show who voted for what (possibly not MVP) 
-#### Action: Move up
-#### Action: Move down
+#### Action: Move up ✔︎
+#### Action: Move down ✔︎
 #### Action: Remove (Mark as played)  ✔︎
-
+#### Bugs
+* Not scrolling when list is large
+* Songs with the same vote count can't be reliably pushed up and down
 
 ### Persona: Playlist view (projection) ✔︎
 ### View: Playlist ✔︎
@@ -105,3 +107,6 @@
 
 ## DB Schema
 * Create a smarter partitioning scheme for Song (and maybe entities), then create id lookups via a GSI
+
+## Known bugs
+* if two songs have the same number of votes they are ordered by the key meaning they can jump unexpectedly when added or voted
