@@ -35,6 +35,8 @@
   - Clean up "back" hack
 #### Misc
 - Refresh on playlist change (MVP)
+- Opacity on disabled button (MVP)
+- Opacity on button click (MVP)
 - On vote, update button text ✔︎
 - Enforce vote limit ✔︎
 - Limit how many times song can be queued
@@ -50,6 +52,7 @@
 * Refresh on playlist change (MVP) ✔︎
 * Handle load failures (MVP)
 * Show who originally added  ✔︎
+* Add indication of empty playlist (MVP)
 
 
 ## Persona: Admin

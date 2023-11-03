@@ -32,6 +32,8 @@ const AppHeader = styled.header`
   background-image: linear-gradient(to bottom right, #6500a3, #2e518a);
   border-radius: 25px 25px 0 0;
   border-bottom: 1vh solid #44006f;
+  display: grid;
+  grid-template-columns: auto 20vh;
 `;
 
 const Screen = styled.div`
@@ -75,16 +77,24 @@ const adminService: AdminService = createAdminService({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
+const QRCodePanelDiv = styled.div`
+  margin: 1vh;
+  width: 10vh;
+  height: 10vh;
+  background-size: contain;
+  background-image: url("./qrcode_yersong.danielsomerfield.com.png");
+`;
+
 function App() {
   const navigator = useNavigate();
 
   return (
     <Screen className={"screen"}>
       <AppHeader className="App-header">
-        {" "}
         <Branding>
           <div>John and Julie's Wedding!</div>
         </Branding>
+        <QRCodePanelDiv />
       </AppHeader>
       <Toast.Provider>
         <AppContainer className={"AppContainer"}>
