@@ -35,10 +35,11 @@ type VoteForSong = (id: string) => Promise<void>;
 export const AddOrVoteButton = styled.button`
   height: 8vh;
   margin: 2vh;
-  padding: 2vh;
+  padding: 0 3vh 0 3vh;
   background-color: #008A22;
-  border: #35D475;
+  border: ##d1F1E4;
   color: white;
+  border-radius: 1vh;
 `;
 
 

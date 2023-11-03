@@ -9,6 +9,11 @@ const MainPanel = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  background-image: linear-gradient(to bottom right, #6500a3, #2e518a);
+  border-radius: 0 0 25px 25px;
+  border-top: 1vh solid #44006f;
+  margin-bottom: 1vh;
+  padding: 0 1vh 1vh 1vh;
 `;
 
 export const NavButton = styled.button`
@@ -17,6 +22,8 @@ export const NavButton = styled.button`
   margin: 1vh;
   font-size: 3.5vh;
   min-width: 8vh;
+  border-color: #d1F1E4;
+  color: white;
 `;
 
 export const NavPanel = (

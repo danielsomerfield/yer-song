@@ -56,6 +56,7 @@ button {
   font-size: 4vh;
   margin: 1vh 1vh 0 0;
   border-radius: 10%;
+  padding: 0px;
 }
 
 button svg {
@@ -65,19 +66,17 @@ button svg {
 
 .browse-button {
   background-color: #8127B9;
-  border-color: #8127B9;
-  color: white;
 }
 
 .playlist-button {
-  background-color: #2037FF;
-  border-color: #2037FF;
-  color: white;
+  background-color: #2135ef;
 }
 
 .back-button {
   display: flex;
   align-items: center;
+  background-color: #dcc2ed;
+  border-color: #d1F1E4
 }
 
 .DialogContent {
