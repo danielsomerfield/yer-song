@@ -9,6 +9,7 @@ html {
 }
 
 body {
+  height: 100%;
   position: absolute;
   left: 0;
   right: 0;
@@ -91,4 +92,9 @@ input::placeholder {
   left: 0;
   right: 0;
 /*  Fade the toast in and out */
+}
+
+.SongWithParam {
+  font-size: 0.75rem;
+  height: 80%;
 }

@@ -8,26 +8,37 @@ import { CurrentUser } from "../../services/userService";
 import * as Toast from "@radix-ui/react-toast";
 
 const Title = styled.h1`
-  font-size: 2em;
-  text-align: center;
-  max-height: 4em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const ArtistNme = styled.h1`
   font-size: 1.5em;
   text-align: center;
+  overflow-wrap: break-word;
+`;
+
+const ArtistName = styled.h1`
+  font-size: 1.0em;
+  text-align: center;
+`;
+
+const Song = styled.div`
+  margin: 2vh 3vh 0 3vh;  
+  padding: 0 2% 2% 2%;
+  border: 5px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right, #B640FF, #90E7B3);
+  overflow: hidden;
+  overflow-y: scroll;
+  max-height: 65%;
 `;
 
 type GetSong = (id: string) => Promise<SongWithVotes | undefined>;
 type VoteForSong = (id: string) => Promise<void>;
 
 export const AddOrVoteButton = styled.button`
-  height: 12vh;
-  margin: 6vh;
+  height: 8vh;
+  margin: 2vh;
+  background-color: #35D475;
+  border: #35D475;
 `;
+
 
 const AddOrVoteButtonPanel = ({
   song,
@@ -69,6 +80,7 @@ const OnPlayListPanel = styled.div`
   font-style: italic;
 `;
 
+
 export const SongView = ({
   song,
   voteForSong,
@@ -99,14 +111,14 @@ export const SongView = ({
 
   return (
     <>
-      <div>
-        <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
-          {song.title}
-        </Title>
-        <ArtistNme role={"heading"} aria-level={2} aria-label={"artist-name"}>
-          {song.artistName}
-        </ArtistNme>
-      </div>
+        <Song>
+          <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
+            {song.title}
+          </Title>
+          <ArtistName role={"heading"} aria-level={2} aria-label={"artist-name"}>
+            {song.artistName}
+          </ArtistName>
+        </Song>
       <div>
         <AddOrVoteButtonPanel
           song={song}
@@ -154,9 +166,7 @@ const Maybe = {
   },
 };
 
-export const SongPageContainer = styled.div`
-  font-size: 3vh;
-`;
+
 
 export const SongPage = ({
   getSong,
@@ -244,7 +254,6 @@ export const SongPageWithParams = ({
   const { songId } = useParams();
   return (
     <div className={"SongWithParam"}>
-      <SongPageContainer>
         <SongPage
           getSong={getSong}
           songId={songId}
@@ -252,10 +261,9 @@ export const SongPageWithParams = ({
           currentUser={currentUser}
         />
 
-        <NavPanel nav={nav}>
-          <BackButton />
-        </NavPanel>
-      </SongPageContainer>
+      <NavPanel nav={nav}>
+        <BackButton />
+      </NavPanel>
     </div>
   );
 };
