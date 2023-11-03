@@ -107,11 +107,21 @@ export const KioskPlaylist = ({
     }
   }, undefined);
 
-  const panel = playlist ? (
-    <PlaylistView playlist={playlist} />
-  ) : (
-    <LoadingMessagePanel />
-  );
+  const panel = () => {
+    if (!playlist) {
+      return (
+        <LoadingMessagePanel />
+      );
+    } else if (playlist.songs.page.length == 0) {
+      return (
+        <div className="message">The playlist is empty. Add some songs!</div>
+      );
+    } else {
+      return (
+        <PlaylistView playlist={playlist} />
+      );
+    }
+  };
   // TODO: get rid of this hack
-  return <>{panel}</>;
+  return <>{panel()}</>;
 };
