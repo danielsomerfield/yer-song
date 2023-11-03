@@ -57,6 +57,12 @@ button {
   margin: 1vh 1vh 0 0;
   border-radius: 10%;
   padding: 0px;
+  border-style: solid;
+}
+
+button:disabled,
+button[disabled] {
+  opacity: 0.5;
 }
 
 button svg {
@@ -119,3 +125,13 @@ input::placeholder {
   font-size: 0.75rem;
   height: 80%;
 }
+
+.left {
+  text-align: left;
+}
+
+.playlist-kiosk {
+  padding: 2vh 2vh 4vh 2vh;
+  background-image: linear-gradient(to bottom right, #d5b8f2, #95f1dc);
+}
+

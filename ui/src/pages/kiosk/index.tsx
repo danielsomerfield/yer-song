@@ -30,7 +30,8 @@ const SongRow = styled.div`
   grid-template-columns: 3fr 1fr 1fr;
   grid-column-gap: 3vh;
   width: 100%;
-  text-align: left;
+  text-align: center;
+  padding: 1vh;
 `;
 
 const SongTitle = styled.div`
@@ -49,32 +50,32 @@ const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
       song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
 
     return (
-      <ListItem
-        role={"listitem"}
-        key={`song::${song.id}`}
-        aria-label={`song: ${song.title}`}
-        data-id={song.id}
-      >
-        <SongRow>
-          <SongTitle>{song.title}</SongTitle>
-          <div>{voterName}</div>
-          <div>{song.voteCount}</div>
-        </SongRow>
-      </ListItem>
+        <ListItem
+          role={"listitem"}
+          key={`song::${song.id}`}
+          aria-label={`song: ${song.title}`}
+          data-id={song.id}
+        >
+          <SongRow>
+            <SongTitle className="left">{song.title}</SongTitle>
+            <div>{voterName}</div>
+            <div>{song.voteCount}</div>
+          </SongRow>
+        </ListItem>
     );
   };
 
   return (
-    <>
+    <div className="playlist-kiosk">
       <SongRow>
-        <TableColumnHeader>Title</TableColumnHeader>
+        <TableColumnHeader className="left">Title</TableColumnHeader>
         <TableColumnHeader>Requester</TableColumnHeader>
         <TableColumnHeader>Votes</TableColumnHeader>
       </SongRow>
       <SongsPanel role={"list"} aria-label={"tag-list"}>
         {playlist.songs.page.map((tag) => SongView(tag))}
       </SongsPanel>
-    </>
+    </div>
   );
 };
 
