@@ -18,8 +18,7 @@ type GetSongsForTagId = (id: string) => Promise<Songs>;
 
 const SongListPanelWrapper = styled.div`
   overflow-y: scroll;
-  height: 80%;
-  //flex: inherit;
+  height: 83%;
 `;
 
 const SongListPanel = (songs: Song[], navigator: NavigateFunction) => {

@@ -14,7 +14,8 @@ type VoteForSong = (id: string) => Promise<void>;
 const SongsPanel = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: scroll;
+  height: 83%;
 `;
 
 const UpVoteButton = styled.button`
@@ -85,7 +86,7 @@ const PlaylistView = ({
 
   return (
     <>
-      <SongsPanel role={"list"} aria-label={"tag-list"}>
+      <SongsPanel role={"list"} aria-label={"song-list"}>
         {playlist.songs.page.map((tag, i) => SongView(tag, i))}
       </SongsPanel>
     </>
@@ -134,9 +135,6 @@ export const PlayListPage = ({
   );
   return (
     <>
-      <div aria-label={"page-title"} role={"heading"}>
-        Playlist
-      </div>
       {panel}
       {/*TODO: Refactor this toast code*/}
       <Toast.Root

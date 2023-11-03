@@ -17,6 +17,18 @@ const SongsPanel = styled.div`
   grid-column-gap: 3vh;
   grid-template-columns: 1fr 1fr auto auto;
   text-align: left;
+  overflow-y: scroll;
+  margin-top: 2vh;
+`;
+
+const SongsTitlePanel = styled.div`
+  display: grid;
+  justify-content: left;
+  grid-column-gap: 3vh;
+  grid-template-columns: 1fr 1fr auto auto;
+  text-align: left;
+  margin-top: 2dvh;
+  text-decoration: underline;
 `;
 
 const SongPanel = styled.div`
@@ -91,12 +103,13 @@ const PlayListControls = ({
 
   return (
     <div>
-      <header>Playlist</header>
-      <SongsPanel aria-label={"song-panel"}>
+      <SongsTitlePanel>
         <div>Song</div>
         <div>Requested by</div>
         <div>Votes</div>
         <div></div>
+      </SongsTitlePanel>
+      <SongsPanel aria-label={"songs-panel"}>
         {playlist.songs.page.map((song) => SongView(song))}
       </SongsPanel>
     </div>

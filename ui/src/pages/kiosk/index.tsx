@@ -21,7 +21,8 @@ const ListItem = styled.div`
 const SongsPanel = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: scroll;
+  height: 90%;
 `;
 
 const SongRow = styled.div`
@@ -43,7 +44,7 @@ const TableColumnHeader = styled.div`
 `;
 
 const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
-  const SongView = (song: SongWithVotes, i: number) => {
+  const SongView = (song: SongWithVotes) => {
     const voterName =
       song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
 
@@ -65,14 +66,13 @@ const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
 
   return (
     <>
+      <SongRow>
+        <TableColumnHeader>Title</TableColumnHeader>
+        <TableColumnHeader>Requester</TableColumnHeader>
+        <TableColumnHeader>Votes</TableColumnHeader>
+      </SongRow>
       <SongsPanel role={"list"} aria-label={"tag-list"}>
-        <SongRow>
-          <TableColumnHeader>Title</TableColumnHeader>
-          <TableColumnHeader>Requester</TableColumnHeader>
-          <TableColumnHeader>Votes</TableColumnHeader>
-        </SongRow>
-
-        {playlist.songs.page.map((tag, i) => SongView(tag, i))}
+        {playlist.songs.page.map((tag) => SongView(tag))}
       </SongsPanel>
     </>
   );

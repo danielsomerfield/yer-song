@@ -30,9 +30,9 @@ const AppContainer = styled.div`
 
 const AppHeader = styled.header`
   text-align: center;
-  background-image: linear-gradient(to bottom right, #6500A3, #2E518A);
+  background-image: linear-gradient(to bottom right, #6500a3, #2e518a);
   border-radius: 25px 25px 0 0;
-  border-bottom: 1vh solid #44006F;
+  border-bottom: 1vh solid #44006f;
 `;
 
 const Screen = styled.div`
@@ -85,9 +85,7 @@ function App() {
       <AppHeader className="App-header">
         {" "}
         <Branding>
-          <div>
-            John and Julie's Wedding!
-          </div>
+          <div>John and Julie's Wedding!</div>
         </Branding>
       </AppHeader>
       <Toast.Provider>
