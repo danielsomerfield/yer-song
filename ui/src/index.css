@@ -136,3 +136,6 @@ input::placeholder {
   background-image: linear-gradient(to bottom right, #d5b8f2, #95f1dc);
 }
 
+.message {
+  padding: 2vh;
+}

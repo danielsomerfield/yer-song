@@ -124,22 +124,32 @@ export const PlayListPage = ({
     }
   }, undefined);
 
-  const panel = playlist ? (
-    <PlaylistView
-      playlist={playlist}
-      nav={nav}
-      currentUser={currentUser}
-      voteForSong={voteForSong}
-      showToast={() => {
-        setToastOpen(true);
-      }}
-    />
-  ) : (
-    <LoadingMessagePanel />
-  );
+  const panel = () => {
+    if (!playlist) {
+      return (
+        <LoadingMessagePanel />
+      );
+    } else if ((playlist?.songs?.page.length == 0)) {
+      return (
+        <div className="message">The playlist is empty. Add a song!</div>
+      );
+    } else {
+      return (
+        <PlaylistView
+        playlist={playlist}
+        nav={nav}
+        currentUser={currentUser}
+        voteForSong={voteForSong}
+        showToast={() => {
+          setToastOpen(true);
+        }}
+        />
+      );
+    }
+  };
   return (
     <>
-      {panel}
+      {panel()}
       {/*TODO: Refactor this toast code*/}
       <Toast.Root
         className={"Toast"}
