@@ -16,7 +16,7 @@ export const NavButton = styled.button`
   width: 90%;
   min-height: 12vh;
   margin: 1vh;
-  font-size: 4vh;
+  font-size: 3.5vh;
   min-width: 8vh;
 `;
 
@@ -28,6 +28,7 @@ export const NavPanel = (
     <>
       <MainPanel className={"SongControlPanel.MainPanel"}>
         <NavButton
+          className="browse-button"
           title={"Back to songs"}
           onClick={() => {
             nav("/genres");
@@ -36,6 +37,7 @@ export const NavPanel = (
           Browse
         </NavButton>
         <NavButton
+          className="playlist-button"
           title={"Playlist"}
           onClick={() => {
             nav("/playlist");
@@ -54,6 +56,7 @@ export const BackButton = () => {
   localStorage.removeItem("lastLocation");
   return (
     <NavButton
+      className="back-button"
       disabled={lastLocation == null}
       onClick={() => {
         // TODO: fix this hack

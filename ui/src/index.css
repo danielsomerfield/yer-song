@@ -56,6 +56,29 @@ input {
 button {
   font-size: 4vh;
   margin: 1vh 1vh 0 0;
+  border-radius: 10%;
+}
+
+button svg {
+  margin-left: 15%;
+  margin-top: 15%;
+}
+
+.browse-button {
+  background-color: #8127B9;
+  border-color: #8127B9;
+  color: white;
+}
+
+.playlist-button {
+  background-color: #2037FF;
+  border-color: #2037FF;
+  color: white;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
 }
 
 .DialogContent {
