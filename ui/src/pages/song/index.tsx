@@ -14,16 +14,16 @@ const Title = styled.h1`
 `;
 
 const ArtistName = styled.h1`
-  font-size: 1.0em;
+  font-size: 1em;
   text-align: center;
 `;
 
 const Song = styled.div`
-  margin: 2vh 3vh 0 3vh;  
+  margin: 2vh 3vh 0 3vh;
   padding: 0 2% 2% 2%;
   border: 5px solid;
   border-image-slice: 1;
-  border-image-source: linear-gradient(to right, #B640FF, #90E7B3);
+  border-image-source: linear-gradient(to right, #b640ff, #90e7b3);
   overflow: hidden;
   overflow-y: scroll;
   max-height: 65%;
@@ -36,12 +36,11 @@ export const AddOrVoteButton = styled.button`
   height: 8vh;
   margin: 2vh;
   padding: 0 3vh 0 3vh;
-  background-color: #008A22;
-  border: ##d1F1E4;
+  background-color: #008a22;
+  border: #d1f1e4;
   color: white;
   border-radius: 1vh;
 `;
-
 
 const AddOrVoteButtonPanel = ({
   song,
@@ -83,7 +82,6 @@ const OnPlayListPanel = styled.div`
   font-style: italic;
 `;
 
-
 export const SongView = ({
   song,
   voteForSong,
@@ -114,14 +112,14 @@ export const SongView = ({
 
   return (
     <>
-        <Song>
-          <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
-            {song.title}
-          </Title>
-          <ArtistName role={"heading"} aria-level={2} aria-label={"artist-name"}>
-            {song.artistName}
-          </ArtistName>
-        </Song>
+      <Song>
+        <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
+          {song.title}
+        </Title>
+        <ArtistName role={"heading"} aria-level={2} aria-label={"artist-name"}>
+          {song.artistName}
+        </ArtistName>
+      </Song>
       <div>
         <AddOrVoteButtonPanel
           song={song}
@@ -168,8 +166,6 @@ const Maybe = {
     };
   },
 };
-
-
 
 export const SongPage = ({
   getSong,
@@ -257,12 +253,12 @@ export const SongPageWithParams = ({
   const { songId } = useParams();
   return (
     <div className={"SongWithParam"}>
-        <SongPage
-          getSong={getSong}
-          songId={songId}
-          voteForSong={voteForSong}
-          currentUser={currentUser}
-        />
+      <SongPage
+        getSong={getSong}
+        songId={songId}
+        voteForSong={voteForSong}
+        currentUser={currentUser}
+      />
 
       <NavPanel nav={nav}>
         <BackButton />

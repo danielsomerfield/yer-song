@@ -45,6 +45,8 @@ const TableColumnHeader = styled.div`
 `;
 
 const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
+  document.getElementById("qr-code")?.style.setProperty("display", "flow");
+
   const SongView = (song: SongWithVotes) => {
     const voterName =
       song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
@@ -110,5 +112,6 @@ export const KioskPlaylist = ({
   ) : (
     <LoadingMessagePanel />
   );
+  // TODO: get rid of this hack
   return <>{panel}</>;
 };

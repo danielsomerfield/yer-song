@@ -65,7 +65,9 @@ export const SongListView = ({
     setLoadStarted(true);
     (async () => {
       const songsForTag = await getSongsForTagId(tagId);
-      setSongs(songsForTag.page);
+      setSongs(
+        songsForTag.page.sort((s1, s2) => (s1.title < s2.title ? -1 : 1)),
+      );
     })();
     panel = <LoadingMessagePanel />;
   } else {

@@ -42,16 +42,16 @@ describe("the song list page", () => {
     expect(
       songItems.map((i) => i.attributes.getNamedItem("aria-label")?.value),
     ).toEqual([
-      "song: Pleasant Valley Tuesday",
       "song: Miserable Hill Wednesday",
+      "song: Pleasant Valley Tuesday",
     ]);
     expect(
       songItems.map((i) => i.attributes.getNamedItem("data-id")?.value),
-    ).toEqual(["123", "345"]);
+    ).toEqual(["345", "123"]);
 
     expect(songItems.map((i) => i.textContent)).toEqual([
-      "Pleasant Valley Tuesday",
       "Miserable Hill Wednesday",
+      "Pleasant Valley Tuesday",
     ]);
   });
 });

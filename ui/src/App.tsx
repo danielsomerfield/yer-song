@@ -33,7 +33,7 @@ const AppHeader = styled.header`
   border-radius: 25px 25px 0 0;
   border-bottom: 1vh solid #44006f;
   display: grid;
-  grid-template-columns: auto 20vh;
+  grid-template-columns: 5fr auto;
 `;
 
 const Screen = styled.div`
@@ -78,7 +78,8 @@ const adminService: AdminService = createAdminService({
 });
 
 const QRCodePanelDiv = styled.div`
-  margin: 1vh;
+  display: none;
+  margin: 1vh 5vh 1vh 1vh;
   width: 10vh;
   height: 10vh;
   background-size: contain;
@@ -94,7 +95,9 @@ function App() {
         <Branding>
           <div>John and Julie's Wedding!</div>
         </Branding>
-        <QRCodePanelDiv />
+        <div>
+          <QRCodePanelDiv id={"qr-code"} />
+        </div>
       </AppHeader>
       <Toast.Provider>
         <AppContainer className={"AppContainer"}>
