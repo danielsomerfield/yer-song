@@ -19,13 +19,14 @@ const SongsPanel = styled.div`
   text-align: left;
   overflow-y: scroll;
   margin-top: 2vh;
+  height: 75%;
 `;
 
 const SongsTitlePanel = styled.div`
   display: grid;
   justify-content: left;
   grid-column-gap: 3vh;
-  grid-template-columns: 1fr 1fr auto auto;
+  grid-template-columns: 1fr 1fr 1fr auto;
   text-align: left;
   margin-top: 2dvh;
   text-decoration: underline;
@@ -102,7 +103,13 @@ const PlayListControls = ({
   };
 
   return (
-    <div>
+    <div
+      style={{
+        position: "absolute",
+        overflow: "hidden",
+        height: "95%",
+      }}
+    >
       <SongsTitlePanel>
         <div>Song</div>
         <div>Requested by</div>

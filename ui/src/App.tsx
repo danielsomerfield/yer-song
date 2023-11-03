@@ -23,7 +23,6 @@ const AppContainer = styled.div`
   text-align: center;
   flex-direction: column;
   flex-wrap: nowrap;
-  border: 1px solid green;
   height: 100%;
   overflow-y: hidden;
 `;
@@ -37,7 +36,6 @@ const AppHeader = styled.header`
 
 const Screen = styled.div`
   //height: 90%;
-  border: 1px solid purple;
   inset: 0 0 0 0;
   position: absolute;
   display: flex;

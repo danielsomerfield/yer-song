@@ -6,7 +6,6 @@ const MainPanel = styled.div`
   display: flex;
   flex-flow: row;
   position: absolute;
-  border: 1px solid blue;
   bottom: 0;
   left: 0;
   right: 0;

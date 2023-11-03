@@ -21,7 +21,6 @@ body {
   display: flex;
   height: 100%;
   flex-direction: column;
-  border: 1px solid crimson;
 }
 
 code {
