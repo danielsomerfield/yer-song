@@ -18,6 +18,7 @@ import { GetPlaylist } from "./domain/playlist";
 import { KioskPlaylist } from "./pages/kiosk";
 import * as Toast from "@radix-ui/react-toast";
 import { AdminService, createAdminService } from "./pages/admin/adminService";
+import { ErrorBoundary } from "react-error-boundary";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -88,6 +89,28 @@ const QRCodePanelDiv = styled.div`
 function App() {
   const navigator = useNavigate();
 
+  const ErrorFallbackPanel = styled.div`
+    font-size: 5vh;
+    margin: 3vh 1vh 1vh;
+  `;
+
+  const ErrorFallbackMessage = styled.div`
+    margin-top: 10vh;
+    font-size: 3vh;
+    font-style: italic;
+  `;
+  const ErrorFallback = () => {
+    return (
+      <ErrorFallbackPanel>
+        <div>It's not a bug. It's a feature&trade;.</div>
+        <ErrorFallbackMessage>
+          Feel free to report this "feature". Or don't. But please do refresh
+          the screen and cross your fingers.
+        </ErrorFallbackMessage>
+      </ErrorFallbackPanel>
+    );
+  };
+
   return (
     <Screen className={"screen"}>
       <AppHeader className="App-header">
@@ -98,64 +121,67 @@ function App() {
           <QRCodePanelDiv id={"qr-code"} />
         </div>
       </AppHeader>
+
       <Toast.Provider>
         <AppContainer className={"AppContainer"}>
-          <Routes>
-            <Route
-              index
-              element={<Home registerUser={registerUserFn} nav={navigator} />}
-            />
-            <Route
-              path={"/songs/:songId"}
-              element={
-                <SongPageWithParams
-                  getSong={getSongForIdFn}
-                  voteForSong={voteForSongFn}
-                  currentUser={currentUser}
-                  nav={navigator}
-                />
-              }
-            />
-            <Route
-              path={"/genres"}
-              element={
-                <GenreSelectorPage getGenres={getGenresFn} nav={navigator} />
-              }
-            />
-            <Route
-              path={"/tags/:tag/songs"}
-              element={
-                <SongListPage
-                  getSongsForTagId={getSongsForTagIdFn}
-                  nav={navigator}
-                />
-              }
-            />
-            <Route
-              path={"/playlist"}
-              element={
-                <PlayListPage
-                  getPlaylist={getPlayListFn}
-                  nav={navigator}
-                  voteForSong={voteForSongFn}
-                />
-              }
-            />
-            <Route
-              path={"/kiosk"}
-              element={<KioskPlaylist getPlaylist={getPlayListFn} />}
-            />
+          <ErrorBoundary fallbackRender={ErrorFallback}>
+            <Routes>
+              <Route
+                index
+                element={<Home registerUser={registerUserFn} nav={navigator} />}
+              />
+              <Route
+                path={"/songs/:songId"}
+                element={
+                  <SongPageWithParams
+                    getSong={getSongForIdFn}
+                    voteForSong={voteForSongFn}
+                    currentUser={currentUser}
+                    nav={navigator}
+                  />
+                }
+              />
+              <Route
+                path={"/genres"}
+                element={
+                  <GenreSelectorPage getGenres={getGenresFn} nav={navigator} />
+                }
+              />
+              <Route
+                path={"/tags/:tag/songs"}
+                element={
+                  <SongListPage
+                    getSongsForTagId={getSongsForTagIdFn}
+                    nav={navigator}
+                  />
+                }
+              />
+              <Route
+                path={"/playlist"}
+                element={
+                  <PlayListPage
+                    getPlaylist={getPlayListFn}
+                    nav={navigator}
+                    voteForSong={voteForSongFn}
+                  />
+                }
+              />
+              <Route
+                path={"/kiosk"}
+                element={<KioskPlaylist getPlaylist={getPlayListFn} />}
+              />
 
-            <Route
-              path={"/admin"}
-              element={
-                <AdminPage
-                  getPlaylist={getPlayListFn}
-                  adminService={adminService}
-                />
-              }
-            />
-          </Routes>
+              <Route
+                path={"/admin"}
+                element={
+                  <AdminPage
+                    getPlaylist={getPlayListFn}
+                    adminService={adminService}
+                  />
+                }
+              />
+            </Routes>
+          </ErrorBoundary>
           <Toast.Viewport />
         </AppContainer>
       </Toast.Provider>

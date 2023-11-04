@@ -52,18 +52,18 @@ const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
       song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
 
     return (
-        <ListItem
-          role={"listitem"}
-          key={`song::${song.id}`}
-          aria-label={`song: ${song.title}`}
-          data-id={song.id}
-        >
-          <SongRow>
-            <SongTitle className="left">{song.title}</SongTitle>
-            <div>{voterName}</div>
-            <div>{song.voteCount}</div>
-          </SongRow>
-        </ListItem>
+      <ListItem
+        role={"listitem"}
+        key={`song::${song.id}`}
+        aria-label={`song: ${song.title}`}
+        data-id={song.id}
+      >
+        <SongRow>
+          <SongTitle className="left">{song.title}</SongTitle>
+          <div>{voterName}</div>
+          <div>{song.voteCount}</div>
+        </SongRow>
+      </ListItem>
     );
   };
 
@@ -89,6 +89,15 @@ export const KioskPlaylist = ({
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
 
+  async function refresh() {
+    try {
+      const playlist = await getPlaylist();
+      setPlaylist(playlist);
+    } catch (e) {
+      console.log("Refresh failed. Will try again");
+    }
+  }
+
   // TODO: refactor this loading pattern out. It's always the same
   useEffect(() => {
     setBackButtonLocation("/playlist");
@@ -96,11 +105,9 @@ export const KioskPlaylist = ({
       if (!loadStarted) {
         setLoadStarted(true);
         (async () => {
-          const playlist = await getPlaylist();
-          setPlaylist(playlist);
+          await refresh();
           setInterval(async () => {
-            const playlist = await getPlaylist();
-            setPlaylist(playlist);
+            await refresh();
           }, 10 * 1000);
         })();
       }
@@ -109,17 +116,13 @@ export const KioskPlaylist = ({
 
   const panel = () => {
     if (!playlist) {
-      return (
-        <LoadingMessagePanel />
-      );
+      return <LoadingMessagePanel />;
     } else if (playlist.songs.page.length == 0) {
       return (
         <div className="message">The playlist is empty. Add some songs!</div>
       );
     } else {
-      return (
-        <PlaylistView playlist={playlist} />
-      );
+      return <PlaylistView playlist={playlist} />;
     }
   };
   // TODO: get rid of this hack

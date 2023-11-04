@@ -44,9 +44,11 @@ const RequestedBy = styled.div`
 const PlayListControls = ({
   playlist,
   adminService,
+  refresh,
 }: {
   playlist: Playlist;
   adminService: AdminService;
+  refresh: () => Promise<void>;
 }) => {
   const SongItemRow = ({
     song,
@@ -59,8 +61,10 @@ const PlayListControls = ({
         <div>
           <SongAdminButton
             key={`button-remove-${song.id}`}
-            onClick={async () => {
+            onClick={async (evt) => {
+              evt.currentTarget.disabled = true;
               await adminService.removeFromPlaylist(song.id);
+              await refresh();
             }}
           >
             [ x ]
@@ -68,8 +72,10 @@ const PlayListControls = ({
           <SongAdminButton
             key={`button-up-${song.id}`}
             disabled={isTop}
-            onClick={async () => {
+            onClick={async (evt) => {
+              evt.currentTarget.disabled = true;
               await adminService.moveUpOnPlaylist(song.id);
+              await refresh();
             }}
           >
             &uarr;
@@ -77,8 +83,10 @@ const PlayListControls = ({
           <SongAdminButton
             key={`button-down-${song.id}`}
             disabled={song.voteCount <= 1 || isBottom}
-            onClick={async () => {
+            onClick={async (evt) => {
+              evt.currentTarget.disabled = true;
               await adminService.moveDownOnPlaylist(song.id);
+              await refresh();
             }}
           >
             &darr;
@@ -134,10 +142,13 @@ export const AdminPage = ({
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
 
+  const refresh = async () => {
+    const playlist = await getPlaylist();
+    setPlaylist(playlist);
+  };
   const startRefresh = () => {
     setInterval(async () => {
-      const playlist = await getPlaylist();
-      setPlaylist(playlist);
+      await refresh();
     }, 1000 * 5);
   };
 
@@ -147,8 +158,7 @@ export const AdminPage = ({
       if (!loadStarted) {
         setLoadStarted(true);
         (async () => {
-          const playlist = await getPlaylist();
-          setPlaylist(playlist);
+          await refresh();
 
           startRefresh();
         })();
@@ -156,7 +166,11 @@ export const AdminPage = ({
     }
   }, undefined);
   const panel = playlist ? (
-    <PlayListControls playlist={playlist} adminService={adminService} />
+    <PlayListControls
+      playlist={playlist}
+      adminService={adminService}
+      refresh={refresh}
+    />
   ) : (
     <LoadingMessagePanel />
   );

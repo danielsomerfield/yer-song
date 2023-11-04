@@ -20,7 +20,7 @@ export const getRequiredString = (
   const value = item?.[fieldName]?.S;
   if (!value) {
     throw {
-      message: `Missing value for field: '${fieldName} in record ${JSON.stringify(
+      message: `Missing value for field: '${fieldName}' in record ${JSON.stringify(
         item
       )}'.`,
     };

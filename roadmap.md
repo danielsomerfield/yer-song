@@ -21,7 +21,7 @@
 #### Action: Back to Playlist ✔︎
 #### Action: Back to Browse ✔︎  
 #### Action: Go to Song Details ✔︎
-* Handle missing tag case (MVP)
+* Handle missing tag case (MVP) ✔︎
 * Message if no songs found  ✔︎
 * Handle load failures (MVP)
 
@@ -35,8 +35,8 @@
   - Clean up "back" hack
 #### Misc
 - Refresh on playlist change (MVP)
-- Opacity on disabled button (MVP)
-- Opacity on button click (MVP)
+- Opacity on disabled button (MVP) ✔︎
+- Opacity on button click
 - On vote, update button text ✔︎
 - Enforce vote limit ✔︎
 - Limit how many times song can be queued
@@ -80,7 +80,7 @@
 * General error handler for failures (MVP)
 * Log in as admin  (MVP)
 * Better loading view  (MVP)
-* Add error boundaries  (MVP)
+* Add error boundaries ✔︎
 * Refreshes when playlist changes (MVP) ✔︎
 * Push user to registration page if not registered (MVP) ✔︎
 * Show toast when something changes (like a vote)

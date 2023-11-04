@@ -187,16 +187,22 @@ export const SongPage = ({
     setLoadStarted(false);
   };
   useEffect(() => {
-    // TODO (MVP): error handling
+    async function refreshSong() {
+      if (!songId) {
+        setSong(Maybe.none);
+      } else {
+        const song = await getSong(songId);
+        setSong(Maybe.of(song));
+      }
+    }
+
     if (!loadStarted) {
       setLoadStarted(true);
       (async () => {
-        if (!songId) {
-          setSong(Maybe.none);
-        } else {
-          const song = await getSong(songId);
-          setSong(Maybe.of(song));
-        }
+        await refreshSong();
+        setInterval(async () => {
+          await refreshSong();
+        }, 10 * 1000);
       })();
     }
   }, undefined);

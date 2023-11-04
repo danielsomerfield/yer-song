@@ -31,13 +31,20 @@ const createVotersList = (maybeItem: Record<string, AttributeValue>) => {
 };
 
 export const createSongRepository = (client: DynamoDB) => {
-  const createSongFromRecord = (maybeItem: Record<string, AttributeValue>) => ({
-    id: getRequiredString(maybeItem, "PK"),
-    title: getRequiredString(maybeItem, "title"),
-    artistName: getStringOrDefault(maybeItem, "artistName", "unknown"),
-    voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
-    voters: createVotersList(maybeItem),
-  });
+  const createSongFromRecord = (maybeItem: Record<string, AttributeValue>) => {
+    try {
+      return {
+        id: getRequiredString(maybeItem, "PK"),
+        title: getRequiredString(maybeItem, "title"),
+        artistName: getStringOrDefault(maybeItem, "artistName", "unknown"),
+        voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
+        voters: createVotersList(maybeItem),
+      };
+    } catch (e) {
+      logger.warn(`Filtering out bad record with id '${maybeItem["pk"]}'`);
+      return undefined;
+    }
+  };
 
   const getSongById = async (id: string): Promise<Song | undefined> => {
     try {
@@ -90,7 +97,9 @@ export const createSongRepository = (client: DynamoDB) => {
 
     if (maybeSongResponse.Items) {
       return {
-        page: maybeSongResponse.Items.map((i) => createSongFromRecord(i)),
+        page: maybeSongResponse.Items.map((i) =>
+          createSongFromRecord(i)
+        ).filter((maybeSong) => maybeSong != undefined) as Song[],
         thisPage: "",
       };
     } else {
@@ -118,9 +127,9 @@ export const createSongRepository = (client: DynamoDB) => {
     if (maybeSongResponse.Items) {
       return {
         page: maybeSongResponse.Items.map((i) => createSongFromRecord(i))
-          .filter((s) => s.voteCount > 0)
+          .filter((s) => s != undefined && s.voteCount > 0)
           .sort((s1, s2) => {
-            return s2.voteCount - s1.voteCount;
+            return (s2?.voteCount || 0) - (s1?.voteCount || 0);
           }),
         thisPage: "",
       };
