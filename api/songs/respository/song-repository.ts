@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { logger } from "../util/logger";
 
-import { Song, Songs, SongWithVotes } from "../domain/songs";
+import { Paginated, Song, Songs, SongWithVotes } from "../domain/songs";
 import {
   getOptionalInt,
   getRequiredString,
@@ -110,7 +110,7 @@ export const createSongRepository = (client: DynamoDB) => {
     }
   };
 
-  const findSongsWithVotes = async () => {
+  const findSongsWithVotes = async (): Promise<Paginated<SongWithVotes>> => {
     const maybeSongResponse = await client.send(
       new QueryCommand({
         TableName: "song",
@@ -125,12 +125,13 @@ export const createSongRepository = (client: DynamoDB) => {
     );
 
     if (maybeSongResponse.Items) {
+      const songs = maybeSongResponse.Items.map((i) => createSongFromRecord(i))
+        .filter((s) => s != undefined && s.voteCount > 0)
+        .sort((s1, s2) => {
+          return (s2?.voteCount || 0) - (s1?.voteCount || 0);
+        });
       return {
-        page: maybeSongResponse.Items.map((i) => createSongFromRecord(i))
-          .filter((s) => s != undefined && s.voteCount > 0)
-          .sort((s1, s2) => {
-            return (s2?.voteCount || 0) - (s1?.voteCount || 0);
-          }),
+        page: songs as SongWithVotes[],
         thisPage: "",
       };
     } else {
