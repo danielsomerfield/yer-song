@@ -19,6 +19,7 @@ import { KioskPlaylist } from "./pages/kiosk";
 import * as Toast from "@radix-ui/react-toast";
 import { AdminService, createAdminService } from "./pages/admin/adminService";
 import { ErrorBoundary } from "react-error-boundary";
+import { Logout } from "./pages/admin/logout";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -180,6 +181,8 @@ function App() {
                   />
                 }
               />
+
+              <Route path={"/logout"} element={<Logout />} />
             </Routes>
           </ErrorBoundary>
           <Toast.Viewport />
