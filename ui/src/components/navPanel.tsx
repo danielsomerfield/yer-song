@@ -11,7 +11,6 @@ const MainPanel = styled.div`
   right: 0;
   background-image: linear-gradient(to bottom right, #6500a3, #2e518a);
   border-top: 1vh solid #44006f;
-  margin-bottom: 1vh;
   padding: 0 1vh 1vh 1vh;
 `;
 
