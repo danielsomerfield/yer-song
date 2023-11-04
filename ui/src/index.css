@@ -83,7 +83,8 @@ button svg {
   display: flex;
   align-items: center;
   background-color: #dbdee0;
-  border-color: #d1F1E4
+  border-color: #d1F1E4;
+  order: -1;
 }
 
 .DialogContent {
