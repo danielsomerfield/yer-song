@@ -20,6 +20,8 @@ const SongsPanel = styled.div`
 
 const UpVoteButton = styled.button`
   margin: 0 1vh 0 0;
+  font-size: 0.8em;
+  padding: 0.5vh;
 `;
 
 const SongRow = styled.div`
@@ -27,6 +29,7 @@ const SongRow = styled.div`
   grid-template-columns: 1fr auto;
   grid-column-gap: 3vh;
   width: 100%;
+  align-items: center;
 `;
 
 const SongTitle = styled.div`
