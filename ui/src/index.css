@@ -116,11 +116,44 @@ input::placeholder {
   list-style-type: none;
   z-index: 10;
   position: absolute;
-  background: lightblue;
+  background: #91ECB5;
   top: 0;
   left: 0;
   right: 0;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 1vh 1vh;
 /*  Fade the toast in and out */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.Toast[data-state='open'],
+.Toast[data-state='open'] {
+  animation: fadeIn 300ms ease-out;
+}
+
+.Toast[data-state='closed'],
+.Toast[data-state='closed'] {
+  animation: fadeOut 300ms ease-in;
 }
 
 .SongWithParam {
