@@ -19,10 +19,14 @@ const ListItemContent = styled.div`
 `;
 
 const ListItemContainer = styled.div`
+  &:hover {
+    transform: scale(1.07);
+  }
   background: linear-gradient(to right, #B640FF, #90E7B3);
   border-radius: 15px;
   margin: 1vh;
   padding: 0.3vh;
+  transition: all .2s ease-in-out;
 `;
 
 export const ListItem = (
