@@ -134,6 +134,7 @@ input::placeholder {
 .playlist-kiosk {
   padding: 2vh 2vh 4vh 2vh;
   background-image: linear-gradient(to bottom right, #d5b8f2, #95f1dc);
+  height: 100%;
 }
 
 .message {
