@@ -154,7 +154,7 @@ describe("The song repository", () => {
       });
 
       expect(songRecord).toBeDefined();
-      expect(songRecord.Item?.["voteCount"].N).toBeUndefined();
+      expect(songRecord.Item?.["voteCount"].N).toEqual("0");
       expect(songRecord.Item?.["GSI2PK"]).toBeUndefined();
       expect(songRecord.Item?.["voters"]).toBeUndefined();
     });
