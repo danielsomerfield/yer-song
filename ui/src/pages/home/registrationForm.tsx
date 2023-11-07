@@ -1,11 +1,9 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Label } from "@radix-ui/react-label";
-import React, { PropsWithChildren, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { getToken } from "../../http/tokenStore";
 import { RegisterUser } from "../../services/userService";
-
-const FormStyle = styled.div``;
 
 const FormRow = styled.div`
   display: flex;
@@ -21,10 +19,6 @@ const RegisterButton = styled.button`
 const ButtonRow = styled(FormRow)`
   flex-flow: row-reverse;
 `;
-
-const RegisterForm = ({ children }: PropsWithChildren) => {
-  return <FormStyle>{children}</FormStyle>;
-};
 
 export const RegistrationForm = ({
   registerUser,
@@ -58,7 +52,7 @@ export const RegistrationForm = ({
       <Dialog.Portal>
         <Dialog.Overlay className="DialogOverlay">
           <Dialog.Content className="DialogContent">
-            <RegisterForm>
+            <div>
               <FormRow>
                 <Label className="formLabel" htmlFor={"emailAddress"}>
                   Name
@@ -79,7 +73,7 @@ export const RegistrationForm = ({
                   Register
                 </RegisterButton>
               </ButtonRow>
-            </RegisterForm>
+            </div>
           </Dialog.Content>
         </Dialog.Overlay>
       </Dialog.Portal>

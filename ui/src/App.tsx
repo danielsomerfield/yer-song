@@ -38,7 +38,6 @@ const AppHeader = styled.header`
 `;
 
 const Screen = styled.div`
-  //height: 90%;
   inset: 0 0 0 0;
   position: absolute;
   display: flex;
@@ -47,7 +46,6 @@ const Screen = styled.div`
 
 const Branding = styled.h1`
   font-size: 5vh;
-  color: white;
 `;
 
 const getSongForIdFn = SongService.createSongForIdFn({
@@ -87,19 +85,20 @@ const QRCodePanelDiv = styled.div`
   background-image: url("./qrcode_yersong.danielsomerfield.com.png");
 `;
 
+const ErrorFallbackPanel = styled.div`
+  font-size: 5vh;
+  margin: 3vh 1vh 1vh;
+`;
+
+const ErrorFallbackMessage = styled.div`
+  margin-top: 10vh;
+  font-size: 3vh;
+  font-style: italic;
+`;
+
 function App() {
   const navigator = useNavigate();
 
-  const ErrorFallbackPanel = styled.div`
-    font-size: 5vh;
-    margin: 3vh 1vh 1vh;
-  `;
-
-  const ErrorFallbackMessage = styled.div`
-    margin-top: 10vh;
-    font-size: 3vh;
-    font-style: italic;
-  `;
   const ErrorFallback = () => {
     return (
       <ErrorFallbackPanel>

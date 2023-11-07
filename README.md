@@ -20,23 +20,28 @@ npm
 There are a lot of pieces to make this run locally. In order to start everything up in development you can do the following from the
 repository root directory:
 
-1. Start local stack (for Dynamo) by running
+1. Log in to aws via SSO
+    
+        aws sso login
+    
+
+2. Start local stack (for Dynamo) by running
 
         docker-compose up
 
-2. Start lambda emulation
+3. Start lambda emulation
 
         make start-api-local
 
-3. Start the UI
+4. Start the UI
 
         make start-ui-local
 
-4. Build the database schema
+5. Build the database schema
 
         make build-table-local
 
-5. Populate the starter data
+6. Populate the starter data
 
         make populate-table-local
 

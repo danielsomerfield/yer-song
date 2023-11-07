@@ -248,7 +248,7 @@ Resources:
           - AttributeName: SK
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 100
+          ReadCapacityUnits: 1000
           WriteCapacityUnits: 100
         GlobalSecondaryIndexes:
           - IndexName: GSI1
@@ -260,7 +260,7 @@ Resources:
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
-              ReadCapacityUnits: 25
+              ReadCapacityUnits: 250
               WriteCapacityUnits: 25
           - IndexName: GSI2
             KeySchema:
@@ -269,7 +269,7 @@ Resources:
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
-              ReadCapacityUnits: 25
+              ReadCapacityUnits: 250
               WriteCapacityUnits: 25
 
 Outputs:
