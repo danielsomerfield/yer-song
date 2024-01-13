@@ -24,7 +24,6 @@ repository root directory:
     
         aws sso login
     
-
 2. Start local stack (for Dynamo) by running
 
         docker-compose up

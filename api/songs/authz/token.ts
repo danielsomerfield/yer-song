@@ -2,6 +2,7 @@ import * as jwt from "jsonwebtoken";
 import { User } from "../domain/user";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { getHeaderByName } from "../http/headers";
+import { logger } from "../util/logger";
 
 interface Dependencies {
   secret: string;
@@ -17,13 +18,17 @@ export const createGenerateToken = (dependencies: Dependencies) => {
 
 export const createGetIdentityFromRequest = (secret: string) => {
   return (event: APIGatewayProxyEvent) => {
-    // TODO: type assertion that header is string
-    const tokenHeader = getHeaderByName(event.headers, "x-token") as string;
-    const token = tokenHeader.match(/Bearer (?<token>.*)/i)?.groups?.["token"];
+    const tokenHeader = getHeaderByName(event.headers, "x-token");
+    const token = tokenHeader?.match(/Bearer (?<token>.*)/i)?.groups?.["token"];
     if (token) {
-      const theJwt = jwt.verify(token, secret, { complete: true });
-      const payload = theJwt.payload;
-      return payload as User;
+      try {
+        const theJwt = jwt.verify(token, secret, { complete: true });
+        const payload = theJwt.payload;
+        const user = payload as User;
+        return user.id && user.name ? user : undefined;
+      } catch (err) {
+        return undefined;
+      }
     } else {
       return undefined;
     }
