@@ -4,4 +4,5 @@ export interface UserInput {
 
 export interface User extends UserInput {
   id: string;
+  roles?: string[];
 }

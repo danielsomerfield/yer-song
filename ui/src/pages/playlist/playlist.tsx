@@ -129,23 +129,19 @@ export const PlayListPage = ({
 
   const panel = () => {
     if (!playlist) {
-      return (
-        <LoadingMessagePanel />
-      );
-    } else if ((playlist?.songs?.page.length == 0)) {
-      return (
-        <div className="message">The playlist is empty. Add a song!</div>
-      );
+      return <LoadingMessagePanel />;
+    } else if (playlist?.songs?.page.length == 0) {
+      return <div className="message">The playlist is empty. Add a song!</div>;
     } else {
       return (
         <PlaylistView
-        playlist={playlist}
-        nav={nav}
-        currentUser={currentUser}
-        voteForSong={voteForSong}
-        showToast={() => {
-          setToastOpen(true);
-        }}
+          playlist={playlist}
+          nav={nav}
+          currentUser={currentUser}
+          voteForSong={voteForSong}
+          showToast={() => {
+            setToastOpen(true);
+          }}
         />
       );
     }

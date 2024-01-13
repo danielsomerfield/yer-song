@@ -1,4 +1,4 @@
-import { PropsWithChildren, ComponentProps } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 import styled from "styled-components";
 
 const ListItemContent = styled.div`
@@ -15,29 +15,25 @@ const ListItemContent = styled.div`
   background-color: white;
   margin: 2px;
   border-radius: 10px;
-  opacity: 1.0;
+  opacity: 1;
 `;
 
 const ListItemContainer = styled.div`
   &:hover {
     transform: scale(1.07);
   }
-  background: linear-gradient(to right, #B640FF, #90E7B3);
+  background: linear-gradient(to right, #b640ff, #90e7b3);
   border-radius: 15px;
   margin: 1vh;
   padding: 0.3vh;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 `;
 
-export const ListItem = (
-  props: PropsWithChildren & ComponentProps<"div"> ,
-) => {
+export const ListItem = (props: PropsWithChildren & ComponentProps<"div">) => {
   return (
-    <div { ...props }>
+    <div {...props}>
       <ListItemContainer>
-        <ListItemContent>
-          { props.children }
-        </ListItemContent>
+        <ListItemContent>{props.children}</ListItemContent>
       </ListItemContainer>
     </div>
   );

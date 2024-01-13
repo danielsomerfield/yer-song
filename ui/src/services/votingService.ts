@@ -9,7 +9,7 @@ export const createVoteForSong = (
   return (songId: string): Promise<void> => {
     return createPost<void>(
       configuration,
-      `vote/songs/${songId}`,
+      `/vote/songs/${songId}`,
       httpClient,
     )();
   };

@@ -4,6 +4,8 @@ import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { SongWithVotes } from "../../domain/song";
 import styled from "styled-components";
 import { AdminService } from "./adminService";
+import { LoginDialog } from "./loginDialog";
+import { User } from "../../domain/users";
 
 const SongAdminButton = styled.button`
   margin: 1vh;
@@ -95,13 +97,16 @@ const PlayListControls = ({
       );
     };
     return (
+      //   TODO: the grid is messed up here again. Need to look at why.
       <>
-        <SongPanel>{song.title}</SongPanel>
-        <RequestedBy>
-          {song.voters.length > 0 ? song.voters[0].name : "unknown"}
-        </RequestedBy>
-        <div>{song.voteCount}</div>
-        <SongItemControls song={song} />
+        <div aria-label={"song-item-row"} role={"row"}>
+          <SongPanel>{song.title}</SongPanel>
+          <RequestedBy>
+            {song.voters.length > 0 ? song.voters[0].name : "unknown"}
+          </RequestedBy>
+          <div>{song.voteCount}</div>
+          <SongItemControls song={song} />
+        </div>
       </>
     );
   };
@@ -112,6 +117,8 @@ const PlayListControls = ({
 
   return (
     <div
+      aria-label={"play-list-controls"}
+      role={"table"}
       style={{
         position: "absolute",
         overflow: "hidden",
@@ -120,13 +127,13 @@ const PlayListControls = ({
         margin: "1vh",
       }}
     >
-      <SongsTitlePanel>
+      <SongsTitlePanel aria-label={"songs-title-panel"}>
         <div>Song</div>
         <div>Requested by</div>
         <div>Votes</div>
         <div></div>
       </SongsTitlePanel>
-      <SongsPanel aria-label={"songs-panel"}>
+      <SongsPanel>
         {playlist.songs.page.map((song) => SongView(song))}
       </SongsPanel>
     </div>
@@ -135,9 +142,11 @@ const PlayListControls = ({
 export const AdminPage = ({
   getPlaylist,
   adminService,
+  getCurrentUser,
 }: {
   getPlaylist: GetPlaylist;
   adminService: AdminService;
+  getCurrentUser: () => User | undefined;
 }) => {
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
@@ -152,27 +161,47 @@ export const AdminPage = ({
     }, 1000 * 5);
   };
 
+  const isAdmin = (user: User | undefined) => {
+    return user?.roles?.find((r) => r == "administrator");
+  };
+
   // TODO: refactor this loading pattern out. It's always the same
   useEffect(() => {
-    if (!playlist) {
-      if (!loadStarted) {
-        setLoadStarted(true);
-        (async () => {
-          await refresh();
+    if (isAdmin(getCurrentUser())) {
+      if (!playlist) {
+        if (!loadStarted) {
+          setLoadStarted(true);
+          (async () => {
+            await refresh();
 
-          startRefresh();
-        })();
+            startRefresh();
+          })();
+        }
       }
     }
   }, undefined);
-  const panel = playlist ? (
-    <PlayListControls
-      playlist={playlist}
-      adminService={adminService}
-      refresh={refresh}
-    />
-  ) : (
-    <LoadingMessagePanel />
-  );
-  return <div>{panel}</div>;
+
+  if (!isAdmin(getCurrentUser())) {
+    return (
+      <LoginDialog
+        onSubmit={adminService.login}
+        onLogin={async (result) => {
+          if (result == "SUCCESS") {
+            await refresh();
+            startRefresh();
+          }
+        }}
+      />
+    );
+  } else if (playlist) {
+    return (
+      <PlayListControls
+        playlist={playlist}
+        adminService={adminService}
+        refresh={refresh}
+      />
+    );
+  } else {
+    return <LoadingMessagePanel />;
+  }
 };

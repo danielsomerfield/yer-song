@@ -1,7 +1,6 @@
 import axios, { Axios } from "axios";
 import { Configuration } from "../configuration";
 import * as TokenStore from "./tokenStore";
-import { Navigate, redirect } from "react-router-dom";
 
 axios.defaults.validateStatus = (status: number) => {
   return status < 500;
@@ -41,15 +40,11 @@ export const createPost = <T>(
   getToken: () => string | null = TokenStore.getToken,
   httpStatusHandler: (status: number) => void = defaultStatusHandler,
 ) => {
-  return async () => {
-    const url = `${configuration.songsAPIHostURL}/${path}`;
-    const response = await httpClient.post(
-      url,
-      {},
-      {
-        headers: { "x-token": `Bearer ${getToken()}` },
-      },
-    );
+  return async (postData: unknown = {}) => {
+    const url = `${configuration.songsAPIHostURL}${path}`;
+    const response = await httpClient.post(url, postData, {
+      headers: { "x-token": `Bearer ${getToken()}` },
+    });
     if (response.status >= 400) {
       httpStatusHandler(response.status);
     }

@@ -72,3 +72,4 @@ start-api-local: build-api
 
 start-dependencies:
 	docker-compose up -d
+

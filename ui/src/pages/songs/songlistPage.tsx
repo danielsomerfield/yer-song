@@ -2,11 +2,7 @@ import React, { MouseEventHandler, useState } from "react";
 import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { ListItem } from "../../components/lists";
-import {
-  BackButton,
-  NavPanel,
-  setBackButtonLocation,
-} from "../../components/navPanel";
+import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
 import styled from "styled-components";
 import { Song } from "../../domain/song";
 
