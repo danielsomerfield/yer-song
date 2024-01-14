@@ -4,20 +4,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { getToken } from "../../http/tokenStore";
 import { RegisterUser } from "../../services/userService";
-
-const FormRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 2vh;
-  margin-right: 2vh;
-`;
+import { ButtonRow, FormRow } from "../../components/dialog";
 
 const RegisterButton = styled.button`
   width: fit-content;
-`;
-
-const ButtonRow = styled(FormRow)`
-  flex-flow: row-reverse;
 `;
 
 export const RegistrationForm = ({
@@ -54,6 +44,7 @@ export const RegistrationForm = ({
           <Dialog.Content className="DialogContent">
             <div>
               <FormRow>
+                {/* TODO: I think this `htmlFor` should be "name" */}
                 <Label className="formLabel" htmlFor={"emailAddress"}>
                   Name
                 </Label>

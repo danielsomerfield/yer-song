@@ -20,6 +20,7 @@ import * as Toast from "@radix-ui/react-toast";
 import { AdminService, createAdminService } from "./pages/admin/adminService";
 import { ErrorBoundary } from "react-error-boundary";
 import { Logout } from "./pages/admin/logout";
+import { getToken } from "./http/tokenStore";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -76,6 +77,7 @@ const adminService: AdminService = createAdminService({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
+// noinspection CssUnknownTarget
 const QRCodePanelDiv = styled.div`
   display: none;
   margin: 1vh 5vh 1vh 1vh;
@@ -177,6 +179,7 @@ function App() {
                   <AdminPage
                     getPlaylist={getPlayListFn}
                     adminService={adminService}
+                    getCurrentUser={currentUser}
                   />
                 }
               />

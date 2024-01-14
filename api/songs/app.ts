@@ -31,7 +31,7 @@ export const voteForSong = auth().requireUser(
   createVoteForSongLambda(getAppDependencies())
 );
 
-export const runAdminCommand = auth().requireUser(
+export const runAdminCommand = auth().requireAdmin(
   createRunAdminCommandLambda(getAppDependencies())
 );
 

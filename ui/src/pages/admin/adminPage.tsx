@@ -4,6 +4,8 @@ import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { SongWithVotes } from "../../domain/song";
 import styled from "styled-components";
 import { AdminService } from "./adminService";
+import { LoginDialog } from "./loginDialog";
+import { User } from "../../domain/users";
 
 const SongAdminButton = styled.button`
   margin: 1vh;
@@ -95,14 +97,14 @@ const PlayListControls = ({
       );
     };
     return (
-      <>
+      <div aria-label={"song-item-row"} role={"row"}>
         <SongPanel>{song.title}</SongPanel>
         <RequestedBy>
           {song.voters.length > 0 ? song.voters[0].name : "unknown"}
         </RequestedBy>
         <div>{song.voteCount}</div>
         <SongItemControls song={song} />
-      </>
+      </div>
     );
   };
 
@@ -112,6 +114,8 @@ const PlayListControls = ({
 
   return (
     <div
+      aria-label={"play-list-controls"}
+      role={"table"}
       style={{
         position: "absolute",
         overflow: "hidden",
@@ -120,13 +124,13 @@ const PlayListControls = ({
         margin: "1vh",
       }}
     >
-      <SongsTitlePanel>
+      <SongsTitlePanel aria-label={"songs-title-panel"}>
         <div>Song</div>
         <div>Requested by</div>
         <div>Votes</div>
         <div></div>
       </SongsTitlePanel>
-      <SongsPanel aria-label={"songs-panel"}>
+      <SongsPanel>
         {playlist.songs.page.map((song) => SongView(song))}
       </SongsPanel>
     </div>
@@ -135,12 +139,15 @@ const PlayListControls = ({
 export const AdminPage = ({
   getPlaylist,
   adminService,
+  getCurrentUser,
 }: {
   getPlaylist: GetPlaylist;
   adminService: AdminService;
+  getCurrentUser: () => User | undefined;
 }) => {
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
 
   const refresh = async () => {
     const playlist = await getPlaylist();
@@ -154,6 +161,9 @@ export const AdminPage = ({
 
   // TODO: refactor this loading pattern out. It's always the same
   useEffect(() => {
+    if (!currentUser) {
+      setCurrentUser(getCurrentUser());
+    }
     if (!playlist) {
       if (!loadStarted) {
         setLoadStarted(true);
@@ -165,14 +175,18 @@ export const AdminPage = ({
       }
     }
   }, undefined);
-  const panel = playlist ? (
-    <PlayListControls
-      playlist={playlist}
-      adminService={adminService}
-      refresh={refresh}
-    />
-  ) : (
-    <LoadingMessagePanel />
-  );
-  return <div>{panel}</div>;
+
+  if (!currentUser?.roles?.find((r) => r == "administrator")) {
+    return <LoginDialog />;
+  } else if (playlist) {
+    return (
+      <PlayListControls
+        playlist={playlist}
+        adminService={adminService}
+        refresh={refresh}
+      />
+    );
+  } else {
+    return <LoadingMessagePanel />;
+  }
 };
