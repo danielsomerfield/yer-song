@@ -1,11 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import {
-  CORSEnabled,
-  generateResponseHeaders,
-  getHeaderByName,
-} from "../http/headers";
-import * as jwt from "jsonwebtoken";
-import { logger } from "../util/logger";
+import { CORSEnabled, generateResponseHeaders } from "../http/headers";
+import { createGetIdentityFromRequest } from "./token";
 
 export interface AuthConfiguration {
   secret: string;
@@ -24,24 +19,17 @@ export const createAuthorization = (
   const { secret } = authConfiguration;
   const { allowedOrigins } = dependencies;
 
+  const getIdentity = createGetIdentityFromRequest(secret);
+
   const requireUser = (lambda: Lambda): Lambda => {
     return async (event: APIGatewayProxyEvent) => {
       // TODO: refactor this with token.ts
-      const authHeaderValue = getHeaderByName(event.headers, "x-token");
-      if (authHeaderValue) {
-        const authHeaderString = authHeaderValue.toString();
-        const token =
-          authHeaderString.match(/Bearer (?<token>.*)/i)?.groups?.["token"];
-        if (token) {
-          try {
-            jwt.verify(token, secret);
-            return lambda(event);
-          } catch (e) {
-            logger.warn(e, "Failed to verify user");
-          }
-        }
+      const identity = getIdentity(event);
+      if (identity) {
+        return lambda(event);
+      } else {
+        return generateResponseHeaders(event.headers, allowedOrigins, 401, {});
       }
-      return generateResponseHeaders(event.headers, allowedOrigins, 401, {});
     };
   };
 
