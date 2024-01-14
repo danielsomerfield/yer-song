@@ -23,7 +23,6 @@ export const createAuthorization = (
 
   const requireUser = (lambda: Lambda): Lambda => {
     return async (event: APIGatewayProxyEvent) => {
-      // TODO: refactor this with token.ts
       const identity = getIdentity(event);
       if (identity) {
         return lambda(event);
@@ -35,7 +34,22 @@ export const createAuthorization = (
 
   const requireAdmin = (lambda: Lambda): Lambda => {
     return async (event: APIGatewayProxyEvent) => {
-      return lambda(event);
+      const identity = getIdentity(event);
+      if (identity) {
+        const find = identity.roles?.find((r) => r == "administrator");
+        if (find) {
+          return lambda(event);
+        } else {
+          return generateResponseHeaders(
+            event.headers,
+            allowedOrigins,
+            403,
+            {}
+          );
+        }
+      } else {
+        return generateResponseHeaders(event.headers, allowedOrigins, 401, {});
+      }
     };
   };
 
