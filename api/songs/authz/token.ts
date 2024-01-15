@@ -2,7 +2,6 @@ import * as jwt from "jsonwebtoken";
 import { User } from "../domain/user";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { getHeaderByName } from "../http/headers";
-import { logger } from "../util/logger";
 
 interface Dependencies {
   secret: string;
