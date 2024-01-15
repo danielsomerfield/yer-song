@@ -147,7 +147,6 @@ export const AdminPage = ({
 }) => {
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
 
   const refresh = async () => {
     const playlist = await getPlaylist();
@@ -159,24 +158,27 @@ export const AdminPage = ({
     }, 1000 * 5);
   };
 
+  const isAdmin = (user: User | undefined) => {
+    return user?.roles?.find((r) => r == "administrator");
+  };
+
   // TODO: refactor this loading pattern out. It's always the same
   useEffect(() => {
-    if (!currentUser) {
-      setCurrentUser(getCurrentUser());
-    }
-    if (!playlist) {
-      if (!loadStarted) {
-        setLoadStarted(true);
-        (async () => {
-          await refresh();
+    if (isAdmin(getCurrentUser())) {
+      if (!playlist) {
+        if (!loadStarted) {
+          setLoadStarted(true);
+          (async () => {
+            await refresh();
 
-          startRefresh();
-        })();
+            startRefresh();
+          })();
+        }
       }
     }
   }, undefined);
 
-  if (!currentUser?.roles?.find((r) => r == "administrator")) {
+  if (!isAdmin(getCurrentUser())) {
     return <LoginDialog onLogin={adminService.login} />;
   } else if (playlist) {
     return (

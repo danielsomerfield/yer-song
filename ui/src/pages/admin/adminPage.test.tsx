@@ -41,6 +41,7 @@ describe("the admin page", () => {
       />,
     );
 
+    expect(getPlayList).not.toBeCalled();
     const actual = await screen.findByRole("dialog", { name: "admin-login" });
     expect(actual).toBeVisible();
   });
@@ -57,6 +58,7 @@ describe("the admin page", () => {
       />,
     );
 
+    expect(getPlayList).not.toBeCalled();
     const actual = await screen.findByRole("dialog", { name: "admin-login" });
     expect(actual).toBeVisible();
   });
