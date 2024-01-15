@@ -1,12 +1,12 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { AdminPage } from "./adminPage";
 import { GetPlaylist } from "../../domain/playlist";
 import { AdminService } from "./adminService";
 import { User } from "../../domain/users";
+import { CurrentUser } from "../../services/userService";
 import fn = jest.fn;
 import MockedFn = jest.MockedFn;
 import resetAllMocks = jest.resetAllMocks;
-import { CurrentUser } from "../../services/userService";
 import MockedFunction = jest.MockedFunction;
 
 describe("the admin page", () => {

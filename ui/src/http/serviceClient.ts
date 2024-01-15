@@ -1,7 +1,6 @@
 import axios, { Axios } from "axios";
 import { Configuration } from "../configuration";
 import * as TokenStore from "./tokenStore";
-import { Navigate, redirect } from "react-router-dom";
 
 axios.defaults.validateStatus = (status: number) => {
   return status < 500;

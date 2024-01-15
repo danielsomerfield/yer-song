@@ -6,8 +6,8 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
-import fn = jest.fn;
 import { CurrentUser } from "../../services/userService";
+import fn = jest.fn;
 import MockedFunction = jest.MockedFunction;
 
 describe("the song page", () => {

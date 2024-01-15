@@ -9,10 +9,10 @@ import * as SongService from "./services/songService";
 import * as PlaylistService from "./services/playListService";
 import * as VotingService from "./services/votingService";
 import * as UserService from "./services/userService";
+import { currentUser, RegisterUser } from "./services/userService";
 import { GenreSelectorPage } from "./pages/songs/genreSelectorPage";
 import { SongListPage } from "./pages/songs/songlistPage";
 import { PlayListPage } from "./pages/playlist/playlist";
-import { currentUser, RegisterUser } from "./services/userService";
 import AdminPage from "./pages/admin";
 import { GetPlaylist } from "./domain/playlist";
 import { KioskPlaylist } from "./pages/kiosk";
@@ -20,7 +20,6 @@ import * as Toast from "@radix-ui/react-toast";
 import { AdminService, createAdminService } from "./pages/admin/adminService";
 import { ErrorBoundary } from "react-error-boundary";
 import { Logout } from "./pages/admin/logout";
-import { getToken } from "./http/tokenStore";
 
 const AppContainer = styled.div`
   text-align: center;

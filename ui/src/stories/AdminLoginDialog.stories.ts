@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { RegistrationForm } from "../pages/home/registrationForm";
 import { LoginDialog } from "../pages/admin/loginDialog";
 
 const meta = {
