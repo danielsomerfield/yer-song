@@ -12,13 +12,15 @@ const RegisterButton = styled.button`
 
 export const RegistrationForm = ({
   registerUser,
+  isRegistered = () => getToken() != null,
+  onLogin = () => {
+    window.location.href = "/playlist";
+  },
 }: {
   registerUser: RegisterUser;
+  isRegistered?: () => boolean;
+  onLogin?: () => void;
 }) => {
-  const isRegistered = (): boolean => {
-    return getToken() != null;
-  };
-
   const [valid, setValid] = useState(false);
   const [formShowing, setFormShowing] = useState(!isRegistered());
   // TODO: pull out this state and registration form
@@ -35,7 +37,7 @@ export const RegistrationForm = ({
 
   // TODO: fix this hack
   if (!formShowing) {
-    window.location.href = "/playlist";
+    onLogin();
   }
   return (
     <Dialog.Root modal={true} open={formShowing}>

@@ -177,7 +177,7 @@ export const AdminPage = ({
   }, undefined);
 
   if (!currentUser?.roles?.find((r) => r == "administrator")) {
-    return <LoginDialog />;
+    return <LoginDialog onLogin={adminService.login} />;
   } else if (playlist) {
     return (
       <PlayListControls

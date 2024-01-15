@@ -8,14 +8,10 @@ const LoginButton = styled.button`
   width: fit-content;
 `;
 
-export const LoginDialog = () => {
+export const LoginDialog = ({ onLogin }: { onLogin: () => void }) => {
   const [valid, setValid] = useState(false);
   // TODO: pull out this state and registration form
   const [nameInput, setNameInput] = useState("");
-
-  const submitLogin = () => {
-    console.log("submitLogin()");
-  };
 
   return (
     <Dialog.Root modal={true} open={true}>
@@ -24,22 +20,23 @@ export const LoginDialog = () => {
           <Dialog.Content className="DialogContent" aria-label={"admin-login"}>
             <div>
               <FormRow>
-                {/*<Label className="formLabel" htmlFor={"emailAddress"}>*/}
-                {/*  Name*/}
-                {/*</Label>*/}
-                {/*<input*/}
-                {/*  id={"name"}*/}
-                {/*  required={true}*/}
-                {/*  minLength={2}*/}
-                {/*  onInput={(e) => {*/}
-                {/*    setValid(e.currentTarget.checkValidity());*/}
-                {/*    setNameInput(e.currentTarget.value);*/}
-                {/*  }}*/}
-                {/*  placeholder={"Enter your full name"}*/}
-                {/*/>*/}
+                <Label className="formLabel" htmlFor={"password"}>
+                  Password
+                </Label>
+                <input
+                  id={"password"}
+                  type={"password"}
+                  required={true}
+                  minLength={5}
+                  onInput={(e) => {
+                    setValid(e.currentTarget.checkValidity());
+                    // setNameInput(e.currentTarget.value);
+                  }}
+                  placeholder={"Enter the admin password"}
+                />
               </FormRow>
               <ButtonRow>
-                <LoginButton onClick={submitLogin} disabled={!valid}>
+                <LoginButton onClick={onLogin} disabled={!valid}>
                   Log in
                 </LoginButton>
               </ButtonRow>

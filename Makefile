@@ -73,7 +73,3 @@ start-api-local: build-api
 start-dependencies:
 	docker-compose up -d
 
-start-all-local: start-dependencies build-table-local populate-table-local
-	make start-api-local &; \
-		make start-ui-local
-

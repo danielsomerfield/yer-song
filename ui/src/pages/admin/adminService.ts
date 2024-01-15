@@ -9,6 +9,7 @@ export interface AdminService {
   removeFromPlaylist: (id: string) => Promise<void>;
   moveUpOnPlaylist: (id: string) => Promise<void>;
   moveDownOnPlaylist: (id: string) => Promise<void>;
+  login: () => Promise<void>;
 }
 
 export const createAdminService = (
@@ -30,9 +31,14 @@ export const createAdminService = (
     )();
   };
 
+  const login = async () => {
+    // TODO: login the admin
+  };
+
   return {
     removeFromPlaylist,
     moveUpOnPlaylist,
     moveDownOnPlaylist,
+    login,
   };
 };
