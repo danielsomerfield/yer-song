@@ -8,10 +8,17 @@ const LoginButton = styled.button`
   width: fit-content;
 `;
 
-export const LoginDialog = ({ onLogin }: { onLogin: () => void }) => {
-  const [valid, setValid] = useState(false);
-  // TODO: pull out this state and registration form
-  const [nameInput, setNameInput] = useState("");
+export const LoginDialog = ({
+  onLogin,
+}: {
+  onLogin: (username: string, password: string) => void;
+}) => {
+  const [usernameInput, setUsernameInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+
+  const isValid: () => boolean = () => {
+    return usernameInput.length > 0 && passwordInput.length > 0;
+  };
 
   return (
     <Dialog.Root modal={true} open={true}>
@@ -19,6 +26,24 @@ export const LoginDialog = ({ onLogin }: { onLogin: () => void }) => {
         <Dialog.Overlay className="DialogOverlay">
           <Dialog.Content className="DialogContent" aria-label={"admin-login"}>
             <div>
+              <FormRow>
+                <Label className="formLabel" htmlFor={"username"}>
+                  Username
+                </Label>
+                <input
+                  id={"username"}
+                  type={"text"}
+                  required={true}
+                  minLength={5}
+                  onInput={(e) => {
+                    if (e.currentTarget.checkValidity()) {
+                      setUsernameInput(e.currentTarget.value);
+                    }
+                  }}
+                  placeholder={"Enter your username"}
+                  aria-label={"username-input"}
+                />
+              </FormRow>
               <FormRow>
                 <Label className="formLabel" htmlFor={"password"}>
                   Password
@@ -29,14 +54,21 @@ export const LoginDialog = ({ onLogin }: { onLogin: () => void }) => {
                   required={true}
                   minLength={5}
                   onInput={(e) => {
-                    setValid(e.currentTarget.checkValidity());
-                    // setNameInput(e.currentTarget.value);
+                    if (e.currentTarget.checkValidity()) {
+                      setPasswordInput(e.currentTarget.value);
+                    }
                   }}
-                  placeholder={"Enter the admin password"}
+                  placeholder={"Enter your password"}
+                  aria-label={"password-input"}
                 />
               </FormRow>
               <ButtonRow>
-                <LoginButton onClick={onLogin} disabled={!valid}>
+                <LoginButton
+                  onClick={() => {
+                    onLogin(usernameInput, passwordInput);
+                  }}
+                  disabled={!isValid()}
+                >
                   Log in
                 </LoginButton>
               </ButtonRow>

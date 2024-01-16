@@ -85,5 +85,7 @@ export const getAppDependencies = (
     generateToken: generateToken,
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
+    //TODO: implement me
+    validateCredentials: () => false,
   };
 };
