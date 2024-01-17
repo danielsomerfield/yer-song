@@ -9,6 +9,7 @@ import {
   createGetIdentityFromRequest,
 } from "./authz/token";
 import { User } from "./domain/user";
+import { createValidateAdminUser } from "./admin/validate";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -74,6 +75,10 @@ export const getAppDependencies = (
     secret: configuration.authorization.secret,
   });
 
+  const validateCredentials = createValidateAdminUser({
+    findUserByName: userRepository.findUserByName,
+  });
+
   return {
     findSongById: songsRepository.getSongById,
     allowedOrigins,
@@ -86,8 +91,6 @@ export const getAppDependencies = (
     generateToken: generateToken,
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
-    //TODO: implement me
-    validateCredentials: async (username: string, password: string) =>
-      Promise.reject<User>(),
+    validateCredentials,
   };
 };
