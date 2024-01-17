@@ -88,6 +88,8 @@ describe("The user repository", () => {
     ).toEqual(true);
   });
 
+  // TODO: test for roles and password hashes
+
   const createUser = async (user: User, password: string) =>
     dynamo.client().putItem({
       TableName: "song",

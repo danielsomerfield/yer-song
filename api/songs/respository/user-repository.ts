@@ -1,5 +1,9 @@
 import { User, UserInput } from "../domain/user";
-import { DynamoDB, QueryCommand } from "@aws-sdk/client-dynamodb";
+import {
+  AttributeValue,
+  DynamoDB,
+  QueryCommand,
+} from "@aws-sdk/client-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 import { getRequiredString } from "./repository";
 
@@ -13,18 +17,36 @@ export const createUserRepository = (
     // TODO: make sure we don't get the same user twice
 
     const id = `u:${idGen()}`;
+    return updateUser({ ...input, id });
+  };
+
+  const updateUser = async (user: User): Promise<User> => {
+    const userRecord: Record<string, AttributeValue> = {
+      PK: { S: user.id },
+      SK: { S: user.id },
+      // TODO: we might be able to get rid of the `name` fields since it's now in GSI1PK
+      name: { S: user.name },
+      GSI1PK: { S: user.name },
+      entityType: { S: "user" },
+      roles: {
+        L:
+          user.roles?.map((r) => {
+            return {
+              S: r,
+            };
+          }) || [],
+      },
+    };
+
+    if (user.passwordHash) {
+      userRecord.passwordHash = { S: user.passwordHash };
+    }
+
     await client.putItem({
       TableName: tableName,
-      Item: {
-        PK: { S: id },
-        SK: { S: id },
-        // TODO: we might be able to get rid of the `name` fields since it's now in GSI1PK
-        name: { S: input.name },
-        GSI1PK: { S: input.name },
-        entityType: { S: "user" },
-      },
+      Item: userRecord,
     });
-    return { ...input, id };
+    return user;
   };
 
   const findUserByName = async (name: string): Promise<User | undefined> => {
@@ -65,5 +87,6 @@ export const createUserRepository = (
   return {
     insertUser,
     findUserByName,
+    updateUser,
   };
 };
