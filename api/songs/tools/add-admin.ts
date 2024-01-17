@@ -1,12 +1,11 @@
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import * as readline from "readline";
 import { createUserRepository } from "../respository/user-repository";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { User } from "../domain/user";
 
-const dynamodb = new DynamoDB();
 const usage = () => {
-  console.log("usage: add-admin <username>");
+  console.log("usage: add-admin <username> [dynamodb endpoint]");
   process.exit(1);
 };
 
@@ -14,6 +13,10 @@ const usage = () => {
   if (process.argv.length < 3) {
     usage();
   }
+
+  const dynamodb = new DynamoDB({
+    endpoint: process.argv.length < 4 ? undefined : process.argv[4],
+  });
 
   const username = process.argv[2];
   const rl = readline.createInterface(process.stdin, process.stdout);

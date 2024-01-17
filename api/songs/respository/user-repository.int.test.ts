@@ -3,7 +3,7 @@ import { afterEach } from "node:test";
 import { Dynamo, startDynamo } from "./testutils";
 import { createUserRepository } from "./user-repository";
 import { User } from "../domain/user";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 
 describe("The user repository", () => {
   let dynamo: Dynamo;

@@ -1,7 +1,7 @@
 import { describe, it } from "@jest/globals";
 import { User } from "../domain/user";
 import { createValidateAdminUser, Dependencies } from "./validate";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import resetAllMocks = jest.resetAllMocks;
 import MockedFn = jest.MockedFn;
 import fn = jest.fn;
