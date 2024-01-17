@@ -45,6 +45,8 @@ export const SongIds = {
   song1Id: `s:song1`,
   song2Id: `s:song2`,
   song3Id: `s:song3`,
+  song4Id: 's:song4',
+  song5Id: 's:song5',
 };
 
 export const GenreIds = {
@@ -100,6 +102,7 @@ export const Songs = {
       voters: { L: [Users.user2] },
     },
   },
+  
   song3: {
     TableName: "song",
     Item: {
@@ -117,6 +120,68 @@ export const Songs = {
       },
       voteCount: {
         N: "4",
+      },
+      voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      GSI1PK: {
+        S: GenreIds.genre1,
+      },
+      GSI2PK: {
+        S: "ON_PLAYLIST",
+      },
+    },
+  },
+
+  song4: {
+    TableName: "song",
+    Item: {
+      PK: {
+        S: SongIds.song4Id,
+      },
+      SK: {
+        S: SongIds.song4Id,
+      },
+      title: {
+        S: "Song 4",
+      },
+      artistName: {
+        S: "Artist 3",
+      },
+      voteCount: {
+        N: "2",
+      },
+      lockOrder: {
+        N: "2"
+      },
+      voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      GSI1PK: {
+        S: GenreIds.genre1,
+      },
+      GSI2PK: {
+        S: "ON_PLAYLIST",
+      },
+    },
+  },
+
+  song5: {
+    TableName: "song",
+    Item: {
+      PK: {
+        S: SongIds.song5Id,
+      },
+      SK: {
+        S: SongIds.song5Id,
+      },
+      title: {
+        S: "Song 5",
+      },
+      artistName: {
+        S: "Artist 3",
+      },
+      voteCount: {
+        N: "2",
+      },
+      lockOrder: {
+        N: "1"
       },
       voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
       GSI1PK: {

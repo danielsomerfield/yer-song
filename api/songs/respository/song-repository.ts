@@ -39,6 +39,7 @@ export const createSongRepository = (client: DynamoDB) => {
         artistName: getStringOrDefault(maybeItem, "artistName", "unknown"),
         voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
         voters: createVotersList(maybeItem),
+        lockOrder: getOptionalInt(maybeItem, "lockOrder") || 0,
       };
     } catch (e) {
       logger.warn(`Filtering out bad record with id '${maybeItem["pk"]}'`);
@@ -124,11 +125,18 @@ export const createSongRepository = (client: DynamoDB) => {
       })
     );
 
+    const orderByProperties = (s1: Song | undefined, s2: Song | undefined) => {
+      if (s1?.lockOrder || s2?.lockOrder) {
+        return ((s1?.lockOrder || Infinity) - (s2?.lockOrder || Infinity));
+      } 
+      return (s2?.voteCount || 0) - (s1?.voteCount || 0);
+    };
+
     if (maybeSongResponse.Items) {
       const songs = maybeSongResponse.Items.map((i) => createSongFromRecord(i))
         .filter((s) => s != undefined && s.voteCount > 0)
         .sort((s1, s2) => {
-          return (s2?.voteCount || 0) - (s1?.voteCount || 0);
+          return orderByProperties(s1, s2);
         });
       return {
         page: songs as SongWithVotes[],

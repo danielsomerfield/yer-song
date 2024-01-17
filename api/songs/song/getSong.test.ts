@@ -14,7 +14,7 @@ describe("song lambda", () => {
     const lambda = createGetSongLambda({
       allowedOrigins: new Set([expectedOrigin, "http://anotherAllowed.com"]),
       findSongById: () =>
-        Promise.resolve({ id: "", title: "", artistName: "", voteCount: 0 }),
+        Promise.resolve({ id: "", title: "", artistName: "", voteCount: 0, lockOrder: 0 }),
     });
     const response = await lambda(event);
     verifyCORSHeaders(response, expectedOrigin);
@@ -33,6 +33,7 @@ describe("song lambda", () => {
           title: `name-${id}`,
           artistName: `artist-${id}`,
           voteCount: 0,
+          lockOrder: 0,
         });
       },
       allowedOrigins: new Set(["http://allowed"]),

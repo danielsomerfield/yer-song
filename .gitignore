@@ -62,7 +62,7 @@ override.tf.json
 terraform.rc
 
 ui/build
-
+volume/
 
 venv
 .authz_secret
