@@ -8,6 +8,7 @@ import {
   createGenerateToken,
   createGetIdentityFromRequest,
 } from "./authz/token";
+import { User } from "./domain/user";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -86,6 +87,7 @@ export const getAppDependencies = (
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
     //TODO: implement me
-    validateCredentials: async (username: string, password: string) => false,
+    validateCredentials: async (username: string, password: string) =>
+      Promise.reject<User>(),
   };
 };
