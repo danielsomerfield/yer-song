@@ -86,6 +86,6 @@ export const getAppDependencies = (
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
     //TODO: implement me
-    validateCredentials: () => false,
+    validateCredentials: async (username: string, password: string) => false,
   };
 };
