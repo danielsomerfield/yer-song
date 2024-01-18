@@ -97,14 +97,17 @@ const PlayListControls = ({
       );
     };
     return (
-      <div aria-label={"song-item-row"} role={"row"}>
-        <SongPanel>{song.title}</SongPanel>
-        <RequestedBy>
-          {song.voters.length > 0 ? song.voters[0].name : "unknown"}
-        </RequestedBy>
-        <div>{song.voteCount}</div>
-        <SongItemControls song={song} />
-      </div>
+      //   TODO: the grid is messed up here again. Need to look at why.
+      <>
+        <div aria-label={"song-item-row"} role={"row"}>
+          <SongPanel>{song.title}</SongPanel>
+          <RequestedBy>
+            {song.voters.length > 0 ? song.voters[0].name : "unknown"}
+          </RequestedBy>
+          <div>{song.voteCount}</div>
+          <SongItemControls song={song} />
+        </div>
+      </>
     );
   };
 
