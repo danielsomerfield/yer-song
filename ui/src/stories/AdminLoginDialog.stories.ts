@@ -15,4 +15,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const NotRegistered: Story = {};
+export const LoginSuccess: Story = {
+  args: {
+    onLogin: () => Promise.resolve("SUCCESS"),
+  },
+};
+
+export const LoginFailed: Story = {
+  args: {
+    onLogin: () => Promise.resolve("FAILURE"),
+  },
+};
+
+export const loginError: Story = {
+  args: {
+    onLogin: () => Promise.reject(),
+  },
+};

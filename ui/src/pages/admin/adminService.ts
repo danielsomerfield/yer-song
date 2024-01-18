@@ -1,6 +1,8 @@
 import axios, { Axios } from "axios";
 import { createPost } from "../../http/serviceClient";
 import { User } from "../../domain/users";
+import { LoginResult, LoginResults } from "./loginDialog";
+import { setToken } from "../../http/tokenStore";
 
 interface Configuration {
   songsAPIHostURL: string;
@@ -13,16 +15,10 @@ export interface AdminService {
   login: (username: string, password: string) => Promise<LoginResult>;
 }
 
-export const LoginResults = {
-  SUCCESS: "SUCCESS",
-  FAILURE: "FAILURE",
-} as const;
-
-export type LoginResult = keyof typeof LoginResults;
-
 export const createAdminService = (
   configuration: Configuration,
   httpClient: Axios = axios,
+  saveToken: (token: string) => void = setToken,
 ): AdminService => {
   const removeFromPlaylist = async (id: string) => {
     return createPost<void>(configuration, `/admin/${id}/remove`, httpClient)();
@@ -58,7 +54,11 @@ export const createAdminService = (
       password,
     });
 
-    return response.user ? LoginResults.SUCCESS : LoginResults.FAILURE;
+    const token = response.token;
+    if (token) {
+      saveToken(token);
+    }
+    return token && response.user ? LoginResults.SUCCESS : LoginResults.FAILURE;
   };
 
   return {

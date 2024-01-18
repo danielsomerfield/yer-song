@@ -14,8 +14,9 @@ const usage = () => {
     usage();
   }
 
+  const endpoint = process.argv.length < 4 ? undefined : process.argv[3];
   const dynamodb = new DynamoDB({
-    endpoint: process.argv.length < 4 ? undefined : process.argv[4],
+    endpoint: endpoint,
   });
 
   const username = process.argv[2];
@@ -25,6 +26,9 @@ const usage = () => {
   rl.write("This script generates admin users.\n");
   rl.write(
     "You must be logged in as an aws user who can write to the dynamodb tables for this to work.\n\n"
+  );
+  rl.write(
+    `Connecting to dynamo instance: ${endpoint || "default from user config"}\n`
   );
 
   const printUpdateMessage = async (user: User) => {

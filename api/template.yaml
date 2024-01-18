@@ -39,7 +39,6 @@ Resources:
         AllowMethods: "'GET,OPTIONS,POST'"
         AllowOrigin: !Sub "'${AllowOrigin}'"
         AllowHeaders: "'Content-Type, x-token'"
-
   TagsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -51,6 +50,12 @@ Resources:
             Path: /tagName/{name}/tags
             Method: get
             RestApiId: !Ref SongByIdAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
       Policies: AWSLambdaDynamoDBExecutionRole
     Connectors:
       ReadFromSongs:
@@ -71,6 +76,12 @@ Resources:
             Method: get
             RestApiId: !Ref SongByIdAPI
       Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
     Connectors:
       ReadFromSongs:
         Properties:
@@ -91,6 +102,12 @@ Resources:
             Method: get
             RestApiId: !Ref SongByIdAPI
       Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
     Connectors:
       ReadFromSongs:
         Properties:
@@ -219,6 +236,12 @@ Resources:
             Method: post
             RestApiId: !Ref SongByIdAPI
       Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
     Connectors:
       ReadFromSongs:
         Properties:

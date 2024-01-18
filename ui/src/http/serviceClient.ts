@@ -41,7 +41,7 @@ export const createPost = <T>(
   httpStatusHandler: (status: number) => void = defaultStatusHandler,
 ) => {
   return async (postData: unknown = {}) => {
-    const url = `${configuration.songsAPIHostURL}/${path}`;
+    const url = `${configuration.songsAPIHostURL}${path}`;
     const response = await httpClient.post(url, postData, {
       headers: { "x-token": `Bearer ${getToken()}` },
     });

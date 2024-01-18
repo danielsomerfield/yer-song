@@ -5,17 +5,18 @@ import MockedFn = jest.MockedFn;
 import fn = jest.fn;
 
 describe("the admin service", () => {
-  it("posts user registration", async () => {
+  it("posts user login", async () => {
     const username = "admin1";
     const password = "password1";
     const adminToken = "adminToken1";
     const configuration: Configuration = {
-      songsAPIHostURL: "https://example.com/",
+      songsAPIHostURL: "https://example.com",
     };
     const post: MockedFn<Axios["post"]> = fn();
     const axios = {
       post,
     } as unknown as Axios;
+    const saveToken: MockedFn<(token: string) => void> = fn();
 
     const axiosResponse = {
       status: 200,
@@ -25,15 +26,24 @@ describe("the admin service", () => {
             name: username,
             roles: ["administrator"],
           },
+          token: adminToken,
         },
-
-        token: adminToken,
       },
     } as unknown as AxiosResponse;
     post.mockResolvedValue(axiosResponse);
 
-    const adminService = createAdminService(configuration, axios);
+    const adminService = createAdminService(configuration, axios, saveToken);
     const response = await adminService.login(username, password);
     expect(response).toEqual("SUCCESS");
+    expect(post).toBeCalledWith(
+      "https://example.com/admin/login",
+      expect.objectContaining({
+        username,
+        password,
+      }),
+      expect.anything(),
+    );
+
+    expect(saveToken).toHaveBeenCalledWith(adminToken);
   });
 });

@@ -179,6 +179,7 @@ export const AdminPage = ({
   }, undefined);
 
   if (!isAdmin(getCurrentUser())) {
+    // TODO: close dialog on submit
     return <LoginDialog onLogin={adminService.login} />;
   } else if (playlist) {
     return (
