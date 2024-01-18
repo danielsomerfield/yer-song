@@ -3,6 +3,6 @@
 export const StatusCodes = {
   Error: "ERR",
   Ok: "OK",
-};
+} as const;
 
 export type StatusCode = keyof typeof StatusCodes;

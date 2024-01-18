@@ -1,10 +1,10 @@
 import { createAdminLoginLambda } from "./adminLogin";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { User } from "../domain/user";
+import { StatusCodes } from "../util/statusCodes";
 import MockedFn = jest.MockedFn;
 import fn = jest.fn;
 import resetAllMocks = jest.resetAllMocks;
-import { StatusCodes } from "../util/statusCodes";
 
 describe("the admin login", () => {
   const adminToken = "admin-token";
@@ -53,12 +53,14 @@ describe("the admin login", () => {
     const response = await adminLoginLambda(event);
     expect(response.statusCode).toEqual(200);
     expect(JSON.parse(response.body)).toMatchObject({
-      user: {
-        id: userId,
-        name: name,
-        roles: adminRoles,
+      data: {
+        user: {
+          id: userId,
+          name: name,
+          roles: adminRoles,
+        },
+        token: adminToken,
       },
-      token: adminToken,
     });
 
     expect(validateCredentials).toBeCalledWith(name, password);

@@ -31,7 +31,7 @@ export const createAdminLoginLambda = (dependencies: Dependencies) => {
         const token = await generateToken(maybeAdmin);
         return {
           statusCode: 200,
-          body: JSON.stringify({ user: maybeAdmin, token }),
+          body: JSON.stringify({ data: { user: maybeAdmin, token } }),
         };
       } else {
         return {

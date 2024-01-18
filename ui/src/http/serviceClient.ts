@@ -40,15 +40,11 @@ export const createPost = <T>(
   getToken: () => string | null = TokenStore.getToken,
   httpStatusHandler: (status: number) => void = defaultStatusHandler,
 ) => {
-  return async () => {
+  return async (postData: unknown = {}) => {
     const url = `${configuration.songsAPIHostURL}/${path}`;
-    const response = await httpClient.post(
-      url,
-      {},
-      {
-        headers: { "x-token": `Bearer ${getToken()}` },
-      },
-    );
+    const response = await httpClient.post(url, postData, {
+      headers: { "x-token": `Bearer ${getToken()}` },
+    });
     if (response.status >= 400) {
       httpStatusHandler(response.status);
     }
