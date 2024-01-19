@@ -1,10 +1,10 @@
 import * as Registration from "./registration";
 import { APIGatewayProxyEvent } from "aws-lambda";
-import fn = jest.fn;
-import MockedFn = jest.MockedFn;
 
 import { User, UserInput } from "../domain/user";
 import { verifyCORSHeaders } from "../http/headers.testing";
+import fn = jest.fn;
+import MockedFn = jest.MockedFn;
 
 describe("the registration process", () => {
   const origin = "https://example.com";

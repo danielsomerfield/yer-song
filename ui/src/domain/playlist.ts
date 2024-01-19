@@ -1,4 +1,4 @@
-import { Song, SongWithVotes } from "./song";
+import { SongWithVotes } from "./song";
 
 export type GetPlaylist = () => Promise<Playlist>;
 

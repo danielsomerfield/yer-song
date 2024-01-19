@@ -8,7 +8,7 @@ import { Vote } from "../song/voteForSong";
 import { Maybe } from "../util/maybe";
 import { User } from "../domain/user";
 
-interface Dependencies extends CORSEnabled {
+export interface Dependencies extends CORSEnabled {
   clearVotes: (id: string) => Promise<void>;
   findSongsWithVotes: () => Promise<Songs>;
   insertVote: (vote: Vote, count: number) => Promise<void>;
@@ -26,11 +26,8 @@ export const createRunAdminCommandLambda = (dependencies: Dependencies) => {
     allowedOrigins,
   } = dependencies;
 
-  const removeSongCommand = async (params: {
-    songId: string;
-    identity: User;
-  }) => {
-    const { songId, identity } = params;
+  const removeSongCommand = async (params: { songId: string }) => {
+    const { songId } = params;
     await clearVotes(songId);
   };
 

@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { SongListView } from "./songlistPage";
+import { Songs } from "../../domain/song";
 import fn = jest.fn;
-import { Song, Songs } from "../../domain/song";
 
 describe("the song list page", () => {
   beforeEach(() => {

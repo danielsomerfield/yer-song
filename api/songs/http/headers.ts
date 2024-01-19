@@ -9,7 +9,7 @@ export interface CORSEnabled {
 export const getHeaderByName = (
   headers: APIGatewayProxyEventHeaders | undefined,
   name: string
-): Maybe<boolean | number | string> => {
+): Maybe<string> => {
   const found = Object.entries(headers || {}).filter(
     (e) => name.toLowerCase() == e[0].toLowerCase()
   );

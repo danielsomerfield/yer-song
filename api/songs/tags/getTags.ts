@@ -19,6 +19,7 @@ export const createGetTagsByNameLambda = (dependencies: Dependencies) => {
     const tagName = event.pathParameters?.["name"];
     if (!tagName) {
       return generateResponseHeaders(event.headers, allowedOrigins, 500, {
+        // TODO: this should be "ERR"
         status: "Error",
         data: [],
       });

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
 import { PropsWithChildren } from "react";
 
 const MainPanel = styled.div`
@@ -20,7 +20,7 @@ export const NavButton = styled.button`
   margin: 1vh;
   font-size: 3.5vh;
   min-width: 8vh;
-  border-color: #d1F1E4;
+  border-color: #d1f1e4;
   color: white;
 `;
 

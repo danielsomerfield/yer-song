@@ -4,31 +4,23 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { getToken } from "../../http/tokenStore";
 import { RegisterUser } from "../../services/userService";
-
-const FormRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 2vh;
-  margin-right: 2vh;
-`;
+import { ButtonRow, FormRow } from "../../components/dialog";
 
 const RegisterButton = styled.button`
   width: fit-content;
 `;
 
-const ButtonRow = styled(FormRow)`
-  flex-flow: row-reverse;
-`;
-
 export const RegistrationForm = ({
   registerUser,
+  isRegistered = () => getToken() != null,
+  onLogin = () => {
+    window.location.href = "/playlist";
+  },
 }: {
   registerUser: RegisterUser;
+  isRegistered?: () => boolean;
+  onLogin?: () => void;
 }) => {
-  const isRegistered = (): boolean => {
-    return getToken() != null;
-  };
-
   const [valid, setValid] = useState(false);
   const [formShowing, setFormShowing] = useState(!isRegistered());
   // TODO: pull out this state and registration form
@@ -45,7 +37,7 @@ export const RegistrationForm = ({
 
   // TODO: fix this hack
   if (!formShowing) {
-    window.location.href = "/playlist";
+    onLogin();
   }
   return (
     <Dialog.Root modal={true} open={formShowing}>
@@ -54,6 +46,7 @@ export const RegistrationForm = ({
           <Dialog.Content className="DialogContent">
             <div>
               <FormRow>
+                {/* TODO: I think this `htmlFor` should be "name" */}
                 <Label className="formLabel" htmlFor={"emailAddress"}>
                   Name
                 </Label>

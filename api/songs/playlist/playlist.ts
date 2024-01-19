@@ -1,4 +1,4 @@
-import { Paginated, Songs } from "../domain/songs";
+import { Songs } from "../domain/songs";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { generateResponseHeadersForDataResponse } from "../http/headers";
 import { logger } from "../util/logger";

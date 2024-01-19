@@ -6,6 +6,7 @@ import { createVoteForSongLambda } from "./song/voteForSong";
 import { createRegisterUserLambda } from "./user/registration";
 import { getAppDependencies } from "./inject";
 import { createRunAdminCommandLambda } from "./admin/runAdminCommand";
+import { createAdminLoginLambda } from "./admin/adminLogin";
 
 const auth = () => {
   return getAppDependencies().authRules;
@@ -31,8 +32,10 @@ export const voteForSong = auth().requireUser(
   createVoteForSongLambda(getAppDependencies())
 );
 
-export const runAdminCommand = auth().requireUser(
+export const runAdminCommand = auth().requireAdmin(
   createRunAdminCommandLambda(getAppDependencies())
 );
+
+export const adminLogin = createAdminLoginLambda(getAppDependencies());
 
 export const registerUser = createRegisterUserLambda(getAppDependencies());

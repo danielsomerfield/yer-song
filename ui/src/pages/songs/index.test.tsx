@@ -7,10 +7,10 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { Tags } from "./tagsService";
-import { NavigateFunction, Route } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
+import { GenreSelectorPage } from "./genreSelectorPage";
 import fn = jest.fn;
 import Mock = jest.Mock;
-import { GenreSelectorPage } from "./genreSelectorPage";
 
 describe("the genres page", () => {
   const genres: Tags = {
