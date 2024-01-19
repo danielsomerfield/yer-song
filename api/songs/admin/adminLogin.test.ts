@@ -5,6 +5,7 @@ import { StatusCodes } from "../util/statusCodes";
 import MockedFn = jest.MockedFn;
 import fn = jest.fn;
 import resetAllMocks = jest.resetAllMocks;
+import { verifyCORSHeaders } from "../http/headers.testing";
 
 describe("the admin login", () => {
   const adminToken = "admin-token";
@@ -12,6 +13,8 @@ describe("the admin login", () => {
   const password = "adminPassword";
   const userId = "adminUserId";
   const adminRoles = ["administrator"];
+
+  const origin = "https://example.com";
 
   const validAdmin: User = {
     id: userId,
@@ -32,6 +35,7 @@ describe("the admin login", () => {
   const dependencies = {
     validateCredentials,
     generateToken,
+    allowedOrigins: new Set([origin]),
   };
 
   beforeEach(() => {
@@ -48,6 +52,7 @@ describe("the admin login", () => {
         username: name,
         password,
       }),
+      headers: { origin },
     } as unknown as APIGatewayProxyEvent;
 
     const response = await adminLoginLambda(event);
@@ -70,6 +75,8 @@ describe("the admin login", () => {
         roles: expect.arrayContaining(adminRoles),
       })
     );
+
+    verifyCORSHeaders(response, origin);
   });
 
   it("denies user with invalid credentials", async () => {
@@ -81,11 +88,14 @@ describe("the admin login", () => {
         username: name,
         password,
       }),
+      headers: { origin },
     } as unknown as APIGatewayProxyEvent;
 
     const response = await adminLoginLambda(event);
     expect(response.statusCode).toEqual(401);
     expect(JSON.parse(response.body).status).toEqual(StatusCodes.Error);
+
+    verifyCORSHeaders(response, origin);
   });
 
   it("denies user without admin role", async () => {
@@ -97,10 +107,13 @@ describe("the admin login", () => {
         username: name,
         password,
       }),
+      headers: { origin },
     } as unknown as APIGatewayProxyEvent;
 
     const response = await adminLoginLambda(event);
     expect(response.statusCode).toEqual(403);
     expect(JSON.parse(response.body).status).toEqual(StatusCodes.Error);
+
+    verifyCORSHeaders(response, origin);
   });
 });

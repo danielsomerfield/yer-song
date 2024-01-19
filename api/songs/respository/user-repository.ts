@@ -77,7 +77,7 @@ export const createUserRepository = (
           roles:
             item?.["roles"]?.L?.map((r) => r.S || "").filter((s) => s != "") ||
             [],
-          passwordHash: item?.["passwordHash"].S,
+          passwordHash: item?.["passwordHash"]?.S,
         };
       }
     }

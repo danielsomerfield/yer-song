@@ -1,7 +1,12 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { User } from "../domain/user";
+import {
+  CORSEnabled,
+  generateResponseHeaders,
+  generateResponseHeadersForDataResponse,
+} from "../http/headers";
 
-export interface Dependencies {
+export interface Dependencies extends CORSEnabled {
   validateCredentials: (
     username: string,
     password: string
@@ -15,7 +20,7 @@ interface Credentials {
 }
 
 export const createAdminLoginLambda = (dependencies: Dependencies) => {
-  const { validateCredentials, generateToken } = dependencies;
+  const { validateCredentials, generateToken, allowedOrigins } = dependencies;
   return async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
@@ -29,21 +34,24 @@ export const createAdminLoginLambda = (dependencies: Dependencies) => {
     if (maybeAdmin) {
       if (maybeAdmin.roles?.find((r) => r == "administrator")) {
         const token = await generateToken(maybeAdmin);
-        return {
-          statusCode: 200,
-          body: JSON.stringify({ data: { user: maybeAdmin, token } }),
+        const data = {
+          user: maybeAdmin,
+          token,
         };
+        return generateResponseHeadersForDataResponse(
+          data,
+          event.headers,
+          allowedOrigins
+        );
       } else {
-        return {
-          statusCode: 403,
-          body: JSON.stringify({ status: "ERR" }),
-        };
+        return generateResponseHeaders(event.headers, allowedOrigins, 403, {
+          status: "ERR",
+        });
       }
     } else {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ status: "ERR" }),
-      };
+      return generateResponseHeaders(event.headers, allowedOrigins, 401, {
+        status: "ERR",
+      });
     }
   };
 };
