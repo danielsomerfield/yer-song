@@ -92,5 +92,6 @@ export const getAppDependencies = (
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
     validateCredentials,
+    insertLock: songsRepository.addLockToSong,
   };
 };

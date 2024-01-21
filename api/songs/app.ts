@@ -3,6 +3,7 @@ import { createGetTagsByNameLambda } from "./tags/getTags";
 import { createGetSongsByTagIdLambda } from "./songs/getSongs";
 import { createGetPlaylist } from "./playlist/playlist";
 import { createVoteForSongLambda } from "./song/voteForSong";
+import { createLockSongLambda } from "./song/lockSong";
 import { createRegisterUserLambda } from "./user/registration";
 import { getAppDependencies } from "./inject";
 import { createRunAdminCommandLambda } from "./admin/runAdminCommand";
@@ -30,6 +31,10 @@ export const getPlaylist = auth().requireUser(
 
 export const voteForSong = auth().requireUser(
   createVoteForSongLambda(getAppDependencies())
+);
+
+export const lockSong = auth().requireAdmin(
+  createLockSongLambda(getAppDependencies())
 );
 
 export const runAdminCommand = auth().requireAdmin(
