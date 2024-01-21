@@ -98,5 +98,6 @@ export const getAppDependencies = (
     // TODO: make this configurable
     voteMode: () => VoteModes.DOLLAR_VOTE,
     insertSongRequest: songRequestRepository.addSongRequest,
+    insertLock: songsRepository.addLockToSong,
   };
 };
