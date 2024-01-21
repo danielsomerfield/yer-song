@@ -5,6 +5,7 @@ export interface Song {
   title: string;
   artistName: string;
   voteCount: number;
+  lockOrder: number;
 }
 
 export interface SongWithVotes extends Song {

@@ -21,7 +21,7 @@ export const createGetPlaylist = (dependencies: Dependencies) => {
   ): Promise<APIGatewayProxyResult> => {
     try {
       const page = await findSongsWithVotes();
-      const playlist: Playlist = {
+      const playlist: Playlist = { 
         songs: page,
       };
       return generateResponseHeadersForDataResponse(

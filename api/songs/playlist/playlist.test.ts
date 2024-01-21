@@ -1,4 +1,4 @@
-import { describe, it } from "@jest/globals";
+import { describe, it, expect } from "@jest/globals";
 import { Songs } from "../domain/songs";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import * as Playlist from "./playlist";
@@ -15,18 +15,21 @@ describe("getPlaylist", () => {
           title: "song 2",
           artistName: "artist 2",
           voteCount: 10,
+          lockOrder: 0,
         },
         {
           id: "s:id3",
           title: "song 3",
           artistName: "artist 3",
           voteCount: 2,
+          lockOrder: 0,
         },
         {
           id: "s:id1",
           title: "song 1",
           artistName: "artist 1",
           voteCount: 1,
+          lockOrder: 0,
         },
       ],
     };
@@ -56,18 +59,21 @@ describe("getPlaylist", () => {
         title: "song 2",
         artistName: "artist 2",
         voteCount: 10,
+        lockOrder: 0,
       },
       {
         id: "s:id3",
         title: "song 3",
         artistName: "artist 3",
         voteCount: 2,
+        lockOrder: 0,
       },
       {
         id: "s:id1",
         title: "song 1",
         artistName: "artist 1",
         voteCount: 1,
+        lockOrder: 0,
       },
     ]);
 

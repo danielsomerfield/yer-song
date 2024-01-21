@@ -1,4 +1,4 @@
-import { describe, it } from "@jest/globals";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 import { afterEach } from "node:test";
 import { createSongRepository } from "./song-repository";
 import { GenreIds, SongIds, Songs, Users } from "./sampledata";
@@ -12,7 +12,7 @@ describe("The song repository", () => {
     await dynamo.client().putItem(Songs.song1);
     await dynamo.client().putItem(Songs.song2);
     await dynamo.client().putItem(Songs.song3);
-  }, 60 * 1000);
+  }, 70 * 1000);
 
   afterEach(async () => {
     await dynamo.stop();
