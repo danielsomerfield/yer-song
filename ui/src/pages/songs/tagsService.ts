@@ -1,5 +1,6 @@
 import axios, { Axios } from "axios";
-import { createGet } from "../../http/serviceClient";
+import { createGet, createGetWithLoadStatus } from "../../http/serviceClient";
+import { ReturnOrError } from "../../services/common";
 
 interface Configuration {
   songsAPIHostURL: string;
@@ -21,8 +22,8 @@ export const createGetTagsByName = (
   configuration: Configuration,
   httpClient: Axios = axios,
 ) => {
-  return async (): Promise<Tags> => {
-    return createGet<Tags>(
+  return async (): Promise<ReturnOrError<Tags>> => {
+    return createGetWithLoadStatus<Tags>(
       configuration,
       `/tagName/${tagName}/tags`,
       httpClient,

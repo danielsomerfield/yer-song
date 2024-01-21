@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { RegistrationForm } from "../pages/home/registrationForm";
+import { RegistrationForm } from "../components/registrationForm";
 
 const meta = {
   title: "Register Dialog",
@@ -21,7 +21,7 @@ export const Registered: Story = {
     onLogin: () => {
       console.log("Login");
     },
-    isRegistered: () => true,
+
     registerUser: () => {
       return Promise.resolve({
         user: {
@@ -38,7 +38,6 @@ export const NotRegistered: Story = {
     onLogin: () => {
       console.log("Login");
     },
-    isRegistered: () => false,
     registerUser: () => {
       return Promise.resolve({
         user: {

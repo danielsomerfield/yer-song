@@ -1,5 +1,5 @@
 import axios, { Axios } from "axios";
-import { createGet } from "../http/serviceClient";
+import { createGet, createGetWithLoadStatus } from "../http/serviceClient";
 import { SongWithVotes } from "../domain/song";
 
 interface Configuration {
@@ -16,5 +16,9 @@ export const createGetPlaylist = (
   configuration: Configuration,
   httpClient: Axios = axios,
 ) => {
-  return createGet<Playlist>(configuration, "playlist", httpClient);
+  return createGetWithLoadStatus<Playlist>(
+    configuration,
+    "playlist",
+    httpClient,
+  );
 };

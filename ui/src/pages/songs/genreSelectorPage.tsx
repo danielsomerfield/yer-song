@@ -5,8 +5,12 @@ import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
+import { LoadStatus, LoadStatuses } from "../common/loading";
+import { ReturnOrError, StatusCodes } from "../../services/common";
+import { RegistrationForm } from "../../components/registrationForm";
+import { RegisterUser } from "../../services/userService";
 
-export type GetTags = () => Promise<Tags>;
+export type GetTags = () => Promise<ReturnOrError<Tags>>;
 
 export const TagsPanel = styled.div`
   display: flex;
@@ -14,7 +18,15 @@ export const TagsPanel = styled.div`
   overflow: hidden;
 `;
 
-const TagsView = ({ tags, nav }: { tags: Tags; nav: NavigateFunction }) => {
+const TagsView = ({
+  tags,
+  nav,
+  registerUser,
+}: {
+  tags: Tags;
+  nav: NavigateFunction;
+  registerUser: RegisterUser;
+}) => {
   const TagView = (tag: Tag, index: number) => {
     const tagValue = `${tag.name}=${tag.value}`;
     return (
@@ -40,38 +52,84 @@ const TagsView = ({ tags, nav }: { tags: Tags; nav: NavigateFunction }) => {
     </>
   );
 };
+
 export const GenreSelectorPage = ({
   getGenres,
   nav,
+  registerUser,
 }: {
   getGenres: GetTags;
   nav: NavigateFunction;
+  registerUser: RegisterUser;
 }) => {
-  const [tags, setTags] = useState<Tags | undefined>(undefined);
-  const [loadStarted, setLoadStarted] = useState(false);
+  const [loadStatus, setLoadStatus] = useState<LoadStatus<Tags>>(
+    LoadStatuses.UNINITIALIZED,
+  );
 
   useEffect(() => {
-    if (!loadStarted) {
-      setLoadStarted(true);
+    if (loadStatus.name == LoadStatuses.UNINITIALIZED.name) {
       (async () => {
-        const tags = await getGenres();
-        setTags(tags);
+        setLoadStatus(LoadStatuses.LOADING);
+        await loadTagList();
       })();
     }
   }, undefined);
 
+  const loadTagList = async () => {
+    const maybeSongsForTag = await getGenres();
+
+    if (maybeSongsForTag.status == StatusCodes.REGISTRATION_REQUIRED) {
+      setLoadStatus(LoadStatuses.REGISTRATION_REQUIRED);
+    } else if (maybeSongsForTag.status == "OK" && maybeSongsForTag.value) {
+      setLoadStatus({
+        data: {
+          page: maybeSongsForTag.value.page,
+        },
+        name: "loaded",
+      });
+    }
+  };
+
   setBackButtonLocation(window.location.pathname);
 
-  const panel = tags ? (
-    <TagsView tags={tags} nav={nav} />
-  ) : (
-    <LoadingMessagePanel />
-  );
+  let panel;
+  if (loadStatus.name == LoadStatuses.LOADING.name) {
+    panel = <LoadingMessagePanel />;
+  } else if (loadStatus.name == LoadStatuses.REGISTRATION_REQUIRED.name) {
+    panel = (
+      <RegistrationForm
+        registerUser={registerUser}
+        onLogin={() => {
+          setLoadStatus(LoadStatuses.UNINITIALIZED);
+        }}
+      />
+    );
+  } else if (loadStatus.name == "loaded") {
+    if (loadStatus?.data) {
+      panel = (
+        <TagsView
+          tags={loadStatus.data}
+          nav={nav}
+          registerUser={registerUser}
+        />
+      );
+    } else {
+      panel = <EmptyPanel />;
+    }
+  } else {
+    // TODO: Can we eliminate this case with better typing?
+    panel = <EmptyPanel />;
+  }
 
+  return <>{panel}</>;
+};
+
+const EmptyPanel = () => {
   return (
     <>
-      {panel}
-      <NavPanel nav={nav} />
+      <div role={"note"} aria-label={"empty-songlist"} className="message">
+        No genres have been loaded.
+      </div>
     </>
   );
 };

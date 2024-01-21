@@ -2,9 +2,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Label } from "@radix-ui/react-label";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { getToken } from "../../http/tokenStore";
-import { RegisterUser } from "../../services/userService";
-import { ButtonRow, FormRow } from "../../components/dialog";
+import { RegisterUser } from "../services/userService";
+import { ButtonRow, FormRow } from "./dialog";
 
 const RegisterButton = styled.button`
   width: fit-content;
@@ -12,18 +11,13 @@ const RegisterButton = styled.button`
 
 export const RegistrationForm = ({
   registerUser,
-  isRegistered = () => getToken() != null,
-  onLogin = () => {
-    window.location.href = "/playlist";
-  },
+  onLogin,
 }: {
   registerUser: RegisterUser;
-  isRegistered?: () => boolean;
-  onLogin?: () => void;
+  onLogin: () => void;
 }) => {
   const [valid, setValid] = useState(false);
-  const [formShowing, setFormShowing] = useState(!isRegistered());
-  // TODO: pull out this state and registration form
+
   const [nameInput, setNameInput] = useState("");
 
   // TODO: test coverage for this logic
@@ -31,19 +25,18 @@ export const RegistrationForm = ({
   const submitRegistration = () => {
     registerUser({ name: nameInput }).then((response) => {
       localStorage.setItem("token", response.token);
-      setFormShowing(false);
+      onLogin();
     });
   };
 
-  // TODO: fix this hack
-  if (!formShowing) {
-    onLogin();
-  }
   return (
-    <Dialog.Root modal={true} open={formShowing}>
+    <Dialog.Root modal={true} open={true}>
       <Dialog.Portal>
         <Dialog.Overlay className="DialogOverlay">
-          <Dialog.Content className="DialogContent">
+          <Dialog.Content
+            className="DialogContent"
+            aria-label={"registration-form"}
+          >
             <div>
               <FormRow>
                 {/* TODO: I think this `htmlFor` should be "name" */}

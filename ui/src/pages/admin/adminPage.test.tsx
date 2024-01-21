@@ -8,6 +8,7 @@ import fn = jest.fn;
 import MockedFn = jest.MockedFn;
 import resetAllMocks = jest.resetAllMocks;
 import MockedFunction = jest.MockedFunction;
+import { ok } from "../../services/common";
 
 describe("the admin page", () => {
   const getPlayList: MockedFn<GetPlaylist> = fn();
@@ -64,11 +65,13 @@ describe("the admin page", () => {
   });
 
   it("renders the playlist controls rather than the login dialog if the user has an admin identity", async () => {
-    getPlayList.mockResolvedValue({
-      songs: {
-        page: [],
-      },
-    });
+    getPlayList.mockResolvedValue(
+      ok({
+        songs: {
+          page: [],
+        },
+      }),
+    );
     currentUser.mockReturnValue(adminUser);
 
     render(

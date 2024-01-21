@@ -1,154 +1,110 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useRef, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
-import { SongWithVotes } from "../../domain/song";
 import { GetPlaylist, Playlist } from "../../domain/playlist";
-import { currentUser, CurrentUser } from "../../services/userService";
+import { currentUser, RegisterUser } from "../../services/userService";
 import * as Toast from "@radix-ui/react-toast";
+import { RegistrationForm } from "../../components/registrationForm";
+import { LoadStatus, LoadStatuses } from "../common/loading";
+import { StatusCodes } from "../../services/common";
+import { PlaylistView } from "./playlistView";
 
 type VoteForSong = (id: string) => Promise<void>;
-
-const SongsPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  height: 83%;
-`;
-
-const UpVoteButton = styled.button`
-  margin: 0 1vh 0 0;
-  font-size: 0.8em;
-  padding: 0.5vh;
-`;
-
-const SongRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-column-gap: 3vh;
-  width: 100%;
-  align-items: center;
-`;
-
-const SongTitle = styled.div`
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const PlaylistView = ({
-  playlist,
-  nav,
-  currentUser,
-  voteForSong,
-  showToast,
-}: {
-  playlist: Playlist;
-  nav: NavigateFunction;
-  voteForSong: VoteForSong;
-  currentUser: CurrentUser;
-  showToast: () => void;
-}) => {
-  const SongView = (song: SongWithVotes, i: number) => {
-    const goToSong: MouseEventHandler = () => {
-      nav(`/songs/${song.id}`);
-    };
-
-    const disableButton =
-      song.voters.filter((v) => v.id == currentUser()?.id).length > 0;
-
-    return (
-      <ListItem
-        role={"listitem"}
-        key={`song::${song.id}`}
-        aria-label={`song: ${song.title}`}
-        data-id={song.id}
-      >
-        <SongRow>
-          <SongTitle onClick={goToSong}>{song.title}</SongTitle>
-          <div>
-            <UpVoteButton
-              disabled={disableButton}
-              onClick={async (evt) => {
-                console.log("Voting for a song");
-                const button = evt.currentTarget;
-                button.disabled = true;
-                await voteForSong(song.id);
-                showToast();
-                // TODO: do a refresh
-              }}
-            >
-              Up vote
-            </UpVoteButton>
-          </div>
-        </SongRow>
-      </ListItem>
-    );
-  };
-
-  return (
-    <>
-      <SongsPanel role={"list"} aria-label={"song-list"}>
-        {playlist.songs.page.map((tag, i) => SongView(tag, i))}
-      </SongsPanel>
-    </>
-  );
-};
 
 export const PlayListPage = ({
   getPlaylist,
   voteForSong,
   nav,
+  registerUser,
+  refreshTime = 5000,
 }: {
   getPlaylist: GetPlaylist;
   voteForSong: VoteForSong;
   nav: NavigateFunction;
+  registerUser: RegisterUser;
+  refreshTime?: number;
 }) => {
-  const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
-  const [loadStarted, setLoadStarted] = useState(false);
   const [toastOpen, setToastOpen] = useState(false);
 
-  // TODO: refactor this loading pattern out. It's always the same
+  const [loadStatus, setLoadStatus] = useState<LoadStatus<Playlist>>(
+    LoadStatuses.UNINITIALIZED,
+  );
+
+  const timer = useRef<number | undefined>(undefined);
+
+  const refreshPlaylist = async () => {
+    const maybePlaylist = await getPlaylist();
+
+    if (maybePlaylist.status == StatusCodes.REGISTRATION_REQUIRED) {
+      if (timer.current) {
+        window.clearInterval(timer.current);
+        timer.current = undefined;
+      }
+      setLoadStatus(LoadStatuses.REGISTRATION_REQUIRED);
+    } else if (maybePlaylist.status == "OK") {
+      setLoadStatus({
+        data: maybePlaylist.value,
+        name: "loaded",
+      });
+    }
+  };
+
   useEffect(() => {
     setBackButtonLocation("/playlist");
-    if (!playlist) {
-      if (!loadStarted) {
-        setLoadStarted(true);
-        (async () => {
-          const playlist = await getPlaylist();
-          setPlaylist(playlist);
-        })();
-        setInterval(async () => {
-          const playlist = await getPlaylist();
-          setPlaylist(playlist);
-        }, 1000 * 20);
-      }
+
+    if (loadStatus.name == LoadStatuses.UNINITIALIZED.name) {
+      (async () => {
+        setLoadStatus(LoadStatuses.LOADING);
+        await refreshPlaylist();
+      })();
+    } else if (loadStatus.name == "loaded" && timer.current == undefined) {
+      timer.current = window.setInterval(async () => {
+        await refreshPlaylist();
+      }, refreshTime);
     }
   }, undefined);
 
   const panel = () => {
-    if (!playlist) {
+    if (loadStatus.name == LoadStatuses.LOADING.name) {
       return <LoadingMessagePanel />;
-    } else if (playlist?.songs?.page.length == 0) {
-      return <div className="message">The playlist is empty. Add a song!</div>;
-    } else {
+    } else if (loadStatus.name == LoadStatuses.REGISTRATION_REQUIRED.name) {
       return (
-        <PlaylistView
-          playlist={playlist}
-          nav={nav}
-          currentUser={currentUser}
-          voteForSong={voteForSong}
-          showToast={() => {
-            setToastOpen(true);
+        <RegistrationForm
+          registerUser={registerUser}
+          onLogin={() => {
+            setLoadStatus(LoadStatuses.UNINITIALIZED);
           }}
         />
       );
+    } else if (loadStatus.name == "loaded") {
+      if (loadStatus.data?.songs.page) {
+        if (loadStatus.data.songs.page.length == 0) {
+          return <EmptyPanel />;
+        } else {
+          return (
+            <PlaylistView
+              playlist={loadStatus.data}
+              nav={nav}
+              currentUser={currentUser}
+              voteForSong={voteForSong}
+              showToast={() => {
+                setToastOpen(true);
+              }}
+            />
+          );
+        }
+      } else {
+        // TODO: can we eliminate this case with type manipulations?
+        console.error("This isn't supposed to happen");
+        return <EmptyPanel />;
+      }
     }
   };
   return (
     <>
       {panel()}
+
       {/*TODO: Refactor this toast code*/}
       <Toast.Root
         className={"Toast"}
@@ -158,6 +114,16 @@ export const PlayListPage = ({
         <Toast.Description>Your vote has been added</Toast.Description>
       </Toast.Root>
       <NavPanel nav={nav} />
+    </>
+  );
+};
+
+const EmptyPanel = () => {
+  return (
+    <>
+      <div role={"note"} aria-label={"empty-playlist"} className="message">
+        The playlist is empty. Add a song!
+      </div>
     </>
   );
 };

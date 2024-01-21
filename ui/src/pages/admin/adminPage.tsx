@@ -153,7 +153,8 @@ export const AdminPage = ({
 
   const refresh = async () => {
     const playlist = await getPlaylist();
-    setPlaylist(playlist);
+    // TODO: check if there is an error
+    setPlaylist(playlist.value);
   };
   const startRefresh = () => {
     setInterval(async () => {

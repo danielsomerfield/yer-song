@@ -11,6 +11,7 @@ import { NavigateFunction } from "react-router-dom";
 import { GenreSelectorPage } from "./genreSelectorPage";
 import fn = jest.fn;
 import Mock = jest.Mock;
+import { ok } from "../../services/common";
 
 describe("the genres page", () => {
   const genres: Tags = {
@@ -24,10 +25,12 @@ describe("the genres page", () => {
     cleanup();
   });
 
-  const tagQuery = () => Promise.resolve(genres);
+  const tagQuery = () => Promise.resolve(ok(genres));
 
   it("loads all genres", async () => {
-    render(<GenreSelectorPage getGenres={tagQuery} nav={fn()} />);
+    render(
+      <GenreSelectorPage getGenres={tagQuery} nav={fn()} registerUser={fn()} />,
+    );
 
     await act(() => tagQuery());
 
@@ -46,7 +49,13 @@ describe("the genres page", () => {
   it("redirects to the URL for the tags of the given genre", async () => {
     const navmock: Mock<NavigateFunction> = fn();
 
-    render(<GenreSelectorPage getGenres={tagQuery} nav={navmock} />);
+    render(
+      <GenreSelectorPage
+        getGenres={tagQuery}
+        nav={navmock}
+        registerUser={fn()}
+      />,
+    );
     await act(() => tagQuery());
     fireEvent.click(screen.getByRole("listitem", { name: "tag::genre=Punk" }));
 

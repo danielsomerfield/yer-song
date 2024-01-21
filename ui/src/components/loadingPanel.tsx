@@ -6,5 +6,9 @@ const LoadingMessageStyle = styled.div`
 `;
 
 export const LoadingMessagePanel = () => {
-  return <LoadingMessageStyle>Loading...</LoadingMessageStyle>;
+  return (
+    <LoadingMessageStyle role={"note"} aria-label={"loading"}>
+      Loading...
+    </LoadingMessageStyle>
+  );
 };

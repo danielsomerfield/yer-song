@@ -91,7 +91,8 @@ export const KioskPlaylist = ({
   async function refresh() {
     try {
       const playlist = await getPlaylist();
-      setPlaylist(playlist);
+      //TODO: check if there is a value
+      setPlaylist(playlist.value);
     } catch (e) {
       console.log("Refresh failed. Will try again");
     }

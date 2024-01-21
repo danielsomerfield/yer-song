@@ -77,3 +77,5 @@ start-api-local: build-api
 start-dependencies:
 	docker-compose up -d
 
+storybook:
+	cd ui && npx storybook dev

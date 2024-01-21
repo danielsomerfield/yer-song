@@ -1,6 +1,7 @@
 import axios, { Axios } from "axios";
 import { Configuration } from "../configuration";
 import * as TokenStore from "./tokenStore";
+import { error, ok, ReturnOrError, StatusCodes } from "../services/common";
 
 axios.defaults.validateStatus = (status: number) => {
   return status < 500;
@@ -8,10 +9,40 @@ axios.defaults.validateStatus = (status: number) => {
 
 const defaultStatusHandler = (status: number) => {
   // TODO: factor this out and change to useNavigate
-  if (status == 401) {
-    window.location.href = "/";
-  }
+  // if (status == 401) {
+  //   window.location.href = "/";
+  // }
 };
+
+const getErrorForStatus = (status: number): ReturnOrError<never> => {
+  if (status == 401) {
+    return error(StatusCodes.REGISTRATION_REQUIRED);
+  }
+
+  return error(StatusCodes.UNKNOWN);
+};
+
+export const createGetWithLoadStatus = <T>(
+  configuration: Configuration,
+  path: string,
+  httpClient: Axios = axios,
+  getToken: () => string | null = TokenStore.getToken,
+) => {
+  return async (): Promise<ReturnOrError<T>> => {
+    const url = `${configuration.songsAPIHostURL}/${path}`;
+    const response = await httpClient.get(url, {
+      headers: { "x-token": `Bearer ${getToken()}` },
+    });
+
+    const httpStatus = response.status;
+    if (httpStatus == 200) {
+      return ok(response.data.data);
+    } else {
+      return getErrorForStatus(httpStatus);
+    }
+  };
+};
+
 export const createGet = <T>(
   configuration: Configuration,
   path: string,

@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { Home } from "./pages/home";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { SongPageWithParams } from "./pages/song";
 import { configuration } from "./configuration";
@@ -128,10 +127,6 @@ function App() {
           <ErrorBoundary fallbackRender={ErrorFallback}>
             <Routes>
               <Route
-                index
-                element={<Home registerUser={registerUserFn} nav={navigator} />}
-              />
-              <Route
                 path={"/songs/:songId"}
                 element={
                   <SongPageWithParams
@@ -145,13 +140,18 @@ function App() {
               <Route
                 path={"/genres"}
                 element={
-                  <GenreSelectorPage getGenres={getGenresFn} nav={navigator} />
+                  <GenreSelectorPage
+                    getGenres={getGenresFn}
+                    nav={navigator}
+                    registerUser={registerUserFn}
+                  />
                 }
               />
               <Route
                 path={"/tags/:tag/songs"}
                 element={
                   <SongListPage
+                    registerUser={registerUserFn}
                     getSongsForTagId={getSongsForTagIdFn}
                     nav={navigator}
                   />
@@ -164,6 +164,7 @@ function App() {
                     getPlaylist={getPlayListFn}
                     nav={navigator}
                     voteForSong={voteForSongFn}
+                    registerUser={registerUserFn}
                   />
                 }
               />
@@ -184,6 +185,8 @@ function App() {
               />
 
               <Route path={"/logout"} element={<Logout />} />
+              {/*  Be default, navigate to the playlist */}
+              <Route path="*" element={<Navigate to="/playlist" />} />
             </Routes>
           </ErrorBoundary>
           <Toast.Viewport />
