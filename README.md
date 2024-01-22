@@ -60,6 +60,7 @@ see a list of song genres.
 In `ui/`:
 
           npm test
+          npm run test-acc
 
 * To run all tests, including integration run the following command from the repository root:
 

@@ -62,6 +62,7 @@ override.tf.json
 terraform.rc
 
 ui/build
+ui/target
 volume/
 
 venv

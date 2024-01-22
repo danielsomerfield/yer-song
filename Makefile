@@ -50,6 +50,10 @@ test-ui:
 	cd ui;\
 	npm test -- --watchAll=false
 
+test-acc-ui:
+	cd ui;\
+	npm run test-acc
+
 ## Build / deploy / run
 
 build-table-local: # TODO: make this only run if the table doesn't exist
