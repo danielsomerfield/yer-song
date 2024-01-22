@@ -6,6 +6,8 @@ import { BackButton, NavPanel } from "../../components/navPanel";
 import { SongWithVotes } from "../../domain/song";
 import { CurrentUser } from "../../services/userService";
 import * as Toast from "@radix-ui/react-toast";
+import { VoteMode, VoteModes, VoteSubmission } from "../../domain/voting";
+import { SubmitDollarVotePanel } from "./submitDollarVotePanel";
 
 const Title = styled.h1`
   font-size: 1.5em;
@@ -18,6 +20,14 @@ const ArtistName = styled.h1`
   text-align: center;
 `;
 
+const SongContainer = styled.div`
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 1.5em;
+`;
+
 const Song = styled.div`
   margin: 2vh 3vh 0 3vh;
   padding: 0 2% 2% 2%;
@@ -25,12 +35,16 @@ const Song = styled.div`
   border-image-slice: 1;
   border-image-source: linear-gradient(to right, #b640ff, #90e7b3);
   overflow: hidden;
-  overflow-y: scroll;
   max-height: 65%;
 `;
 
 type GetSong = (id: string) => Promise<SongWithVotes | undefined>;
 type VoteForSong = (id: string) => Promise<void>;
+
+type SubmitDollarVoteForSong = (vote: {
+  songId: string;
+  value: number;
+}) => Promise<VoteSubmission>;
 
 export const AddOrVoteButton = styled.button`
   height: 8vh;
@@ -41,6 +55,11 @@ export const AddOrVoteButton = styled.button`
   color: white;
   border-radius: 1vh;
 `;
+
+// TODO: BIG OLD CLEANUP REQUIRED
+//  This conditional logic in this has gotten a little gnarly. Rather than the conditional logic,
+//  it might be better to have common frame and logic, then separate top level components that use them.
+//  Either that, or a strategy pattern that determines both the rendering of the button and the submission logic.
 
 const AddOrVoteButtonPanel = ({
   song,
@@ -86,11 +105,18 @@ export const SongView = ({
   song,
   voteForSong,
   currentUser,
+  voteMode = VoteModes.SINGLE_VOTE,
+  submitDollarVoteForSong = async () => {
+    //This is here for test backwards compat. The cleanup should get rid of this
+    throw "Please reports this as a bug";
+  },
   showToast = () => undefined,
 }: {
   song: SongWithVotes;
   voteForSong: VoteForSong;
   currentUser: CurrentUser;
+  voteMode?: VoteMode;
+  submitDollarVoteForSong?: SubmitDollarVoteForSong;
   showToast?: () => void;
 }) => {
   const isOnPlaylist = song.voteCount > 0;
@@ -110,9 +136,51 @@ export const SongView = ({
     <div></div>
   );
 
+  const ButtonForVoteMode = ({
+    submitDollarVoteForSong,
+  }: {
+    submitDollarVoteForSong: SubmitDollarVoteForSong;
+  }) => {
+    // TODO: this is a bit hacky. Vote modes should probably define a range of behaviors intrinsically.
+    //  But it's good enough for now.
+    if (voteMode == VoteModes.SINGLE_VOTE) {
+      return (
+        <AddOrVoteButtonPanel
+          song={song}
+          voteForSong={voteForSong}
+          isOnPlaylist={isOnPlaylist}
+          currentUser={currentUser}
+          showToast={showToast}
+        />
+      );
+    } else if (voteMode == VoteModes.DOLLAR_VOTE) {
+      return (
+        <SubmitDollarVotePanel
+          onSubmit={async (vote) => {
+            const result = await submitDollarVoteForSong({
+              songId: song.id,
+              value: vote.value,
+            });
+
+            const note = encodeURIComponent(
+              `Song: ${song.title} - RequestId: ${result.requestId} `,
+            );
+            window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=daniel@redwinewintifish.org&amount=${vote.value}&note=${note}`;
+          }}
+        />
+      );
+    } else {
+      return (
+        <div>
+          {/*    This means that a bad vote mode was returned. Presumably client and server code are out of sync */}
+        </div>
+      );
+    }
+  };
+
   return (
-    <>
-      <Song>
+    <SongContainer>
+      <Song className={"Song"}>
         <Title role={"heading"} aria-level={1} aria-label={"song-title"}>
           {song.title}
         </Title>
@@ -121,16 +189,10 @@ export const SongView = ({
         </ArtistName>
       </Song>
       <div>
-        <AddOrVoteButtonPanel
-          song={song}
-          voteForSong={voteForSong}
-          isOnPlaylist={isOnPlaylist}
-          currentUser={currentUser}
-          showToast={showToast}
-        />
+        <ButtonForVoteMode submitDollarVoteForSong={submitDollarVoteForSong} />
       </div>
       {onList}
-    </>
+    </SongContainer>
   );
 };
 
@@ -172,11 +234,18 @@ export const SongPage = ({
   songId,
   voteForSong,
   currentUser,
+  voteMode = VoteModes.SINGLE_VOTE,
+  submitDollarVoteForSong = async () => {
+    //This is here for test backwards compat. The cleanup should get rid of this
+    throw "Please reports this as a bug";
+  },
 }: {
   getSong: GetSong;
   songId?: string;
   voteForSong: VoteForSong;
   currentUser: CurrentUser;
+  voteMode?: VoteMode;
+  submitDollarVoteForSong?: SubmitDollarVoteForSong;
 }) => {
   const [song, setSong] = useState<Maybe<SongWithVotes> | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
@@ -186,6 +255,7 @@ export const SongPage = ({
     setSong(undefined);
     setLoadStarted(false);
   };
+
   useEffect(() => {
     async function refreshSong() {
       if (!songId) {
@@ -225,6 +295,8 @@ export const SongPage = ({
         showToast={() => {
           setToastOpen(true);
         }}
+        voteMode={voteMode}
+        submitDollarVoteForSong={submitDollarVoteForSong}
       />
       {/*TODO: Refactor this toast code*/}
       <Toast.Root
@@ -250,11 +322,15 @@ export const SongPageWithParams = ({
   voteForSong,
   currentUser,
   nav,
+  voteMode = VoteModes.SINGLE_VOTE,
+  submitDollarVoteForSong,
 }: {
   getSong: GetSong;
   voteForSong: VoteForSong;
   currentUser: CurrentUser;
   nav: NavigateFunction;
+  voteMode?: VoteMode;
+  submitDollarVoteForSong: SubmitDollarVoteForSong;
 }) => {
   const { songId } = useParams();
   return (
@@ -264,6 +340,8 @@ export const SongPageWithParams = ({
         songId={songId}
         voteForSong={voteForSong}
         currentUser={currentUser}
+        voteMode={voteMode}
+        submitDollarVoteForSong={submitDollarVoteForSong}
       />
 
       <NavPanel nav={nav}>

@@ -10,6 +10,8 @@ import {
 } from "./authz/token";
 import { User } from "./domain/user";
 import { createValidateAdminUser } from "./admin/validate";
+import { VoteModes } from "./song/voteForSong";
+import { createSongRequestRepository } from "./respository/song-request-repository";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -66,6 +68,7 @@ export const getAppDependencies = (
   const tagsRepository = createTagsRepository(dynamoClient);
   const songsRepository = createSongRepository(dynamoClient);
   const userRepository = createUserRepository(dynamoClient);
+  const songRequestRepository = createSongRequestRepository(dynamoClient);
 
   const getIdentityFromRequest = createGetIdentityFromRequest(
     configuration.authorization.secret
@@ -92,5 +95,8 @@ export const getAppDependencies = (
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
     validateCredentials,
+    // TODO: make this configurable
+    voteMode: () => VoteModes.DOLLAR_VOTE,
+    insertSongRequest: songRequestRepository.addSongRequest,
   };
 };

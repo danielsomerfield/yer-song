@@ -49,9 +49,9 @@ export const generateResponseHeadersForDataResponse = (
   data: unknown,
   requestHeaders: APIGatewayProxyEventHeaders,
   allowedOrigins: Set<string>,
-  status = "OK"
+  status = "OK",
+  statusCode = 200
 ): APIGatewayProxyResult => {
-  const statusCode = 200;
   return generateResponseHeaders(requestHeaders, allowedOrigins, statusCode, {
     data,
     status,

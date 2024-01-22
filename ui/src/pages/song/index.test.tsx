@@ -9,6 +9,7 @@ import {
 import { CurrentUser } from "../../services/userService";
 import fn = jest.fn;
 import MockedFunction = jest.MockedFunction;
+import { User } from "../../domain/users";
 
 describe("the song page", () => {
   const currentUser: MockedFunction<CurrentUser> = fn();
@@ -16,18 +17,29 @@ describe("the song page", () => {
   beforeEach(() => {
     cleanup();
   });
+
+  const song = {
+    id: "song1",
+    title: "Song 1",
+    artistName: "The Artist",
+  };
+
+  const songWithVotes = {
+    ...song,
+    voteCount: 1,
+    voters: [
+      {
+        id: "different user",
+        name: "Different User",
+      },
+    ],
+  };
+
   describe("the song view", () => {
     it("renders a song", () => {
-      const song = {
-        id: "song1",
-        title: "Song 1",
-        artistName: "The Artist",
-        voteCount: 0,
-        voters: [],
-      };
       render(
         <SongView
-          song={song}
+          song={songWithVotes}
           voteForSong={async () => {
             throw "Not expected";
           }}
@@ -40,6 +52,85 @@ describe("the song page", () => {
       expect(
         screen.getByRole("heading", { name: "artist-name" }),
       ).toHaveTextContent("The Artist");
+    });
+
+    it("renders the request button in vote mode with no votes", () => {
+      const noVoteSong = { ...song, voteCount: 0, voters: [] };
+      render(
+        <SongView
+          song={noVoteSong}
+          voteForSong={async () => {
+            throw "Not expected";
+          }}
+          currentUser={currentUser}
+          voteMode={"SINGLE_VOTE"}
+        />,
+      );
+      expect(screen.getByRole("button", { name: "vote-button" })).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: "vote-button" }),
+      ).toHaveTextContent("Request");
+    });
+
+    it("renders the up vote button if there are votes but user didn't vote for it already", () => {
+      render(
+        <SongView
+          song={songWithVotes}
+          voteForSong={async () => {
+            throw "Not expected";
+          }}
+          currentUser={currentUser}
+          voteMode={"SINGLE_VOTE"}
+        />,
+      );
+      expect(screen.getByRole("button", { name: "vote-button" })).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: "vote-button" }),
+      ).toHaveTextContent("Up vote");
+      expect(screen.getByRole("button", { name: "vote-button" })).toBeEnabled();
+    });
+
+    it("disable button if user already voted for it", () => {
+      const user: User = {
+        id: "user123",
+        name: "User 123",
+      };
+
+      const songFromThisUser = {
+        id: "123",
+        title: "Song from me",
+        artistName: "Whoever",
+        voteCount: 1,
+        voters: [user],
+      };
+      render(
+        <SongView
+          song={songFromThisUser}
+          voteForSong={async () => {
+            throw "Not expected";
+          }}
+          currentUser={() => user}
+          voteMode={"SINGLE_VOTE"}
+        />,
+      );
+      expect(screen.getByRole("button", { name: "vote-button" })).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: "vote-button" }),
+      ).toBeDisabled();
+    });
+
+    it("renders the venmo request button in dollar vote mode", () => {
+      render(
+        <SongView
+          song={songWithVotes}
+          voteForSong={async () => {
+            throw "Not expected";
+          }}
+          currentUser={currentUser}
+          voteMode={"DOLLAR_VOTE"}
+        />,
+      );
+      expect(screen.getByRole("button", { name: "Venmo" })).toBeVisible();
     });
   });
 

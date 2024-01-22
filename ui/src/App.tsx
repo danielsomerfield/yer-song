@@ -19,6 +19,7 @@ import * as Toast from "@radix-ui/react-toast";
 import { AdminService, createAdminService } from "./pages/admin/adminService";
 import { ErrorBoundary } from "react-error-boundary";
 import { Logout } from "./pages/admin/logout";
+import { VoteModes } from "./domain/voting";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -67,6 +68,9 @@ const voteForSongFn = VotingService.createVoteForSong({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
 
+const submitDollarVoteForSongFn = VotingService.createDollarVoteForSong({
+  songsAPIHostURL: configuration.songsAPIHostURL,
+});
 const registerUserFn: RegisterUser = UserService.createRegisterUser({
   songsAPIHostURL: configuration.songsAPIHostURL,
 });
@@ -134,6 +138,8 @@ function App() {
                     voteForSong={voteForSongFn}
                     currentUser={currentUser}
                     nav={navigator}
+                    voteMode={VoteModes.SINGLE_VOTE}
+                    submitDollarVoteForSong={submitDollarVoteForSongFn}
                   />
                 }
               />

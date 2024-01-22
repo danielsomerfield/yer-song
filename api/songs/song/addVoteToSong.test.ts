@@ -1,12 +1,13 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import * as AddVoteToSong from "./voteForSong";
-import { Vote } from "./voteForSong";
+import { Vote, VoteModes } from "./voteForSong";
 import { User } from "../domain/user";
 import * as jwt from "jsonwebtoken";
 import { createGetIdentityFromRequest } from "../authz/token";
 import fn = jest.fn;
 import MockedFunction = jest.MockedFunction;
 import resetAllMocks = jest.resetAllMocks;
+import { verifyCORSHeaders } from "../http/headers.testing";
 
 describe("add vote to song", () => {
   const insertVote: MockedFunction<(vote: Vote) => Promise<void>> = fn();
@@ -20,8 +21,10 @@ describe("add vote to song", () => {
 
   const dependencies = {
     insertVote,
+    insertSongRequest: fn(), // TODO: we should be able to get rid of this dependency. It's a byproduct of coupling the two vote functions
     allowedOrigins: new Set(""),
     getIdentityFromRequest: createGetIdentityFromRequest(secret),
+    voteMode: () => VoteModes.SINGLE_VOTE,
   };
 
   beforeEach(() => {

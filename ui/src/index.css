@@ -57,7 +57,7 @@ button {
   font-size: 4vh;
   margin: 1vh 1vh 0 0;
   border-radius: 2vh;
-  padding: 0px;
+  padding: 1vh;
   border-style: solid;
 }
 
@@ -157,7 +157,7 @@ input::placeholder {
 }
 
 .SongWithParam {
-  font-size: 0.75rem;
+  font-size: 0.75em;
   height: 80%;
 }
 
