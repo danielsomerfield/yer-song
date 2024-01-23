@@ -14,10 +14,10 @@ const SongAdminButton = styled.button`
 `;
 
 const SongsPanel = styled.div`
-  display: grid;
+  // display: grid;
   justify-content: left;
   grid-column-gap: 3vh;
-  grid-template-columns: 1fr 1fr auto auto;
+  // grid-template-columns: 1fr 1fr auto auto;
   text-align: left;
   overflow-y: scroll;
   margin-top: 2vh;
@@ -32,6 +32,12 @@ const SongsTitlePanel = styled.div`
   text-align: left;
   margin-top: 2dvh;
   text-decoration: underline;
+`;
+
+const SongRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr auto auto;
+  grid-column-gap: 3vh;
 `;
 
 const SongPanel = styled.div`
@@ -52,7 +58,7 @@ const PlayListControls = ({
   adminService: AdminService;
   refresh: () => Promise<void>;
 }) => {
-  const SongItemRow = ({
+  const   SongItemRow = ({
     song,
   }: PropsWithChildren & { song: SongWithVotes }) => {
     const songIndex = playlist.songs.page.findIndex((s) => s.id == song.id);
@@ -99,20 +105,20 @@ const PlayListControls = ({
     return (
       //   TODO: the grid is messed up here again. Need to look at why.
       <>
-        <div aria-label={"song-item-row"} role={"row"}>
+        <SongRow aria-label={"song-item-row"} role={"row"} className="row-a-row">
           <SongPanel>{song.title}</SongPanel>
           <RequestedBy>
             {song.voters.length > 0 ? song.voters[0].name : "unknown"}
           </RequestedBy>
           <div>{song.voteCount}</div>
           <SongItemControls song={song} />
-        </div>
+        </SongRow>
       </>
     );
   };
 
   const SongView = (song: SongWithVotes) => {
-    return <SongItemRow song={song} key={`song-item-row-${song.id}`} />;
+    return <SongItemRow song={song} key={`song-item-row-${song.id}`}/>;
   };
 
   return (
@@ -133,7 +139,7 @@ const PlayListControls = ({
         <div>Votes</div>
         <div></div>
       </SongsTitlePanel>
-      <SongsPanel>
+      <SongsPanel className="songs-panel-container">
         {playlist.songs.page.map((song) => SongView(song))}
       </SongsPanel>
     </div>
