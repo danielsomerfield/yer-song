@@ -66,7 +66,7 @@ const PlayListControls = ({
     const isTop = songIndex <= 0;
     const SongItemControls = ({ song }: { song: SongWithVotes }) => {
       return (
-        <div>
+        <div className="button-div">
           <SongAdminButton
             key={`button-remove-${song.id}`}
             onClick={async (evt) => {
@@ -105,14 +105,14 @@ const PlayListControls = ({
     return (
       //   TODO: the grid is messed up here again. Need to look at why.
       <>
-        <SongRow aria-label={"song-item-row"} role={"row"} className="row-a-row">
-          <SongPanel>{song.title}</SongPanel>
-          <RequestedBy>
+        <tr aria-label={"song-item-row"} role={"row"} >
+          <td>{song.title}</td>
+          <td>
             {song.voters.length > 0 ? song.voters[0].name : "unknown"}
-          </RequestedBy>
-          <div>{song.voteCount}</div>
-          <SongItemControls song={song} />
-        </SongRow>
+          </td>
+          <td>{song.voteCount}</td>
+          <td><SongItemControls song={song} /></td>
+        </tr>
       </>
     );
   };
@@ -133,15 +133,15 @@ const PlayListControls = ({
         margin: "1vh",
       }}
     >
-      <SongsTitlePanel aria-label={"songs-title-panel"}>
-        <div>Song</div>
-        <div>Requested by</div>
-        <div>Votes</div>
-        <div></div>
-      </SongsTitlePanel>
-      <SongsPanel className="songs-panel-container">
-        {playlist.songs.page.map((song) => SongView(song))}
-      </SongsPanel>
+      <table>
+        <tr aria-label={"songs-title-panel"}>
+          <th>Song</th>
+          <th>Requested by</th>
+          <th>Votes</th>
+          <th></th>
+        </tr>
+          {playlist.songs.page.map((song) => SongView(song))}
+      </table>
     </div>
   );
 };

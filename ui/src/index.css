@@ -174,3 +174,19 @@ input::placeholder {
 .message {
   padding: 2vh;
 }
+
+.table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+.table, th, td {
+  border: 1px solid red;
+  padding: 1vh;
+}
+
+.button-div {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
