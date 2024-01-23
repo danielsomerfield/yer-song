@@ -247,14 +247,14 @@ export const createSongRepository = (client: DynamoDB) => {
       },
       ReturnValues: "UPDATED_NEW",
       ExpressionAttributeValues: {
-        ":zero": {
-          N: "0",
+        ":one": {
+          N: "1",
         },
         ":playlist": {
           S: "ON_PLAYLIST",
         },
       },
-      UpdateExpression: "SET lockOrder = 1, GSI2PK = :playlist",
+      UpdateExpression: "SET lockOrder = :one, GSI2PK = :playlist",
     });
   };
   
