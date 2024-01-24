@@ -13,6 +13,7 @@ export interface AdminService {
   moveUpOnPlaylist: (id: string) => Promise<void>;
   moveDownOnPlaylist: (id: string) => Promise<void>;
   login: (username: string, password: string) => Promise<LoginResult>;
+  lockSong: (id: string) => Promise<void>;
 }
 
 export const createAdminService = (
@@ -31,6 +32,12 @@ export const createAdminService = (
     return createPost<void>(
       configuration,
       `/admin/${id}/moveDown`,
+      httpClient,
+    )();
+  };
+  const lockSong = async (id: string) => {
+    return createPost<void>(
+      configuration, `/lock/songs/${id}`,
       httpClient,
     )();
   };
@@ -70,5 +77,6 @@ export const createAdminService = (
     moveUpOnPlaylist,
     moveDownOnPlaylist,
     login,
+    lockSong,
   };
 };

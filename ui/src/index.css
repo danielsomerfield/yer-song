@@ -175,18 +175,22 @@ input::placeholder {
   padding: 2vh;
 }
 
-.table {
+table {
   width: 100%;
   table-layout: auto;
   border-collapse: collapse;
 }
 
-.table, th, td {
-  border: 1px solid red;
-  padding: 1vh;
+td {
+  border: 1px solid grey;
+}
+
+
+table, th, td {
+  padding: 1vh 2vh;
 }
 
 .button-div {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
 }
