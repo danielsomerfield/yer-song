@@ -20,6 +20,7 @@ import { AdminService, createAdminService } from "./pages/admin/adminService";
 import { ErrorBoundary } from "react-error-boundary";
 import { Logout } from "./pages/admin/logout";
 import { VoteModes } from "./domain/voting";
+import { DollarVoteAdminPage } from "./pages/admin/dollarVoteAdminPage";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -190,8 +191,21 @@ function App() {
                 }
               />
 
+              {/*  TODO: keeping this as a separate page for the moment.
+                    Will combine later when we figure out the experience.
+              */}
+              <Route
+                path={"/dvAdmin"}
+                element={
+                  <DollarVoteAdminPage
+                    adminService={adminService}
+                    getSongRequests={adminService.getSongRequests}
+                  />
+                }
+              />
+
               <Route path={"/logout"} element={<Logout />} />
-              {/*  Be default, navigate to the playlist */}
+              {/*  By default, navigate to the playlist */}
               <Route path="*" element={<Navigate to="/playlist" />} />
             </Routes>
           </ErrorBoundary>

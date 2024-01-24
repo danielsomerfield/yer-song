@@ -65,6 +65,7 @@ export const PlayListPage = ({
     }
   }, undefined);
 
+  //TODO: replace this function with a shared component
   const panel = () => {
     if (loadStatus.name == LoadStatuses.LOADING.name) {
       return <LoadingMessagePanel />;

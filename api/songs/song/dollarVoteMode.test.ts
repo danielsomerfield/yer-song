@@ -1,7 +1,7 @@
 import { describe, it } from "@jest/globals";
 import { User } from "../domain/user";
 import * as AddVoteToSong from "./voteForSong";
-import { SongRequest, VoteModes } from "./voteForSong";
+import { SongRequestInput, VoteModes } from "./voteForSong";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { verifyCORSHeaders } from "../http/headers.testing";
 import { StatusCodes } from "../util/statusCodes";
@@ -23,7 +23,7 @@ describe("dollar vote mode", () => {
 
   it("accepts multiple vote units from a registered user", async () => {
     const insertSongRequest: MockedFunction<
-      (vote: SongRequest) => Promise<{ requestId: string }>
+      (vote: SongRequestInput) => Promise<{ requestId: string }>
     > = fn();
 
     insertSongRequest.mockResolvedValue({ requestId: "" });
@@ -48,7 +48,7 @@ describe("dollar vote mode", () => {
 
     const voteForSong = AddVoteToSong.createVoteForSongLambda(dependencies);
     const result = await voteForSong(event);
-    const expectedSongRequest: SongRequest = {
+    const expectedSongRequest: SongRequestInput = {
       songId,
       voter,
       value: 10,

@@ -40,3 +40,19 @@ export const getOptionalInt = (
     return Number.parseInt(value);
   }
 };
+
+export const getRequiredInt = (
+  item: Record<string, AttributeValue>,
+  fieldName: string
+): number => {
+  const value = item?.[fieldName]?.N;
+  if (!value) {
+    throw {
+      message: `Missing value for field: '${fieldName}' in record ${JSON.stringify(
+        item
+      )}'.`,
+    };
+  } else {
+    return Number.parseInt(value);
+  }
+};

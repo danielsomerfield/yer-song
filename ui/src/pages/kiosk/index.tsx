@@ -94,7 +94,7 @@ export const KioskPlaylist = ({
       //TODO: check if there is a value
       setPlaylist(playlist.value);
     } catch (e) {
-      console.log("Refresh failed. Will try again");
+      console.warn("Refresh failed. Will try again");
     }
   }
 

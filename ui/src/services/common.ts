@@ -19,6 +19,7 @@ export const error = (status: StatusCode): ReturnOrError<never> => {
   };
 };
 
+// TODO: we could probably do some tricky typescript to make this so value is never null if StatusCode == OK.
 export type ReturnOrError<T> = {
   value?: T;
   status: StatusCode;
