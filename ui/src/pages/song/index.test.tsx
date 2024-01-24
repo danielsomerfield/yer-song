@@ -22,6 +22,7 @@ describe("the song page", () => {
     id: "song1",
     title: "Song 1",
     artistName: "The Artist",
+    lockOrder: 0,
   };
 
   const songWithVotes = {
@@ -101,6 +102,7 @@ describe("the song page", () => {
         title: "Song from me",
         artistName: "Whoever",
         voteCount: 1,
+        lockOrder: 0,
         voters: [user],
       };
       render(
@@ -142,6 +144,7 @@ describe("the song page", () => {
           title: "Title 1",
           artistName: "Artist 1",
           voteCount: 0,
+          lockOrder: 0,
           voters: [],
         });
       };
@@ -168,6 +171,7 @@ describe("the song page", () => {
           title: "Title 1",
           artistName: "Artist 1",
           voteCount: 0,
+          lockOrder: 0,
           voters: [],
         });
       };
@@ -201,6 +205,7 @@ describe("the song page", () => {
         title: "Title 1",
         artistName: "Artist 1",
         voteCount: 1,
+        lockOrder: 0,
         voters: [
           {
             id: "user123",
@@ -237,6 +242,7 @@ describe("the song page", () => {
         title: "Title 1",
         artistName: "Artist 1",
         voteCount: 1,
+        lockOrder: 0,
         voters: [
           {
             id: "user123",

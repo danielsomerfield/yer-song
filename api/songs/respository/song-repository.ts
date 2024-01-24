@@ -231,15 +231,39 @@ export const createSongRepository = (client: DynamoDB) => {
       },
       UpdateExpression: "SET voteCount = :voteCount REMOVE GSI2PK, voters",
     });
-
     // throw "NYI: need to remove votes";
   };
 
+  const addLockToSong = async (id: string): Promise<void> => {
+    await client.updateItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: id,
+        },
+        SK: {
+          S: id,
+        },
+      },
+      ReturnValues: "UPDATED_NEW",
+      ExpressionAttributeValues: {
+        ":one": {
+          N: "1",
+        },
+        ":playlist": {
+          S: "ON_PLAYLIST",
+        },
+      },
+      UpdateExpression: "SET lockOrder = :one, GSI2PK = :playlist",
+    });
+  };
+  
   return {
     getSongById,
     findSongsByTag,
     findSongsWithVotes,
     addVoteToSong,
     clearVotes,
+    addLockToSong,
   };
 };

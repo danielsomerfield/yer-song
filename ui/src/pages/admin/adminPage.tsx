@@ -13,36 +13,6 @@ const SongAdminButton = styled.button`
   min-width: 8vh;
 `;
 
-const SongsPanel = styled.div`
-  display: grid;
-  justify-content: left;
-  grid-column-gap: 3vh;
-  grid-template-columns: 1fr 1fr auto auto;
-  text-align: left;
-  overflow-y: scroll;
-  margin-top: 2vh;
-  height: 75%;
-`;
-
-const SongsTitlePanel = styled.div`
-  display: grid;
-  justify-content: left;
-  grid-column-gap: 3vh;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  text-align: left;
-  margin-top: 2dvh;
-  text-decoration: underline;
-`;
-
-const SongPanel = styled.div`
-  text-align: left;
-  padding-left: 1vh;
-`;
-
-const RequestedBy = styled.div`
-  margin-left: 1vh;
-`;
-
 const PlayListControls = ({
   playlist,
   adminService,
@@ -52,15 +22,17 @@ const PlayListControls = ({
   adminService: AdminService;
   refresh: () => Promise<void>;
 }) => {
-  const SongItemRow = ({
+  const   SongItemRow = ({
     song,
   }: PropsWithChildren & { song: SongWithVotes }) => {
     const songIndex = playlist.songs.page.findIndex((s) => s.id == song.id);
     const isBottom = songIndex >= playlist.songs.page.length - 1;
     const isTop = songIndex <= 0;
+
+    const lockIcon = (song.lockOrder === 1) ? <>&#128274;</> : <>&#128275;</>;
     const SongItemControls = ({ song }: { song: SongWithVotes }) => {
       return (
-        <div>
+        <div className="button-div">
           <SongAdminButton
             key={`button-remove-${song.id}`}
             onClick={async (evt) => {
@@ -93,26 +65,37 @@ const PlayListControls = ({
           >
             &darr;
           </SongAdminButton>
+          <SongAdminButton
+            key={`button-lock-${song.id}`}
+            disabled={song.lockOrder === 1}
+            onClick={async (evt) => {
+              evt.currentTarget.disabled = true;
+              await adminService.lockSong(song.id);
+              await refresh();
+            }}
+          >
+            {lockIcon}
+          </SongAdminButton>
         </div>
       );
     };
     return (
       //   TODO: the grid is messed up here again. Need to look at why.
       <>
-        <div aria-label={"song-item-row"} role={"row"}>
-          <SongPanel>{song.title}</SongPanel>
-          <RequestedBy>
+        <tr aria-label={"song-item-row"} role={"row"} >
+          <td>{song.title}</td>
+          <td>
             {song.voters.length > 0 ? song.voters[0].name : "unknown"}
-          </RequestedBy>
-          <div>{song.voteCount}</div>
-          <SongItemControls song={song} />
-        </div>
+          </td>
+          <td>{song.voteCount}</td>
+          <td><SongItemControls song={song} /></td>
+        </tr>
       </>
     );
   };
 
   const SongView = (song: SongWithVotes) => {
-    return <SongItemRow song={song} key={`song-item-row-${song.id}`} />;
+    return <SongItemRow song={song} key={`song-item-row-${song.id}`}/>;
   };
 
   return (
@@ -127,15 +110,19 @@ const PlayListControls = ({
         margin: "1vh",
       }}
     >
-      <SongsTitlePanel aria-label={"songs-title-panel"}>
-        <div>Song</div>
-        <div>Requested by</div>
-        <div>Votes</div>
-        <div></div>
-      </SongsTitlePanel>
-      <SongsPanel>
-        {playlist.songs.page.map((song) => SongView(song))}
-      </SongsPanel>
+      <table>
+        <thead>
+          <tr aria-label={"songs-title-panel"}>
+            <th>Song</th>
+            <th>Requested by</th>
+            <th>Votes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {playlist.songs.page.map((song) => SongView(song))}
+        </tbody>
+      </table>
     </div>
   );
 };
