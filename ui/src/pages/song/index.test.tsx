@@ -23,6 +23,7 @@ describe("the song page", () => {
         title: "Song 1",
         artistName: "The Artist",
         voteCount: 0,
+        lockOrder: 0,
         voters: [],
       };
       render(
@@ -51,6 +52,7 @@ describe("the song page", () => {
           title: "Title 1",
           artistName: "Artist 1",
           voteCount: 0,
+          lockOrder: 0,
           voters: [],
         });
       };
@@ -77,6 +79,7 @@ describe("the song page", () => {
           title: "Title 1",
           artistName: "Artist 1",
           voteCount: 0,
+          lockOrder: 0,
           voters: [],
         });
       };
@@ -110,6 +113,7 @@ describe("the song page", () => {
         title: "Title 1",
         artistName: "Artist 1",
         voteCount: 1,
+        lockOrder: 0,
         voters: [
           {
             id: "user123",
@@ -146,6 +150,7 @@ describe("the song page", () => {
         title: "Title 1",
         artistName: "Artist 1",
         voteCount: 1,
+        lockOrder: 0,
         voters: [
           {
             id: "user123",

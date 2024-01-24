@@ -13,42 +13,6 @@ const SongAdminButton = styled.button`
   min-width: 8vh;
 `;
 
-const SongsPanel = styled.div`
-  // display: grid;
-  justify-content: left;
-  grid-column-gap: 3vh;
-  // grid-template-columns: 1fr 1fr auto auto;
-  text-align: left;
-  overflow-y: scroll;
-  margin-top: 2vh;
-  height: 75%;
-`;
-
-const SongsTitlePanel = styled.div`
-  display: grid;
-  justify-content: left;
-  grid-column-gap: 3vh;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  text-align: left;
-  margin-top: 2dvh;
-  text-decoration: underline;
-`;
-
-const SongRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr auto auto;
-  grid-column-gap: 3vh;
-`;
-
-const SongPanel = styled.div`
-  text-align: left;
-  padding-left: 1vh;
-`;
-
-const RequestedBy = styled.div`
-  margin-left: 1vh;
-`;
-
 const PlayListControls = ({
   playlist,
   adminService,
@@ -64,6 +28,8 @@ const PlayListControls = ({
     const songIndex = playlist.songs.page.findIndex((s) => s.id == song.id);
     const isBottom = songIndex >= playlist.songs.page.length - 1;
     const isTop = songIndex <= 0;
+
+    const lockIcon = (song.lockOrder === 1) ? <>&#128274;</> : <>&#128275;</>;
     const SongItemControls = ({ song }: { song: SongWithVotes }) => {
       return (
         <div className="button-div">
@@ -98,6 +64,17 @@ const PlayListControls = ({
             }}
           >
             &darr;
+          </SongAdminButton>
+          <SongAdminButton
+            key={`button-lock-${song.id}`}
+            disabled={song.lockOrder === 1}
+            onClick={async (evt) => {
+              evt.currentTarget.disabled = true;
+              await adminService.lockSong(song.id);
+              await refresh();
+            }}
+          >
+            {lockIcon}
           </SongAdminButton>
         </div>
       );
@@ -134,13 +111,17 @@ const PlayListControls = ({
       }}
     >
       <table>
-        <tr aria-label={"songs-title-panel"}>
-          <th>Song</th>
-          <th>Requested by</th>
-          <th>Votes</th>
-          <th></th>
-        </tr>
+        <thead>
+          <tr aria-label={"songs-title-panel"}>
+            <th>Song</th>
+            <th>Requested by</th>
+            <th>Votes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
           {playlist.songs.page.map((song) => SongView(song))}
+        </tbody>
       </table>
     </div>
   );
