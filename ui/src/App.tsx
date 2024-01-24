@@ -138,7 +138,7 @@ function App() {
                     voteForSong={voteForSongFn}
                     currentUser={currentUser}
                     nav={navigator}
-                    voteMode={VoteModes.SINGLE_VOTE}
+                    voteMode={VoteModes.DOLLAR_VOTE}
                     submitDollarVoteForSong={submitDollarVoteForSongFn}
                   />
                 }
