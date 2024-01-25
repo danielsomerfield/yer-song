@@ -35,14 +35,17 @@ export const RequestTable = styled.table`
   }
 `;
 
+const ApproveButton = styled.button`
+  font-size: 2vh;
+`;
+
 export const VoteRequestRow = ({ request }: { request: SongRequest }) => {
   const action =
     request.status == RequestStatuses.PENDING_APPROVAL ? (
-      <button>Approve</button>
+      <ApproveButton>Approve</ApproveButton>
     ) : (
       <div>Approved</div>
     );
-  console.log(request);
   return (
     <tr aria-label={"dollar-vote-request"}>
       <td aria-label={"action"}>{action}</td>
@@ -54,6 +57,15 @@ export const VoteRequestRow = ({ request }: { request: SongRequest }) => {
     </tr>
   );
 };
+
+const RequestTableContainer = styled.div`
+  overflow: scroll;
+  max-height: 85%;
+  max-width: 100%;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+`;
 
 export const DollarVoteAdminPage = ({
   getSongRequests,
@@ -127,26 +139,28 @@ export const DollarVoteAdminPage = ({
         } else {
           return (
             <>
-              <RequestTable aria-label={"dollar-vote-request-table"}>
-                <thead role={"columnheader"}>
-                  <tr>
-                    <th>Action</th>
-                    <th>Amount</th>
-                    <th>Requested by</th>
-                    <th>Title</th>
-                    <th>Timestamp</th>
-                    <th>Request Id</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {loadStatus.data.page.map((sr) => (
-                    <VoteRequestRow
-                      key={sr.requestId}
-                      request={sr}
-                    ></VoteRequestRow>
-                  ))}
-                </tbody>
-              </RequestTable>
+              <RequestTableContainer className={"request-table-container"}>
+                <RequestTable aria-label={"dollar-vote-request-table"}>
+                  <thead role={"columnheader"}>
+                    <tr>
+                      <th>Action</th>
+                      <th>Amount</th>
+                      <th>Requested by</th>
+                      <th>Title</th>
+                      <th>Timestamp</th>
+                      <th>Request Id</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loadStatus.data.page.map((sr) => (
+                      <VoteRequestRow
+                        key={sr.requestId}
+                        request={sr}
+                      ></VoteRequestRow>
+                    ))}
+                  </tbody>
+                </RequestTable>
+              </RequestTableContainer>
             </>
           );
         }
@@ -162,9 +176,10 @@ export const DollarVoteAdminPage = ({
 };
 
 const Container = styled.div`
+  overflow: hidden;
   display: flex;
   justify-content: center;
-  margin-top: 3em;
+  height: 100%;
 `;
 
 const EmptyPanel = () => {

@@ -105,7 +105,6 @@ export const createAdminService = (
           };
         }) || [];
 
-      console.log("page", page);
       return {
         value: {
           page,

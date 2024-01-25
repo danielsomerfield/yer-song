@@ -48,6 +48,7 @@ export const createSongRequestsLambda = (dependencies: Dependencies) => {
               requestedBy: r.requestedBy,
               song: r.song,
               value: r.value,
+              status: r.status,
               timestamp: r.timestamp
                 .toUTC()
                 .toISO({ suppressMilliseconds: true }),
