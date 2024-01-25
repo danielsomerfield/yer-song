@@ -16,8 +16,12 @@ Feature: e2e
 #    And click('{Button}Browse')
     And waitFor('{div}Contemporary').click()
     And waitFor('{div}Holy').click()
-    And waitFor('{Button}Up vote').click()
-    And waitFor('{div}Your vote has been added')
+    And waitFor('{label}Request')
+## TODO: change default value to 11
+#    And input('input[name=requestValue]', 11)
+    And waitFor('{Button}Venmo').click()
+
+## TODO: accept vote on venmo monitor view
 
     Then click('{Button}Playlist')
     And waitFor('{div}Holy')
