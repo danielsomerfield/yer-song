@@ -42,15 +42,18 @@ const ApproveButton = styled.button`
 export const VoteRequestRow = ({
   request,
   adminService,
+  load,
 }: {
   request: SongRequest;
   adminService: AdminService;
+  load: () => Promise<void>;
 }) => {
   const action =
     request.status == RequestStatuses.PENDING_APPROVAL ? (
       <ApproveButton
-        onClick={async () => {
+        onClick={async (evt) => {
           try {
+            evt.currentTarget.disabled = true;
             await adminService.approveSongRequest({
               requestId: request.requestId, //TODO: should this be just `id`?
               songId: request.song.id,
@@ -60,6 +63,7 @@ export const VoteRequestRow = ({
             console.log(e);
             //TODO: show the toast error
           }
+          await load();
         }}
       >
         Approve
@@ -176,6 +180,7 @@ export const DollarVoteAdminPage = ({
                         key={sr.requestId}
                         request={sr}
                         adminService={adminService}
+                        load={load}
                       ></VoteRequestRow>
                     ))}
                   </tbody>

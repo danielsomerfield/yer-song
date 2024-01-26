@@ -42,6 +42,7 @@ describe("The dollar vote admin page", () => {
           <VoteRequestRow
             request={requests.request1}
             adminService={adminService}
+            load={fn()}
           />
         </tbody>
       </table>,
@@ -56,6 +57,7 @@ describe("The dollar vote admin page", () => {
           <VoteRequestRow
             request={requests.approvedRequest3}
             adminService={adminService}
+            load={fn()}
           />
         </tbody>
       </table>,
@@ -66,5 +68,6 @@ describe("The dollar vote admin page", () => {
     );
   });
 
-  // TODO: doesn't show data, but prompts admin login if not an admin
+  // TODO: test doesn't show data, but prompts admin login if not an admin
+  // TODO: test reloads on approve
 });
