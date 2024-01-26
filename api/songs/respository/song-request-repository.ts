@@ -82,10 +82,27 @@ export const createSongRequestRepository = (
         ":status": {
           S: RequestStatuses.PENDING_APPROVAL,
         },
+        ":voter": {
+          L: [
+            {
+              M: {
+                id: {
+                  S: voter.id,
+                },
+                name: {
+                  S: voter.name,
+                },
+              },
+            },
+          ],
+        },
+        ":empty": {
+          L: [],
+        },
       },
 
       UpdateExpression:
-        "SET requests.#id = :request, GSI2PK = if_not_exists(GSI2PK, :status)",
+        "SET requests.#id = :request, GSI2PK = if_not_exists(GSI2PK, :status), voters = list_append(if_not_exists(voters, :empty), :voter)",
       ExpressionAttributeNames: {
         "#id": requestId,
       },

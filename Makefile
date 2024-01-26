@@ -79,3 +79,7 @@ start-dependencies:
 
 storybook:
 	cd ui && npx storybook dev
+
+populate-dv-admin-sample-local:
+	  	aws --no-paginate --no-cli-pager dynamodb --endpoint-url http://localhost:4566 batch-write-item \
+	      --request-items file://./api/tables/requestQueue.sample.json;

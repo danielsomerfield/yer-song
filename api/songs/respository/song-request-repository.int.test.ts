@@ -71,6 +71,20 @@ describe("The song request repository", () => {
       GSI2PK: {
         S: "PENDING_APPROVAL",
       },
+      voters: {
+        L: [
+          {
+            M: {
+              id: {
+                S: voter1Id,
+              },
+              name: {
+                S: voter1Name,
+              },
+            },
+          },
+        ],
+      },
       requests: {
         M: {
           "request 1": {
@@ -216,8 +230,6 @@ describe("The song request repository", () => {
     expect(songRecord.Item?.["GSI2PK"].S).toEqual("ON_PLAYLIST");
     expect(songRecord.Item?.["voteCount"].N).toEqual(valueToSet.toString());
   });
-
-  // TODO: do we need to add voters? We'll have the approved requests and we don't need to prevent multiple votes...
 
   // TODO: Test that if the song or request doesn't exist, nothing is created
 });

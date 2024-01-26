@@ -41,7 +41,7 @@ export const createGetSongRequestsLambda = (dependencies: Dependencies) => {
     return generateResponseHeadersForDataResponse(
       {
         page: requests.page
-          .sort((a, b) => a.timestamp.toMillis() - b.timestamp.toMillis())
+          .sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis())
           .map((r) => {
             return {
               requestId: r.id,

@@ -1,0 +1,381 @@
+{
+  "song": [
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:dbcb889e-8128-457b-a56a-7a902d5304fa"
+          },
+          "SK": {
+            "S": "s:dbcb889e-8128-457b-a56a-7a902d5304fa"
+          },
+          "artistName": {
+            "S": "Lady Gaga: A Star is Born"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "GSI2PK": {
+            "S": "PENDING_APPROVAL"
+          },
+          "voters": {
+            "L": [
+              {
+                "M": {
+                  "id": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "name": {
+                    "S": "jojoadmin"
+                  }
+                }
+              }
+            ]
+          },
+          "requests": {
+            "M": {
+              "be0b6cfea316": {
+                "M": {
+                  "id": {
+                    "S": "be0b6cfea316"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-26T05:10:47.131Z"
+                  },
+                  "value": {
+                    "N": "6"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              }
+            }
+          },
+          "title": {
+            "S": "Always Remember Us This Way"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:7af8ba9d-2ce8-47a6-b7bc-b2eaebbf0b3b"
+          },
+          "SK": {
+            "S": "s:7af8ba9d-2ce8-47a6-b7bc-b2eaebbf0b3b"
+          },
+          "artistName": {
+            "S": "Main Theme"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "GSI2PK": {
+            "S": "ON_PLAYLIST"
+          },
+          "voters": {
+            "L": [
+              {
+                "M": {
+                  "id": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "name": {
+                    "S": "jojoadmin"
+                  }
+                }
+              }
+            ]
+          },
+          "requests": {
+            "M": {
+              "140d2753ea58": {
+                "M": {
+                  "id": {
+                    "S": "140d2753ea58"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-26T05:13:17.629Z"
+                  },
+                  "value": {
+                    "N": "10"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              }
+            }
+          },
+          "title": {
+            "S": "Game of Thrones"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:dbcfedf6-fc8b-4589-b371-aa09c5673f72"
+          },
+          "SK": {
+            "S": "s:dbcfedf6-fc8b-4589-b371-aa09c5673f72"
+          },
+          "artistName": {
+            "S": "Beach Boys"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "GSI2PK": {
+            "S": "ON_PLAYLIST"
+          },
+          "voters": {
+            "L": [
+              {
+                "M": {
+                  "id": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "name": {
+                    "S": "jojoadmin"
+                  }
+                }
+              }
+            ]
+          },
+          "requests": {
+            "M": {
+              "721c017f5054": {
+                "M": {
+                  "id": {
+                    "S": "721c017f5054"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-26T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "1111111": {
+                "M": {
+                  "id": {
+                    "S": "1111111"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-20T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "2222222": {
+                "M": {
+                  "id": {
+                    "S": "2222222"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-25T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "3333333": {
+                "M": {
+                  "id": {
+                    "S": "3333333"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-19T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "4444444": {
+                "M": {
+                  "id": {
+                    "S": "4444444"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-23T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "5555555": {
+                "M": {
+                  "id": {
+                    "S": "5555555"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-25T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "6666666": {
+                "M": {
+                  "id": {
+                    "S": "6666666"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-25T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "7777777": {
+                "M": {
+                  "id": {
+                    "S": "7777777"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-25T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              },
+              "8888888": {
+                "M": {
+                  "id": {
+                    "S": "8888888"
+                  },
+                  "status": {
+                    "S": "PENDING_APPROVAL"
+                  },
+                  "timestamp": {
+                    "S": "2024-01-25T05:13:47.032Z"
+                  },
+                  "value": {
+                    "N": "5"
+                  },
+                  "voterId": {
+                    "S": "u:32fdb2f2-d25d-4200-a2e6-31538efb3a62"
+                  },
+                  "voterName": {
+                    "S": "jojoadmin"
+                  }
+                }
+              }
+            }
+          },
+          "title": {
+            "S": "Wouldn’t It Be Nice"
+          }
+        }
+      }
+    }
+  ]
+}

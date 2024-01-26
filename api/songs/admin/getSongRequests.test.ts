@@ -19,7 +19,7 @@ describe("the dollar votes admin api", () => {
     id: "song1",
     title: "Song 1",
   };
-  const request1Timestamp = "2024-01-24T14:20:05Z";
+  const request1Timestamp = "2024-01-24T04:20:05Z";
   const request1: SongRequest = {
     id: "request1",
     requestedBy: user1,
@@ -29,7 +29,7 @@ describe("the dollar votes admin api", () => {
     timestamp: DateTime.fromISO(request1Timestamp).toUTC(),
   };
 
-  const request2Timestamp = "2024-01-24T04:20:05Z";
+  const request2Timestamp = "2024-01-24T14:20:05Z";
   const request2: SongRequest = {
     id: "request2",
     requestedBy: user1,
