@@ -29,8 +29,8 @@
     }
   ],
   "ProvisionedThroughput": {
-    "WriteCapacityUnits": 1,
-    "ReadCapacityUnits": 1
+    "WriteCapacityUnits": 100,
+    "ReadCapacityUnits": 1000
   },
   "GlobalSecondaryIndexes": [
     {
@@ -49,8 +49,8 @@
         "ProjectionType": "ALL"
       },
       "ProvisionedThroughput": {
-        "ReadCapacityUnits": 1,
-        "WriteCapacityUnits": 1
+        "ReadCapacityUnits": 250,
+        "WriteCapacityUnits": 25
       }
     },
     {
@@ -65,8 +65,8 @@
         "ProjectionType": "ALL"
       },
       "ProvisionedThroughput": {
-        "ReadCapacityUnits": 1,
-        "WriteCapacityUnits": 1
+        "ReadCapacityUnits": 250,
+        "WriteCapacityUnits": 25
       }
     }
   ]
