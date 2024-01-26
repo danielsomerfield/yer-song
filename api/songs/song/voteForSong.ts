@@ -9,7 +9,7 @@ export interface Vote {
   songId: string;
 }
 
-export interface SongRequest {
+export interface SongRequestInput {
   voter: User;
   songId: string;
   value: number;
@@ -18,7 +18,7 @@ export interface SongRequest {
 export interface Dependencies {
   getIdentityFromRequest: (event: APIGatewayProxyEvent) => Maybe<User>;
   insertVote(vote: Vote): Promise<void>;
-  insertSongRequest(request: SongRequest): Promise<{ requestId: string }>;
+  insertSongRequest(request: SongRequestInput): Promise<{ requestId: string }>;
   allowedOrigins: Set<string>;
   voteMode: () => VoteMode;
 }

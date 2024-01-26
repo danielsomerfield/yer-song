@@ -136,48 +136,6 @@ export const SongView = ({
     <div></div>
   );
 
-  const ButtonForVoteMode = ({
-    submitDollarVoteForSong,
-  }: {
-    submitDollarVoteForSong: SubmitDollarVoteForSong;
-  }) => {
-    // TODO: this is a bit hacky. Vote modes should probably define a range of behaviors intrinsically.
-    //  But it's good enough for now.
-    if (voteMode == VoteModes.SINGLE_VOTE) {
-      return (
-        <AddOrVoteButtonPanel
-          song={song}
-          voteForSong={voteForSong}
-          isOnPlaylist={isOnPlaylist}
-          currentUser={currentUser}
-          showToast={showToast}
-        />
-      );
-    } else if (voteMode == VoteModes.DOLLAR_VOTE) {
-      return (
-        <SubmitDollarVotePanel
-          onSubmit={async (vote) => {
-            const result = await submitDollarVoteForSong({
-              songId: song.id,
-              value: vote.value,
-            });
-
-            const note = encodeURIComponent(
-              `Song: ${song.title} - RequestId: ${result.requestId} `,
-            );
-            window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=daniel@redwinewintifish.org&amount=${vote.value}&note=${note}`;
-          }}
-        />
-      );
-    } else {
-      return (
-        <div>
-          {/*    This means that a bad vote mode was returned. Presumably client and server code are out of sync */}
-        </div>
-      );
-    }
-  };
-
   return (
     <SongContainer>
       <Song className={"Song"}>
@@ -189,11 +147,79 @@ export const SongView = ({
         </ArtistName>
       </Song>
       <div>
-        <ButtonForVoteMode submitDollarVoteForSong={submitDollarVoteForSong} />
+        {/*
+          TODO: this is a gnarly pattern. Doing it temporarily because
+              the nested component definition is messing up the state on refresh.
+              Will replace this with shared state or subcomponents.
+
+        */}
+        <ButtonForVoteMode
+          submitDollarVoteForSong={submitDollarVoteForSong}
+          voteMode={voteMode}
+          song={song}
+          voteForSong={voteForSong}
+          isOnPlaylist={isOnPlaylist}
+          currentUser={currentUser}
+          showToast={showToast}
+        />
       </div>
       {onList}
     </SongContainer>
   );
+};
+
+const ButtonForVoteMode = ({
+  submitDollarVoteForSong,
+  voteMode,
+  song,
+  voteForSong,
+  isOnPlaylist,
+  currentUser,
+  showToast,
+}: {
+  submitDollarVoteForSong: SubmitDollarVoteForSong;
+  voteMode: VoteMode;
+  song: SongWithVotes;
+  voteForSong: VoteForSong;
+  isOnPlaylist: boolean;
+  currentUser: CurrentUser;
+  showToast: () => void;
+}) => {
+  // TODO: this is a bit hacky. Vote modes should probably define a range of behaviors intrinsically.
+  //  But it's good enough for now.
+  if (voteMode == VoteModes.SINGLE_VOTE) {
+    return (
+      <AddOrVoteButtonPanel
+        song={song}
+        voteForSong={voteForSong}
+        isOnPlaylist={isOnPlaylist}
+        currentUser={currentUser}
+        showToast={showToast}
+      />
+    );
+  } else if (voteMode == VoteModes.DOLLAR_VOTE) {
+    return (
+      <SubmitDollarVotePanel
+        onSubmit={async (vote) => {
+          const result = await submitDollarVoteForSong({
+            songId: song.id,
+            value: vote.value,
+          });
+
+          const note = encodeURIComponent(
+            `Song: ${song.title} - RequestId: ${result.requestId} `,
+          );
+          window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=daniel@redwinewintifish.org&amount=${vote.value}&note=${note}`;
+        }}
+      />
+    );
+  } else {
+    return (
+      <div>
+        {/*    This means that a bad vote mode was returned. Presumably client and server code are out of sync */}
+      </div>
+    );
+  }
 };
 
 const SongNotFound = () => {

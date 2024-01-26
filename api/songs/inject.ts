@@ -8,7 +8,6 @@ import {
   createGenerateToken,
   createGetIdentityFromRequest,
 } from "./authz/token";
-import { User } from "./domain/user";
 import { createValidateAdminUser } from "./admin/validate";
 import { VoteModes } from "./song/voteForSong";
 import { createSongRequestRepository } from "./respository/song-request-repository";
@@ -98,5 +97,8 @@ export const getAppDependencies = (
     // TODO: make this configurable
     voteMode: () => VoteModes.DOLLAR_VOTE,
     insertSongRequest: songRequestRepository.addSongRequest,
+    findAllSongRequests: songRequestRepository.findAllSongRequests,
+    insertLock: songsRepository.addLockToSong,
+    approveRequest: songRequestRepository.approveSongRequest,
   };
 };

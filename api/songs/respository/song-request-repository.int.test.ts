@@ -2,8 +2,11 @@ import { beforeEach, describe, it } from "@jest/globals";
 import { afterEach } from "node:test";
 import { Dynamo, startDynamo } from "./testutils";
 import { createSongRequestRepository } from "./song-request-repository";
-import { Songs, Users } from "./sampledata";
+import { Songs, SongsWithRequests, Users } from "./sampledata";
 import { DateTime } from "luxon";
+import { Approval } from "../admin/approveSongRequest";
+import { RequestStatuses } from "../admin/songRequests";
+import { createSongRepository } from "./song-repository";
 
 describe("The song request repository", () => {
   let dynamo: Dynamo;
@@ -12,6 +15,8 @@ describe("The song request repository", () => {
     dynamo = await startDynamo();
     await dynamo.client().putItem(Songs.song1);
     await dynamo.client().putItem(Songs.song2);
+    await dynamo.client().putItem(SongsWithRequests.song7);
+    await dynamo.client().putItem(SongsWithRequests.song8);
   }, 60 * 1000);
 
   afterEach(async () => {
@@ -31,13 +36,13 @@ describe("The song request repository", () => {
   const now = DateTime.fromISO(nowString);
 
   it("stores new first song request in pending status", async () => {
-    const tagsRepository = createSongRequestRepository(
+    const repository = createSongRequestRepository(
       dynamo.client(),
       () => requestId,
       () => now
     );
 
-    await tagsRepository.addSongRequest({
+    await repository.addSongRequest({
       songId: song1Id,
       voter: {
         id: voter1Id,
@@ -55,6 +60,7 @@ describe("The song request repository", () => {
     });
 
     expect(item.Item).toBeDefined();
+
     expect(item.Item).toMatchObject({
       PK: {
         S: song1Id,
@@ -65,9 +71,23 @@ describe("The song request repository", () => {
       GSI2PK: {
         S: "PENDING_APPROVAL",
       },
-      requests: {
+      voters: {
         L: [
           {
+            M: {
+              id: {
+                S: voter1Id,
+              },
+              name: {
+                S: voter1Name,
+              },
+            },
+          },
+        ],
+      },
+      requests: {
+        M: {
+          "request 1": {
             M: {
               id: {
                 S: requestId,
@@ -78,7 +98,7 @@ describe("The song request repository", () => {
               voterName: {
                 S: voter1Name,
               },
-              requestStatus: {
+              status: {
                 S: "PENDING_APPROVAL",
               },
               value: {
@@ -89,19 +109,19 @@ describe("The song request repository", () => {
               },
             },
           },
-        ],
+        },
       },
     });
   });
 
   it("leaves the song in ON_PLAYLIST status", async () => {
-    const tagsRepository = createSongRequestRepository(
+    const repository = createSongRequestRepository(
       dynamo.client(),
       () => requestId,
       () => now
     );
 
-    await tagsRepository.addSongRequest({
+    await repository.addSongRequest({
       songId: song2Id,
       voter: {
         id: voter1Id,
@@ -130,8 +150,8 @@ describe("The song request repository", () => {
         S: "ON_PLAYLIST",
       },
       requests: {
-        L: [
-          {
+        M: {
+          "request 1": {
             M: {
               id: {
                 S: requestId,
@@ -142,7 +162,7 @@ describe("The song request repository", () => {
               voterName: {
                 S: voter1Name,
               },
-              requestStatus: {
+              status: {
                 S: "PENDING_APPROVAL",
               },
               value: {
@@ -153,8 +173,63 @@ describe("The song request repository", () => {
               },
             },
           },
-        ],
+        },
       },
     });
   });
+
+  it("fetches all song requests from songs", async () => {
+    const repository = createSongRequestRepository(
+      dynamo.client(),
+      () => requestId,
+      () => now
+    );
+
+    const requests = await repository.findAllSongRequests();
+    expect(requests.page.length).toEqual(3);
+    expect(requests.page.map((r) => r.id).sort()).toMatchObject(
+      [
+        SongsWithRequests.song7.Item.requests.M["Song7Request1"].M.id.S,
+        SongsWithRequests.song7.Item.requests.M["Song7Request2"].M.id.S,
+        SongsWithRequests.song8.Item.requests.M["Song8Request1"].M.id.S,
+      ].sort()
+    );
+  });
+
+  it("approves a request, adding it to the playlist with expected value", async () => {
+    const repository = createSongRequestRepository(
+      dynamo.client(),
+      () => requestId,
+      () => now
+    );
+    const requestToApproveId =
+      SongsWithRequests.song7.Item.requests.M["Song7Request1"].M.id.S;
+    const requestToApproveSongId = SongsWithRequests.song7.Item.PK.S;
+    const valueToSet = 3;
+
+    const approval: Approval = {
+      requestId: requestToApproveId,
+      songId: requestToApproveSongId,
+      value: valueToSet,
+    };
+    await repository.approveSongRequest(approval);
+
+    const requests = await repository.findAllSongRequests();
+    const request = requests.page.find((r) => r.id == requestToApproveId);
+    expect(request).toBeDefined();
+    expect(request?.status).toEqual(RequestStatuses.APPROVED);
+
+    const songId = request!.song.id;
+    const songRecord = await dynamo.client().getItem({
+      TableName: "song",
+      Key: {
+        PK: { S: songId },
+        SK: { S: songId },
+      },
+    });
+    expect(songRecord.Item?.["GSI2PK"].S).toEqual("ON_PLAYLIST");
+    expect(songRecord.Item?.["voteCount"].N).toEqual(valueToSet.toString());
+  });
+
+  // TODO: Test that if the song or request doesn't exist, nothing is created
 });

@@ -45,8 +45,11 @@ export const SongIds = {
   song1Id: `s:song1`,
   song2Id: `s:song2`,
   song3Id: `s:song3`,
-  song4Id: 's:song4',
-  song5Id: 's:song5',
+  song4Id: "s:song4",
+  song5Id: "s:song5",
+  song6Id: "s:song6",
+  song7Id: "s:song7",
+  song8Id: "s:song8",
 };
 
 export const GenreIds = {
@@ -71,6 +74,9 @@ export const Songs = {
       },
       GSI1PK: {
         S: GenreIds.genre1,
+      },
+      requests: {
+        M: {},
       },
     },
   },
@@ -100,9 +106,12 @@ export const Songs = {
         S: "ON_PLAYLIST",
       },
       voters: { L: [Users.user2] },
+      requests: {
+        M: {},
+      },
     },
   },
-  
+
   song3: {
     TableName: "song",
     Item: {
@@ -122,6 +131,9 @@ export const Songs = {
         N: "4",
       },
       voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      requests: {
+        M: {},
+      },
       GSI1PK: {
         S: GenreIds.genre1,
       },
@@ -150,9 +162,12 @@ export const Songs = {
         N: "2",
       },
       lockOrder: {
-        N: "2"
+        N: "2",
       },
       voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      requests: {
+        M: {},
+      },
       GSI1PK: {
         S: GenreIds.genre1,
       },
@@ -181,14 +196,144 @@ export const Songs = {
         N: "2",
       },
       lockOrder: {
-        N: "1"
+        N: "1",
       },
       voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      requests: {
+        M: {},
+      },
       GSI1PK: {
         S: GenreIds.genre1,
       },
       GSI2PK: {
         S: "ON_PLAYLIST",
+      },
+    },
+  },
+};
+
+export const SongsWithRequests = {
+  song7: {
+    TableName: "song",
+    Item: {
+      PK: {
+        S: SongIds.song7Id,
+      },
+      SK: {
+        S: SongIds.song7Id,
+      },
+      title: {
+        S: "Song 7",
+      },
+      artistName: {
+        S: "Artist 7",
+      },
+      GSI7PK: {
+        S: GenreIds.genre1,
+      },
+      GSI2PK: {
+        S: "PENDING_APPROVAL",
+      },
+      requests: {
+        M: {
+          Song7Request1: {
+            M: {
+              id: {
+                S: "Song7Request1",
+              },
+              voterId: {
+                S: Users.user2.M.id.S,
+              },
+              voterName: {
+                S: Users.user2.M.name.S,
+              },
+              status: {
+                S: "PENDING_APPROVAL",
+              },
+              value: {
+                N: "7",
+              },
+              timestamp: {
+                S: "2024-07-22T20:77:00Z",
+              },
+            },
+          },
+          Song7Request2: {
+            M: {
+              id: {
+                S: "Song7Request2",
+              },
+              voterId: {
+                S: Users.user2.M.id.S,
+              },
+              voterName: {
+                S: Users.user2.M.name.S,
+              },
+              status: {
+                S: "APPROVED",
+              },
+              value: {
+                N: "2",
+              },
+              timestamp: {
+                S: "2024-07-22T79:07:00Z",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  song8: {
+    TableName: "song",
+    Item: {
+      PK: {
+        S: SongIds.song8Id,
+      },
+      SK: {
+        S: SongIds.song8Id,
+      },
+      title: {
+        S: "Song 8",
+      },
+      artistName: {
+        S: "Artist 2",
+      },
+      voteCount: {
+        N: "1",
+      },
+      GSI1PK: {
+        S: GenreIds.genre2,
+      },
+      GSI2PK: {
+        S: "ON_PLAYLIST",
+      },
+      requests: {
+        M: {
+          Song8Request1: {
+            M: {
+              id: {
+                S: "Song8Request1",
+              },
+              voterId: {
+                S: Users.user2.M.id.S,
+              },
+              voterName: {
+                S: Users.user2.M.name.S,
+              },
+              status: {
+                S: "PENDING_APPROVAL",
+              },
+              value: {
+                N: "2",
+              },
+              timestamp: {
+                S: "2028-01-22T22:33:00Z",
+              },
+            },
+          },
+        },
       },
     },
   },

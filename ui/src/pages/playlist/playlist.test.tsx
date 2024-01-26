@@ -56,6 +56,7 @@ describe("the playlist page", () => {
               voters: [],
               artistName: "???",
               voteCount: 0,
+              lockOrder: 0,
             },
           ],
         },

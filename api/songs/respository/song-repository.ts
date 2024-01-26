@@ -127,8 +127,8 @@ export const createSongRepository = (client: DynamoDB) => {
 
     const orderByProperties = (s1: Song | undefined, s2: Song | undefined) => {
       if (s1?.lockOrder || s2?.lockOrder) {
-        return ((s1?.lockOrder || Infinity) - (s2?.lockOrder || Infinity));
-      } 
+        return (s1?.lockOrder || Infinity) - (s2?.lockOrder || Infinity);
+      }
       return (s2?.voteCount || 0) - (s1?.voteCount || 0);
     };
 
@@ -176,6 +176,7 @@ export const createSongRepository = (client: DynamoDB) => {
       UpdateExpression:
         "SET voteCount = if_not_exists(voteCount, :zero) + :increment, GSI2PK = :playlist",
     });
+    // TODO: this should be combined with the above so you don't end up with partial updates.
     await client.updateItem({
       TableName: "song",
       Key: {
@@ -228,11 +229,38 @@ export const createSongRepository = (client: DynamoDB) => {
         ":voteCount": {
           N: "0",
         },
+        ":lockOrder": {
+          N: "0",
+        },
       },
-      UpdateExpression: "SET voteCount = :voteCount REMOVE GSI2PK, voters",
+      UpdateExpression:
+        "SET voteCount = :voteCount, lockOrder = :lockOrder REMOVE GSI2PK, voters",
     });
-
     // throw "NYI: need to remove votes";
+  };
+
+  const addLockToSong = async (id: string): Promise<void> => {
+    await client.updateItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: id,
+        },
+        SK: {
+          S: id,
+        },
+      },
+      ReturnValues: "UPDATED_NEW",
+      ExpressionAttributeValues: {
+        ":one": {
+          N: "1",
+        },
+        ":playlist": {
+          S: "ON_PLAYLIST",
+        },
+      },
+      UpdateExpression: "SET lockOrder = :one, GSI2PK = :playlist",
+    });
   };
 
   return {
@@ -241,5 +269,6 @@ export const createSongRepository = (client: DynamoDB) => {
     findSongsWithVotes,
     addVoteToSong,
     clearVotes,
+    addLockToSong,
   };
 };

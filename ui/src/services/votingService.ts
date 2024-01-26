@@ -31,7 +31,6 @@ export const createDollarVoteForSong = (
       httpClient,
     );
     const postResult = await post(vote);
-    console.log("postResult", postResult);
     return postResult;
   };
 };

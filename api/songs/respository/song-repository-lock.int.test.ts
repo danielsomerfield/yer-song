@@ -26,4 +26,20 @@ describe("The song repository with lock order", () => {
     expect(matches.page[1].id).toBe(SongIds.song4Id);
     expect(matches.page[2].id).toBe(SongIds.song3Id);
     });
+
+    it("clears lockOrder when song is removed from playlist", async () => {
+      const songRepository = createSongRepository(dynamo.client());
+      await songRepository.clearVotes(SongIds.song5Id);
+
+      const songRecord = await dynamo.client().getItem({
+        Key: {
+          PK: Songs.song5.Item.PK,
+          SK: Songs.song5.Item.SK,
+        },
+        TableName: "song",
+      });
+
+      expect(songRecord).toBeDefined();
+      expect(songRecord.Item?.["lockOrder"].N).toEqual("0");
+    });
 });

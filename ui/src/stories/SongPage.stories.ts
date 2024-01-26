@@ -31,6 +31,7 @@ const baseConfiguration = {
       title: "Yer Song",
       artistName: "The Somerfields",
       voteCount: 0,
+      lockOrder: 0,
       voters: [],
     };
   },

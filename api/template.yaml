@@ -170,6 +170,33 @@ Resources:
             - Read
             - Write
 
+  LockSongFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lockSong
+      Events:
+        Song:
+          Type: Api
+          Properties:
+            Path: /lock/songs/{songId}
+            Method: post
+            RestApiId: !Ref SongByIdAPI
+      Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+    Connectors:
+      ReadFromSongs:
+        Properties:
+          Destination:
+            Id: SongTable
+          Permissions:
+            - Read
+            - Write
+
   RegisterUserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -250,6 +277,58 @@ Resources:
           Permissions:
             - Read
 
+  GetSongRequests:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.getSongRequests
+      Events:
+        SongQuery:
+          Type: Api
+          Properties:
+            Path: /admin/songRequests
+            Method: get
+            RestApiId: !Ref SongByIdAPI
+      Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+    Connectors:
+      ReadFromSongs:
+        Properties:
+          Destination:
+            Id: SongTable
+          Permissions:
+            - Read
+
+  ApproveSongRequest:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.approveSongRequest
+      Events:
+        SongQuery:
+          Type: Api
+          Properties:
+            Path: /admin/songRequest/approval
+            Method: post
+            RestApiId: !Ref SongByIdAPI
+      Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+    Connectors:
+      ReadFromSongs:
+        Properties:
+          Destination:
+            Id: SongTable
+          Permissions:
+            - Read
+            - Write
 
 
   # Dependencies
