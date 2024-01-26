@@ -1,643 +1,652 @@
 {
-  "song": [
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "t:genre"
-          },
-          "SK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "entityType": {
-            "S": "tag"
-          },
-          "tag": {
-            "S": "genre:Movie, TV, & Stage"
-          }
+    "song": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "t:genre"
+                    },
+                    "SK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "entityType": {
+                        "S": "tag"
+                    },
+                    "tag": {
+                        "S": "genre:Classic Pop & Rock (Last century)"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "t:genre"
+                    },
+                    "SK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "entityType": {
+                        "S": "tag"
+                    },
+                    "tag": {
+                        "S": "genre:Contemporary (This century)"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "t:genre"
+                    },
+                    "SK": {
+                        "S": "t:genre:MovieTVStage"
+                    },
+                    "entityType": {
+                        "S": "tag"
+                    },
+                    "tag": {
+                        "S": "genre:Movie, TV, and Stage"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:758d58a3-e757-424f-bbe6-3e6b845ff3d7"
+                    },
+                    "SK": {
+                        "S": "s:758d58a3-e757-424f-bbe6-3e6b845ff3d7"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Across the Universe"
+                    },
+                    "artistName": {
+                        "S": "Beatles"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:98ff7d15-aec2-42f8-932e-d4f66c9ec6fc"
+                    },
+                    "SK": {
+                        "S": "s:98ff7d15-aec2-42f8-932e-d4f66c9ec6fc"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "All My Life"
+                    },
+                    "artistName": {
+                        "S": "K-Ci & JoJo"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:2ef09553-f11e-4490-902a-3bfea10e8022"
+                    },
+                    "SK": {
+                        "S": "s:2ef09553-f11e-4490-902a-3bfea10e8022"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "All My Loving"
+                    },
+                    "artistName": {
+                        "S": "Beatles"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:a586ed75-fcbf-4958-8994-4da23010ddd4"
+                    },
+                    "SK": {
+                        "S": "s:a586ed75-fcbf-4958-8994-4da23010ddd4"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "All You Need Is Love"
+                    },
+                    "artistName": {
+                        "S": "Beatles"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:043d387e-8eee-42dd-9077-981a1dfbdd4f"
+                    },
+                    "SK": {
+                        "S": "s:043d387e-8eee-42dd-9077-981a1dfbdd4f"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "And I Love Her"
+                    },
+                    "artistName": {
+                        "S": "Beatles"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:3d755782-4ab0-4d23-ad65-a817bbd3c345"
+                    },
+                    "SK": {
+                        "S": "s:3d755782-4ab0-4d23-ad65-a817bbd3c345"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "And Then He Kissed Me"
+                    },
+                    "artistName": {
+                        "S": "The Crystals"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:ffab7a33-e724-4eaa-8250-a6f714a175d4"
+                    },
+                    "SK": {
+                        "S": "s:ffab7a33-e724-4eaa-8250-a6f714a175d4"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Annie\u2019s Song"
+                    },
+                    "artistName": {
+                        "S": "John Denver"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:479c42cc-a336-49ff-8091-064cb87675c2"
+                    },
+                    "SK": {
+                        "S": "s:479c42cc-a336-49ff-8091-064cb87675c2"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Billie Jean"
+                    },
+                    "artistName": {
+                        "S": "Michael Jackson"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:726a4997-63f0-4002-a430-5db6c12a2000"
+                    },
+                    "SK": {
+                        "S": "s:726a4997-63f0-4002-a430-5db6c12a2000"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Bitter Sweet Symphony"
+                    },
+                    "artistName": {
+                        "S": "The Verve"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:fd5740fe-c26b-47c2-a7bc-a317dcbd52cd"
+                    },
+                    "SK": {
+                        "S": "s:fd5740fe-c26b-47c2-a7bc-a317dcbd52cd"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Blackbird"
+                    },
+                    "artistName": {
+                        "S": "Beatles"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:7841e28b-5087-4fe8-b1a1-a36dc1460e9b"
+                    },
+                    "SK": {
+                        "S": "s:7841e28b-5087-4fe8-b1a1-a36dc1460e9b"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Bohemian Rhapsody"
+                    },
+                    "artistName": {
+                        "S": "Queen"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:d30faf54-07a5-44da-866c-81db8e541d3c"
+                    },
+                    "SK": {
+                        "S": "s:d30faf54-07a5-44da-866c-81db8e541d3c"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Can't Help Falling In Love"
+                    },
+                    "artistName": {
+                        "S": "Elvis"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:3b033223-268a-4646-a608-9eb4743a7a18"
+                    },
+                    "SK": {
+                        "S": "s:3b033223-268a-4646-a608-9eb4743a7a18"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Can\u2019t Take My Eyes Off of You"
+                    },
+                    "artistName": {
+                        "S": "Frankie Valli"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:1ca2a2b5-6437-445f-8b8f-ce80f4c15d51"
+                    },
+                    "SK": {
+                        "S": "s:1ca2a2b5-6437-445f-8b8f-ce80f4c15d51"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Changes"
+                    },
+                    "artistName": {
+                        "S": "David Bowie"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:6ea91389-67d9-4d3e-88d1-9fb72c69966f"
+                    },
+                    "SK": {
+                        "S": "s:6ea91389-67d9-4d3e-88d1-9fb72c69966f"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Come and Get Your Love"
+                    },
+                    "artistName": {
+                        "S": "Redbone"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:0a73f49d-3738-4752-bffd-c2c97c8e4c72"
+                    },
+                    "SK": {
+                        "S": "s:0a73f49d-3738-4752-bffd-c2c97c8e4c72"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Crazy Little Thing Called Love"
+                    },
+                    "artistName": {
+                        "S": "Queen"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:bfbd7452-3f23-4c13-99ae-c8d064c218db"
+                    },
+                    "SK": {
+                        "S": "s:bfbd7452-3f23-4c13-99ae-c8d064c218db"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Crazy Love"
+                    },
+                    "artistName": {
+                        "S": "Van Morrison"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:a7ae4735-349e-4711-969a-8edc62da2a80"
+                    },
+                    "SK": {
+                        "S": "s:a7ae4735-349e-4711-969a-8edc62da2a80"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Dancing in the Moonlight"
+                    },
+                    "artistName": {
+                        "S": "King Harvest"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:3f5ad5e0-716e-4505-8e46-68b308c873a1"
+                    },
+                    "SK": {
+                        "S": "s:3f5ad5e0-716e-4505-8e46-68b308c873a1"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Dancing Queen"
+                    },
+                    "artistName": {
+                        "S": "Abba"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:548f54e8-c76a-4009-a941-46e5e4cf1206"
+                    },
+                    "SK": {
+                        "S": "s:548f54e8-c76a-4009-a941-46e5e4cf1206"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Don't Stop Believin'"
+                    },
+                    "artistName": {
+                        "S": "Journey"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:3775bee0-35e9-4964-9650-e81b18fdc234"
+                    },
+                    "SK": {
+                        "S": "s:3775bee0-35e9-4964-9650-e81b18fdc234"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Eleanor Rigby"
+                    },
+                    "artistName": {
+                        "S": "Beatles"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:108acc76-cd8e-486e-b02f-ce602b34eaf4"
+                    },
+                    "SK": {
+                        "S": "s:108acc76-cd8e-486e-b02f-ce602b34eaf4"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:ClassicPopRock"
+                    },
+                    "title": {
+                        "S": "Faithfully"
+                    },
+                    "artistName": {
+                        "S": "Journey"
+                    }
+                }
+            }
         }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "t:genre"
-          },
-          "SK": {
-            "S": "t:genre:ClassicPopRock"
-          },
-          "entityType": {
-            "S": "tag"
-          },
-          "tag": {
-            "S": "genre:Classic Pop & Rock"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "t:genre"
-          },
-          "SK": {
-            "S": "t:genre:JazzStandardsOldLoveSongs"
-          },
-          "entityType": {
-            "S": "tag"
-          },
-          "tag": {
-            "S": "genre:Jazz Standards and Old Love Songs"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "t:genre"
-          },
-          "SK": {
-            "S": "t:genre:Contemporary"
-          },
-          "entityType": {
-            "S": "tag"
-          },
-          "tag": {
-            "S": "genre:Contemporary"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:843c1a6f-2e60-4e2b-8fa3-e8a144b9c7f1"
-          },
-          "SK": {
-            "S": "s:843c1a6f-2e60-4e2b-8fa3-e8a144b9c7f1"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Accidentally in Love"
-          },
-          "artistName": {
-            "S": "Counting Crows: Shrek 2"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:f288f98c-f331-42fb-af01-b42d280ed75b"
-          },
-          "SK": {
-            "S": "s:f288f98c-f331-42fb-af01-b42d280ed75b"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "All I Ask of You"
-          },
-          "artistName": {
-            "S": "Phantom of the Opera"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:dbcb889e-8128-457b-a56a-7a902d5304fa"
-          },
-          "SK": {
-            "S": "s:dbcb889e-8128-457b-a56a-7a902d5304fa"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Always Remember Us This Way"
-          },
-          "artistName": {
-            "S": "Lady Gaga: A Star is Born"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:29b8e9d3-f6aa-461b-aff0-ad7f65bc6c41"
-          },
-          "SK": {
-            "S": "s:29b8e9d3-f6aa-461b-aff0-ad7f65bc6c41"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Baby Shark"
-          },
-          "artistName": {
-            "S": "Silly Kid’s Singalong Song"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:7a9fcfe3-7754-494a-8be1-399f3bf9a820"
-          },
-          "SK": {
-            "S": "s:7a9fcfe3-7754-494a-8be1-399f3bf9a820"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Be Our Guest"
-          },
-          "artistName": {
-            "S": "Beauty & The Beast"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:9017a121-f118-40ba-91f3-da578bde4d6e"
-          },
-          "SK": {
-            "S": "s:9017a121-f118-40ba-91f3-da578bde4d6e"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Bella Notte"
-          },
-          "artistName": {
-            "S": "Lady & The Tramp"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:7e7a0b5d-565e-4480-b84f-cbbde379d153"
-          },
-          "SK": {
-            "S": "s:7e7a0b5d-565e-4480-b84f-cbbde379d153"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Can You Feel the Love Tonight"
-          },
-          "artistName": {
-            "S": "Lion King"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:9980e949-f04c-48e8-a918-13d56c6d9b10"
-          },
-          "SK": {
-            "S": "s:9980e949-f04c-48e8-a918-13d56c6d9b10"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Cantina Band"
-          },
-          "artistName": {
-            "S": "Star Wars IV: A New Hope"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:33ddf2d7-7699-4d26-b1d2-7bb2f3db79f1"
-          },
-          "SK": {
-            "S": "s:33ddf2d7-7699-4d26-b1d2-7bb2f3db79f1"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Concerning Hobbits"
-          },
-          "artistName": {
-            "S": "Lord of the Rings"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:27338ac6-9103-4a3e-afb6-02bb2369cb8b"
-          },
-          "SK": {
-            "S": "s:27338ac6-9103-4a3e-afb6-02bb2369cb8b"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Edelweiss"
-          },
-          "artistName": {
-            "S": "The Sound of Music"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:ed2bbfc1-c4a5-4b3b-b1bc-c566cb667437"
-          },
-          "SK": {
-            "S": "s:ed2bbfc1-c4a5-4b3b-b1bc-c566cb667437"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Forces of Attraction"
-          },
-          "artistName": {
-            "S": "The Theory of Everything"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:88a6b50b-bfa4-4884-9f48-cf99b22ab24c"
-          },
-          "SK": {
-            "S": "s:88a6b50b-bfa4-4884-9f48-cf99b22ab24c"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "From Now On"
-          },
-          "artistName": {
-            "S": "The Greatest Showman"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:280987a7-0953-41f8-9465-25fa6eb5d7e3"
-          },
-          "SK": {
-            "S": "s:280987a7-0953-41f8-9465-25fa6eb5d7e3"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Gabriele’s Oboe aka Nella Fantasia"
-          },
-          "artistName": {
-            "S": "The Mission – Ennio Morricone"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:7af8ba9d-2ce8-47a6-b7bc-b2eaebbf0b3b"
-          },
-          "SK": {
-            "S": "s:7af8ba9d-2ce8-47a6-b7bc-b2eaebbf0b3b"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Game of Thrones"
-          },
-          "artistName": {
-            "S": "Main Theme"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:3d2d71ae-2876-440e-a697-fdfb58bae4a4"
-          },
-          "SK": {
-            "S": "s:3d2d71ae-2876-440e-a697-fdfb58bae4a4"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Happy"
-          },
-          "artistName": {
-            "S": "Despicable Me 2 - Pharrell"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:45c374cc-33c1-40bf-bea9-ec312a974fcb"
-          },
-          "SK": {
-            "S": "s:45c374cc-33c1-40bf-bea9-ec312a974fcb"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "How Far I’ll Go"
-          },
-          "artistName": {
-            "S": "Moana"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:31ab3cbc-d007-485e-8939-7cb49d5fe00e"
-          },
-          "SK": {
-            "S": "s:31ab3cbc-d007-485e-8939-7cb49d5fe00e"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "I Dreamed a Dream"
-          },
-          "artistName": {
-            "S": "Les Miserables"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:67d9e4b3-c304-4d86-a400-a148fc575ee4"
-          },
-          "SK": {
-            "S": "s:67d9e4b3-c304-4d86-a400-a148fc575ee4"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "I See the Light"
-          },
-          "artistName": {
-            "S": "Tangled"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:6ca5bb3b-7be7-499f-bbae-bc8318a91f94"
-          },
-          "SK": {
-            "S": "s:6ca5bb3b-7be7-499f-bbae-bc8318a91f94"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Ice Dance"
-          },
-          "artistName": {
-            "S": "Edward Scissorhands"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:1e094a3f-246a-44a3-bdb5-98944b4e45e8"
-          },
-          "SK": {
-            "S": "s:1e094a3f-246a-44a3-bdb5-98944b4e45e8"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "I’m Kissing You"
-          },
-          "artistName": {
-            "S": "Romeo and Juliet - Des’ree"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "PK": {
-            "S": "s:f88180f0-5f21-4540-91a0-d8f20d3f5dc5"
-          },
-          "SK": {
-            "S": "s:f88180f0-5f21-4540-91a0-d8f20d3f5dc5"
-          },
-          "entityType": {
-            "S": "song"
-          },
-          "requests": {
-            "M": {}
-          },
-          "GSI1PK": {
-            "S": "t:genre:MovieTVStage"
-          },
-          "title": {
-            "S": "Journey"
-          },
-          "artistName": {
-            "S": "Destiny 2 videogame"
-          }
-        }
-      }
-    }
-  ]
+    ]
 }
