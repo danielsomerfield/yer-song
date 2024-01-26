@@ -5,6 +5,7 @@ import { SongWithVotes } from "../../domain/song";
 import React, { MouseEventHandler } from "react";
 import { ListItem } from "../../components/lists";
 import styled from "styled-components";
+import { VoteMode, VoteModes } from "../../domain/voting";
 const SongsPanel = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,12 +40,14 @@ export const PlaylistView = ({
   currentUser,
   voteForSong,
   showToast,
+  voteMode,
 }: {
   playlist: Playlist;
   nav: NavigateFunction;
   voteForSong: VoteForSong;
   currentUser: CurrentUser;
   showToast: () => void;
+  voteMode: VoteMode;
 }) => {
   const SongView = (song: SongWithVotes) => {
     const goToSong: MouseEventHandler = () => {
@@ -54,6 +57,30 @@ export const PlaylistView = ({
     const disableButton =
       song.voters.filter((v) => v.id == currentUser()?.id).length > 0;
 
+    const singleVoteBidButton = (
+      <>
+        <UpVoteButton
+          disabled={disableButton}
+          onClick={async (evt) => {
+            const button = evt.currentTarget;
+            button.disabled = true;
+            await voteForSong(song.id);
+            showToast();
+          }}
+        >
+          Up vote
+        </UpVoteButton>
+      </>
+    );
+    const dollarVoteModeBidButton = (
+      <>
+        <UpVoteButton onClick={goToSong}>Bid up!</UpVoteButton>
+      </>
+    );
+    const voteButton =
+      voteMode == VoteModes.SINGLE_VOTE
+        ? singleVoteBidButton
+        : dollarVoteModeBidButton;
     return (
       <ListItem
         role={"listitem"}
@@ -63,19 +90,7 @@ export const PlaylistView = ({
       >
         <SongRow>
           <SongTitle onClick={goToSong}>{song.title}</SongTitle>
-          <div>
-            <UpVoteButton
-              disabled={disableButton}
-              onClick={async (evt) => {
-                const button = evt.currentTarget;
-                button.disabled = true;
-                await voteForSong(song.id);
-                showToast();
-              }}
-            >
-              Up vote
-            </UpVoteButton>
-          </div>
+          <div>{voteButton}</div>
         </SongRow>
       </ListItem>
     );

@@ -101,6 +101,9 @@ const ErrorFallbackMessage = styled.div`
   font-style: italic;
 `;
 
+// TODO: get this from the server
+const voteMode = VoteModes.DOLLAR_VOTE;
+
 function App() {
   const navigator = useNavigate();
 
@@ -139,7 +142,7 @@ function App() {
                     voteForSong={voteForSongFn}
                     currentUser={currentUser}
                     nav={navigator}
-                    voteMode={VoteModes.DOLLAR_VOTE}
+                    voteMode={voteMode}
                     submitDollarVoteForSong={submitDollarVoteForSongFn}
                   />
                 }
@@ -172,6 +175,7 @@ function App() {
                     nav={navigator}
                     voteForSong={voteForSongFn}
                     registerUser={registerUserFn}
+                    voteMode={voteMode}
                   />
                 }
               />

@@ -9,6 +9,7 @@ import { RegistrationForm } from "../../components/registrationForm";
 import { LoadStatus, LoadStatuses } from "../common/loading";
 import { StatusCodes } from "../../services/common";
 import { PlaylistView } from "./playlistView";
+import { VoteMode, VoteModes } from "../../domain/voting";
 
 type VoteForSong = (id: string) => Promise<void>;
 
@@ -17,12 +18,14 @@ export const PlayListPage = ({
   voteForSong,
   nav,
   registerUser,
+  voteMode,
   refreshTime = 5000,
 }: {
   getPlaylist: GetPlaylist;
   voteForSong: VoteForSong;
   nav: NavigateFunction;
   registerUser: RegisterUser;
+  voteMode: VoteMode;
   refreshTime?: number;
 }) => {
   const [toastOpen, setToastOpen] = useState(false);
@@ -89,6 +92,7 @@ export const PlayListPage = ({
               nav={nav}
               currentUser={currentUser}
               voteForSong={voteForSong}
+              voteMode={voteMode}
               showToast={() => {
                 setToastOpen(true);
               }}
