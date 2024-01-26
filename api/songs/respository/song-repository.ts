@@ -228,8 +228,11 @@ export const createSongRepository = (client: DynamoDB) => {
         ":voteCount": {
           N: "0",
         },
+        ":lockOrder": {
+          N: "0",
+        },
       },
-      UpdateExpression: "SET voteCount = :voteCount REMOVE GSI2PK, voters",
+      UpdateExpression: "SET voteCount = :voteCount, lockOrder = :lockOrder REMOVE GSI2PK, voters",
     });
     // throw "NYI: need to remove votes";
   };
