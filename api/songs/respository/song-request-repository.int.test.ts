@@ -4,6 +4,9 @@ import { Dynamo, startDynamo } from "./testutils";
 import { createSongRequestRepository } from "./song-request-repository";
 import { Songs, SongsWithRequests, Users } from "./sampledata";
 import { DateTime } from "luxon";
+import { Approval } from "../admin/approveSongRequest";
+import { RequestStatuses } from "../admin/songRequests";
+import { createSongRepository } from "./song-repository";
 
 describe("The song request repository", () => {
   let dynamo: Dynamo;
@@ -57,6 +60,7 @@ describe("The song request repository", () => {
     });
 
     expect(item.Item).toBeDefined();
+
     expect(item.Item).toMatchObject({
       PK: {
         S: song1Id,
@@ -68,8 +72,8 @@ describe("The song request repository", () => {
         S: "PENDING_APPROVAL",
       },
       requests: {
-        L: [
-          {
+        M: {
+          "request 1": {
             M: {
               id: {
                 S: requestId,
@@ -91,7 +95,7 @@ describe("The song request repository", () => {
               },
             },
           },
-        ],
+        },
       },
     });
   });
@@ -132,8 +136,8 @@ describe("The song request repository", () => {
         S: "ON_PLAYLIST",
       },
       requests: {
-        L: [
-          {
+        M: {
+          "request 1": {
             M: {
               id: {
                 S: requestId,
@@ -155,7 +159,7 @@ describe("The song request repository", () => {
               },
             },
           },
-        ],
+        },
       },
     });
   });
@@ -171,10 +175,49 @@ describe("The song request repository", () => {
     expect(requests.page.length).toEqual(3);
     expect(requests.page.map((r) => r.id).sort()).toMatchObject(
       [
-        SongsWithRequests.song7.Item.requests.L[0].M.id.S,
-        SongsWithRequests.song7.Item.requests.L[1].M.id.S,
-        SongsWithRequests.song8.Item.requests.L[0].M.id.S,
+        SongsWithRequests.song7.Item.requests.M["Song7Request1"].M.id.S,
+        SongsWithRequests.song7.Item.requests.M["Song7Request2"].M.id.S,
+        SongsWithRequests.song8.Item.requests.M["Song8Request1"].M.id.S,
       ].sort()
     );
   });
+
+  it("approves a request, adding it to the playlist with expected value", async () => {
+    const repository = createSongRequestRepository(
+      dynamo.client(),
+      () => requestId,
+      () => now
+    );
+    const requestToApproveId =
+      SongsWithRequests.song7.Item.requests.M["Song7Request1"].M.id.S;
+    const requestToApproveSongId = SongsWithRequests.song7.Item.PK.S;
+    const valueToSet = 3;
+
+    const approval: Approval = {
+      requestId: requestToApproveId,
+      songId: requestToApproveSongId,
+      value: valueToSet,
+    };
+    await repository.approveSongRequest(approval);
+
+    const requests = await repository.findAllSongRequests();
+    const request = requests.page.find((r) => r.id == requestToApproveId);
+    expect(request).toBeDefined();
+    expect(request?.status).toEqual(RequestStatuses.APPROVED);
+
+    const songId = request!.song.id;
+    const songRecord = await dynamo.client().getItem({
+      TableName: "song",
+      Key: {
+        PK: { S: songId },
+        SK: { S: songId },
+      },
+    });
+    expect(songRecord.Item?.["GSI2PK"].S).toEqual("ON_PLAYLIST");
+    expect(songRecord.Item?.["voteCount"].N).toEqual(valueToSet.toString());
+  });
+
+  // TODO: do we need to add voters? We'll have the approved requests and we don't need to prevent multiple votes...
+
+  // TODO: Test that if the song or request doesn't exist, nothing is created
 });

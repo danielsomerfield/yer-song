@@ -32,7 +32,7 @@ export interface Dependencies extends CORSEnabled {
   findAllSongRequests: () => Promise<Paginated<SongRequest>>;
 }
 
-export const createSongRequestsLambda = (dependencies: Dependencies) => {
+export const createGetSongRequestsLambda = (dependencies: Dependencies) => {
   const { allowedOrigins, findAllSongRequests } = dependencies;
   return async (
     event: APIGatewayProxyEvent

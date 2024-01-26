@@ -19,6 +19,7 @@ import {
 } from "../admin/songRequests";
 import { Maybe } from "../util/maybe";
 import { createHash } from "node:crypto";
+import { Approval } from "../admin/approveSongRequest";
 
 const idGenerator = () =>
   createHash("shake256", { outputLength: 6 })
@@ -41,6 +42,28 @@ export const createSongRequestRepository = (
       throw new Error("Invalid timestamp. This is almost certainly a bug");
     }
     const requestId = idGen();
+    // const requestsToAdd: Record<string, AttributeValue> = {};
+    const requestToAdd = {
+      id: {
+        S: requestId,
+      },
+      voterId: {
+        S: voter.id,
+      },
+      voterName: {
+        S: voter.name,
+      },
+      status: {
+        S: RequestStatuses.PENDING_APPROVAL,
+      },
+      value: {
+        N: value.toString(),
+      },
+      timestamp: {
+        S: nowString,
+      },
+    };
+
     await client.updateItem({
       TableName: "song",
       Key: {
@@ -54,33 +77,7 @@ export const createSongRequestRepository = (
       ReturnValues: "UPDATED_NEW",
       ExpressionAttributeValues: {
         ":request": {
-          L: [
-            {
-              M: {
-                id: {
-                  S: requestId,
-                },
-                voterId: {
-                  S: voter.id,
-                },
-                voterName: {
-                  S: voter.name,
-                },
-                status: {
-                  S: RequestStatuses.PENDING_APPROVAL,
-                },
-                value: {
-                  N: value.toString(),
-                },
-                timestamp: {
-                  S: nowString,
-                },
-              },
-            },
-          ],
-        },
-        ":empty": {
-          L: [],
+          M: requestToAdd,
         },
         ":status": {
           S: RequestStatuses.PENDING_APPROVAL,
@@ -88,7 +85,10 @@ export const createSongRequestRepository = (
       },
 
       UpdateExpression:
-        "SET requests = list_append(if_not_exists(requests, :empty), :request), GSI2PK = if_not_exists(GSI2PK, :status)",
+        "SET requests.#id = :request, GSI2PK = if_not_exists(GSI2PK, :status)",
+      ExpressionAttributeNames: {
+        "#id": requestId,
+      },
     });
 
     return {
@@ -96,6 +96,10 @@ export const createSongRequestRepository = (
     };
   };
 
+  // TODO: turns out that putting song requests under songs was not the best choice.
+  //  For now, we'll just make sure that the requests field exist for all songs, even if it's empty,
+  //  but ultimately, we'd be much better off peeling out the requests entity into the Single Table
+  //  pattern and taking the rather small cost of another index, if necessary.
   const findAllSongRequests = async (): Promise<Paginated<SongRequest>> => {
     const createSongRequestFromRecord = (
       songId: string,
@@ -107,7 +111,7 @@ export const createSongRequestRepository = (
           id: getRequiredString(item, "id"),
           status: getStringOrDefault(
             item,
-            "requestStatus",
+            "status",
             RequestStatuses.PENDING_APPROVAL
           ) as RequestStatus,
           requestedBy: {
@@ -164,14 +168,14 @@ export const createSongRequestRepository = (
 
     const maybeRequests: SongRequest[] =
       filteredItems.flatMap((i) => {
-        const maybeRequestRecords = i["requests"]?.L || [];
+        const maybeRequestRecords = Object.entries(i["requests"]?.M || {});
         return maybeRequestRecords
           .map((r) =>
-            r.M != undefined
+            r[1].M != undefined
               ? createSongRequestFromRecord(
                   getRequiredString(i, "PK"),
                   getRequiredString(i, "title"),
-                  r.M
+                  r[1].M
                 )
               : undefined
           )
@@ -184,8 +188,52 @@ export const createSongRequestRepository = (
     };
   };
 
+  const approveSongRequest = async (approval: Approval): Promise<void> => {
+    // TODO: this should be refactored with song-repository's `addVoteToSong`. As things stand, they are highly
+    //  duplicative and, by definition, do the same thing.
+    await client.transactWriteItems({
+      TransactItems: [
+        {
+          Update: {
+            TableName: "song",
+            Key: {
+              PK: {
+                S: approval.songId,
+              },
+              SK: {
+                S: approval.songId,
+              },
+            },
+            ExpressionAttributeValues: {
+              ":requestStatus": {
+                S: RequestStatuses.APPROVED,
+              },
+              ":playlist": {
+                S: "ON_PLAYLIST",
+              },
+              ":increment": {
+                N: approval.value.toString(),
+              },
+              ":zero": {
+                N: "0",
+              },
+            },
+
+            UpdateExpression:
+              "SET requests.#id.#status = :requestStatus, GSI2PK = :playlist, voteCount = if_not_exists(voteCount, :zero) + :increment",
+            ExpressionAttributeNames: {
+              "#id": approval.requestId,
+              "#status": "status",
+            },
+          },
+        },
+      ],
+    });
+  };
+
   return {
     addSongRequest,
     findAllSongRequests,
+    approveSongRequest,
   };
 };

@@ -75,6 +75,9 @@ export const Songs = {
       GSI1PK: {
         S: GenreIds.genre1,
       },
+      requests: {
+        M: {},
+      },
     },
   },
 
@@ -103,6 +106,9 @@ export const Songs = {
         S: "ON_PLAYLIST",
       },
       voters: { L: [Users.user2] },
+      requests: {
+        M: {},
+      },
     },
   },
 
@@ -125,6 +131,9 @@ export const Songs = {
         N: "4",
       },
       voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      requests: {
+        M: {},
+      },
       GSI1PK: {
         S: GenreIds.genre1,
       },
@@ -156,6 +165,9 @@ export const Songs = {
         N: "2",
       },
       voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      requests: {
+        M: {},
+      },
       GSI1PK: {
         S: GenreIds.genre1,
       },
@@ -187,6 +199,9 @@ export const Songs = {
         N: "1",
       },
       voters: { L: [Users.user1, Users.user2, Users.user3, Users.user4] },
+      requests: {
+        M: {},
+      },
       GSI1PK: {
         S: GenreIds.genre1,
       },
@@ -220,8 +235,8 @@ export const SongsWithRequests = {
         S: "PENDING_APPROVAL",
       },
       requests: {
-        L: [
-          {
+        M: {
+          Song7Request1: {
             M: {
               id: {
                 S: "Song7Request1",
@@ -243,7 +258,7 @@ export const SongsWithRequests = {
               },
             },
           },
-          {
+          Song7Request2: {
             M: {
               id: {
                 S: "Song7Request2",
@@ -265,7 +280,7 @@ export const SongsWithRequests = {
               },
             },
           },
-        ],
+        },
       },
     },
   },
@@ -295,8 +310,8 @@ export const SongsWithRequests = {
         S: "ON_PLAYLIST",
       },
       requests: {
-        L: [
-          {
+        M: {
+          Song8Request1: {
             M: {
               id: {
                 S: "Song8Request1",
@@ -318,7 +333,7 @@ export const SongsWithRequests = {
               },
             },
           },
-        ],
+        },
       },
     },
   },

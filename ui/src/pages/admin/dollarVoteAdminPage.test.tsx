@@ -39,18 +39,24 @@ describe("The dollar vote admin page", () => {
     render(
       <table>
         <tbody>
-          <VoteRequestRow request={requests.request1} />
+          <VoteRequestRow
+            request={requests.request1}
+            adminService={adminService}
+          />
         </tbody>
       </table>,
     );
-    expect(screen.getByRole("button", { name: "Approve" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Approve" })).toBeEnabled();
   });
 
   it("it hides the approve button for an approved request", () => {
     render(
       <table>
         <tbody>
-          <VoteRequestRow request={requests.approvedRequest3} />
+          <VoteRequestRow
+            request={requests.approvedRequest3}
+            adminService={adminService}
+          />
         </tbody>
       </table>,
     );

@@ -5,7 +5,7 @@ import {
   SongRequest,
   SongRequests,
 } from "../../domain/voting";
-import React, { useEffect, useRef, useState } from "react";
+import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { LoadStatus, LoadStatuses } from "../common/loading";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { LoginDialog } from "./loginDialog";
@@ -39,10 +39,31 @@ const ApproveButton = styled.button`
   font-size: 2vh;
 `;
 
-export const VoteRequestRow = ({ request }: { request: SongRequest }) => {
+export const VoteRequestRow = ({
+  request,
+  adminService,
+}: {
+  request: SongRequest;
+  adminService: AdminService;
+}) => {
   const action =
     request.status == RequestStatuses.PENDING_APPROVAL ? (
-      <ApproveButton>Approve</ApproveButton>
+      <ApproveButton
+        onClick={async () => {
+          try {
+            await adminService.approveSongRequest({
+              requestId: request.requestId, //TODO: should this be just `id`?
+              songId: request.song.id,
+              value: request.value,
+            });
+          } catch (e) {
+            console.log(e);
+            //TODO: show the toast error
+          }
+        }}
+      >
+        Approve
+      </ApproveButton>
     ) : (
       <div>Approved</div>
     );
@@ -63,8 +84,6 @@ const RequestTableContainer = styled.div`
   max-height: 85%;
   max-width: 100%;
   position: fixed;
-  display: flex;
-  justify-content: center;
 `;
 
 export const DollarVoteAdminPage = ({
@@ -156,6 +175,7 @@ export const DollarVoteAdminPage = ({
                       <VoteRequestRow
                         key={sr.requestId}
                         request={sr}
+                        adminService={adminService}
                       ></VoteRequestRow>
                     ))}
                   </tbody>

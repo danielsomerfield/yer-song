@@ -11,6 +11,12 @@ interface Configuration {
   songsAPIHostURL: string;
 }
 
+interface Approval {
+  requestId: string;
+  songId: string;
+  value: number;
+}
+
 export interface AdminService {
   removeFromPlaylist: (id: string) => Promise<void>;
   moveUpOnPlaylist: (id: string) => Promise<void>;
@@ -18,6 +24,7 @@ export interface AdminService {
   login: (username: string, password: string) => Promise<LoginResult>;
   lockSong: (id: string) => Promise<void>;
   getSongRequests: () => Promise<ReturnOrError<SongRequests>>;
+  approveSongRequest: (approval: Approval) => Promise<void>;
 }
 
 export const createAdminService = (
@@ -119,6 +126,17 @@ export const createAdminService = (
     }
   };
 
+  const approveSongRequestPost = createPost<void>(
+    configuration,
+    "/admin/songRequest/approval",
+    httpClient,
+    getToken,
+  );
+
+  const approveSongRequest = async (request: Approval) => {
+    return approveSongRequestPost(request);
+  };
+
   return {
     removeFromPlaylist,
     moveUpOnPlaylist,
@@ -126,5 +144,6 @@ export const createAdminService = (
     login,
     lockSong,
     getSongRequests,
+    approveSongRequest,
   };
 };

@@ -99,5 +99,6 @@ export const getAppDependencies = (
     insertSongRequest: songRequestRepository.addSongRequest,
     findAllSongRequests: songRequestRepository.findAllSongRequests,
     insertLock: songsRepository.addLockToSong,
+    approveRequest: songRequestRepository.approveSongRequest,
   };
 };

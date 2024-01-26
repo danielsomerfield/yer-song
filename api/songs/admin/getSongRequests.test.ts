@@ -1,7 +1,7 @@
 import { describe } from "@jest/globals";
 import { Paginated } from "../domain/songs";
 import {
-  createSongRequestsLambda,
+  createGetSongRequestsLambda,
   Dependencies,
   SongRequest,
 } from "./songRequests";
@@ -57,7 +57,7 @@ describe("the dollar votes admin api", () => {
       findAllSongRequests,
       allowedOrigins: new Set([origin]),
     };
-    const lambda = createSongRequestsLambda(dependencies);
+    const lambda = createGetSongRequestsLambda(dependencies);
     const response = await lambda(event);
     expect(response.statusCode).toEqual(200);
     expect(JSON.parse(response.body)).toMatchObject({

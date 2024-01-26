@@ -1,1 +1,676 @@
-{"song": [{"PutRequest": {"Item": {"PK": {"S": "s:5f6afe2b-4f6c-4e60-9d9a-8a3151d446b2"}, "SK": {"S": "s:5f6afe2b-4f6c-4e60-9d9a-8a3151d446b2"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "The Legend of Zelda Medley"}, "artistName": {"S": "Overworld, Dungeon, Hyrule Field, Introducing the Adventure of Link, Palace, Zelda\u2019s Lullaby, Time of Falling Rain, Main Theme, Twilight\u2019s Orchestra, Dark World, Hyrule Castle, Ballad of the Wind Fish"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:45a0c590-dc57-498b-9bf0-2511261b4572"}, "SK": {"S": "s:45a0c590-dc57-498b-9bf0-2511261b4572"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "The Lord of the Rings: The Fellowship of the Ring"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:98d921d3-f808-4873-ba4e-8b412b154501"}, "SK": {"S": "s:98d921d3-f808-4873-ba4e-8b412b154501"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "The Music of the Night"}, "artistName": {"S": "Phantom of the Opera"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:d9f33f98-73b3-4ebc-a93b-3b9246f75e5d"}, "SK": {"S": "s:d9f33f98-73b3-4ebc-a93b-3b9246f75e5d"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "The Rose"}, "artistName": {"S": "From the movie 'The Rose'"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:a6e97be1-bf87-40d7-a227-ccb1c8f9d0a6"}, "SK": {"S": "s:a6e97be1-bf87-40d7-a227-ccb1c8f9d0a6"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "The Summer Knows"}, "artistName": {"S": "Theme from 'Summer of '42'"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:55a60059-f535-4186-a83e-ecfdefb7d63e"}, "SK": {"S": "s:55a60059-f535-4186-a83e-ecfdefb7d63e"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "The Time of My Life"}, "artistName": {"S": "Dirty Dancing"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:87e7a65c-23f3-4450-8cc9-9fe05e79fb07"}, "SK": {"S": "s:87e7a65c-23f3-4450-8cc9-9fe05e79fb07"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "The Way We Were"}, "artistName": {"S": "Theme Song"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:bebc0707-8147-4b99-8dfc-8bb8012a21ae"}, "SK": {"S": "s:bebc0707-8147-4b99-8dfc-8bb8012a21ae"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "Turning Page"}, "artistName": {"S": "Sleeping At Last \u2013 The Twilight Saga"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:a13100de-ee20-4178-a1e1-84e8392143da"}, "SK": {"S": "s:a13100de-ee20-4178-a1e1-84e8392143da"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "Twin Peaks"}, "artistName": {"S": "Theme"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:de88bde5-d793-4a1d-8f96-f3082eb74be3"}, "SK": {"S": "s:de88bde5-d793-4a1d-8f96-f3082eb74be3"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "Wedding Dance No. 1"}, "artistName": {"S": "Titanic \u2013 Paul Lincke"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:a90d9acf-e38c-4644-ae95-274c9ab6b1fb"}, "SK": {"S": "s:a90d9acf-e38c-4644-ae95-274c9ab6b1fb"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "Wildest Dreams"}, "artistName": {"S": "Bridgerton"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:3ecd1cff-2957-4cc4-af4e-4296134652ac"}, "SK": {"S": "s:3ecd1cff-2957-4cc4-af4e-4296134652ac"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:MovieTVStage"}, "title": {"S": "Zelda\u2019s Lullaby"}, "artistName": {"S": "Legend of Zelda"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:d6c2c71a-416b-4f90-99d9-509bb8c5bd5c"}, "SK": {"S": "s:d6c2c71a-416b-4f90-99d9-509bb8c5bd5c"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Across the Universe"}, "artistName": {"S": "Beatles"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:2a91ce50-732f-4c6f-8b15-cbeca71c0c69"}, "SK": {"S": "s:2a91ce50-732f-4c6f-8b15-cbeca71c0c69"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "All My Life"}, "artistName": {"S": "K-Ci & JoJo"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:54653f33-0873-447a-a96a-4a3357f9f705"}, "SK": {"S": "s:54653f33-0873-447a-a96a-4a3357f9f705"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "All My Loving"}, "artistName": {"S": "Beatles"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:46b38c3c-5c9e-472b-86a8-64ae16bfbea7"}, "SK": {"S": "s:46b38c3c-5c9e-472b-86a8-64ae16bfbea7"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "All You Need Is Love"}, "artistName": {"S": "Beatles"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:a15ef8d4-83b6-4fb5-85a2-31cf3e1868a8"}, "SK": {"S": "s:a15ef8d4-83b6-4fb5-85a2-31cf3e1868a8"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "And I Love Her"}, "artistName": {"S": "Beatles"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:bcb7ce34-4879-48f0-a2a6-521434a0c24c"}, "SK": {"S": "s:bcb7ce34-4879-48f0-a2a6-521434a0c24c"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Annie\u2019s Song"}, "artistName": {"S": "John Denver"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:ac31ad58-c657-4fd1-b1c4-5ef4999cdccb"}, "SK": {"S": "s:ac31ad58-c657-4fd1-b1c4-5ef4999cdccb"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Billie Jean"}, "artistName": {"S": "Michael Jackson"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:1043283d-8a37-4dc0-92c1-6ccec29e581b"}, "SK": {"S": "s:1043283d-8a37-4dc0-92c1-6ccec29e581b"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Bitter Sweet Symphony"}, "artistName": {"S": "The Verve"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:06879619-1c35-4416-a608-e2f695f8239b"}, "SK": {"S": "s:06879619-1c35-4416-a608-e2f695f8239b"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Blackbird"}, "artistName": {"S": "Beatles"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:a73b3801-472d-4b6c-a8c2-562e0ec62c62"}, "SK": {"S": "s:a73b3801-472d-4b6c-a8c2-562e0ec62c62"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Can't Help Falling In Love"}, "artistName": {"S": "Elvis"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:8e9092f4-e6e0-404a-8006-3d578af90113"}, "SK": {"S": "s:8e9092f4-e6e0-404a-8006-3d578af90113"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Can\u2019t Take My Eyes Off of You"}, "artistName": {"S": "Frankie Valli"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:17ba696a-e5f6-40d6-a7f5-ac628e59318e"}, "SK": {"S": "s:17ba696a-e5f6-40d6-a7f5-ac628e59318e"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Changes"}, "artistName": {"S": "David Bowie"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:8773fa22-37a4-463a-8887-d57a734ce101"}, "SK": {"S": "s:8773fa22-37a4-463a-8887-d57a734ce101"}, "entityType": {"S": "song"}, "GSI1PK": {"S": "t:genre:ClassicPopRock"}, "title": {"S": "Crazy Little Thing Called Love"}, "artistName": {"S": "Queen"}}}}]}
+{
+  "song": [
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:5f6afe2b-4f6c-4e60-9d9a-8a3151d446b2"
+          },
+          "SK": {
+            "S": "s:5f6afe2b-4f6c-4e60-9d9a-8a3151d446b2"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "The Legend of Zelda Medley"
+          },
+          "artistName": {
+            "S": "Overworld, Dungeon, Hyrule Field, Introducing the Adventure of Link, Palace, Zelda\u2019s Lullaby, Time of Falling Rain, Main Theme, Twilight\u2019s Orchestra, Dark World, Hyrule Castle, Ballad of the Wind Fish"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:45a0c590-dc57-498b-9bf0-2511261b4572"
+          },
+          "SK": {
+            "S": "s:45a0c590-dc57-498b-9bf0-2511261b4572"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "The Lord of the Rings: The Fellowship of the Ring"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:98d921d3-f808-4873-ba4e-8b412b154501"
+          },
+          "SK": {
+            "S": "s:98d921d3-f808-4873-ba4e-8b412b154501"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "The Music of the Night"
+          },
+          "artistName": {
+            "S": "Phantom of the Opera"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:d9f33f98-73b3-4ebc-a93b-3b9246f75e5d"
+          },
+          "SK": {
+            "S": "s:d9f33f98-73b3-4ebc-a93b-3b9246f75e5d"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "The Rose"
+          },
+          "artistName": {
+            "S": "From the movie 'The Rose'"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:a6e97be1-bf87-40d7-a227-ccb1c8f9d0a6"
+          },
+          "SK": {
+            "S": "s:a6e97be1-bf87-40d7-a227-ccb1c8f9d0a6"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "The Summer Knows"
+          },
+          "artistName": {
+            "S": "Theme from 'Summer of '42'"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:55a60059-f535-4186-a83e-ecfdefb7d63e"
+          },
+          "SK": {
+            "S": "s:55a60059-f535-4186-a83e-ecfdefb7d63e"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "The Time of My Life"
+          },
+          "artistName": {
+            "S": "Dirty Dancing"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:87e7a65c-23f3-4450-8cc9-9fe05e79fb07"
+          },
+          "SK": {
+            "S": "s:87e7a65c-23f3-4450-8cc9-9fe05e79fb07"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "The Way We Were"
+          },
+          "artistName": {
+            "S": "Theme Song"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:bebc0707-8147-4b99-8dfc-8bb8012a21ae"
+          },
+          "SK": {
+            "S": "s:bebc0707-8147-4b99-8dfc-8bb8012a21ae"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Turning Page"
+          },
+          "artistName": {
+            "S": "Sleeping At Last \u2013 The Twilight Saga"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:a13100de-ee20-4178-a1e1-84e8392143da"
+          },
+          "SK": {
+            "S": "s:a13100de-ee20-4178-a1e1-84e8392143da"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Twin Peaks"
+          },
+          "artistName": {
+            "S": "Theme"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:de88bde5-d793-4a1d-8f96-f3082eb74be3"
+          },
+          "SK": {
+            "S": "s:de88bde5-d793-4a1d-8f96-f3082eb74be3"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Wedding Dance No. 1"
+          },
+          "artistName": {
+            "S": "Titanic \u2013 Paul Lincke"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:a90d9acf-e38c-4644-ae95-274c9ab6b1fb"
+          },
+          "SK": {
+            "S": "s:a90d9acf-e38c-4644-ae95-274c9ab6b1fb"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Wildest Dreams"
+          },
+          "artistName": {
+            "S": "Bridgerton"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:3ecd1cff-2957-4cc4-af4e-4296134652ac"
+          },
+          "SK": {
+            "S": "s:3ecd1cff-2957-4cc4-af4e-4296134652ac"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:MovieTVStage"
+          },
+          "title": {
+            "S": "Zelda\u2019s Lullaby"
+          },
+          "artistName": {
+            "S": "Legend of Zelda"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:d6c2c71a-416b-4f90-99d9-509bb8c5bd5c"
+          },
+          "SK": {
+            "S": "s:d6c2c71a-416b-4f90-99d9-509bb8c5bd5c"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Across the Universe"
+          },
+          "artistName": {
+            "S": "Beatles"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:2a91ce50-732f-4c6f-8b15-cbeca71c0c69"
+          },
+          "SK": {
+            "S": "s:2a91ce50-732f-4c6f-8b15-cbeca71c0c69"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "All My Life"
+          },
+          "artistName": {
+            "S": "K-Ci & JoJo"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:54653f33-0873-447a-a96a-4a3357f9f705"
+          },
+          "SK": {
+            "S": "s:54653f33-0873-447a-a96a-4a3357f9f705"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "All My Loving"
+          },
+          "artistName": {
+            "S": "Beatles"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:46b38c3c-5c9e-472b-86a8-64ae16bfbea7"
+          },
+          "SK": {
+            "S": "s:46b38c3c-5c9e-472b-86a8-64ae16bfbea7"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "All You Need Is Love"
+          },
+          "artistName": {
+            "S": "Beatles"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:a15ef8d4-83b6-4fb5-85a2-31cf3e1868a8"
+          },
+          "SK": {
+            "S": "s:a15ef8d4-83b6-4fb5-85a2-31cf3e1868a8"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "And I Love Her"
+          },
+          "artistName": {
+            "S": "Beatles"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:bcb7ce34-4879-48f0-a2a6-521434a0c24c"
+          },
+          "SK": {
+            "S": "s:bcb7ce34-4879-48f0-a2a6-521434a0c24c"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Annie\u2019s Song"
+          },
+          "artistName": {
+            "S": "John Denver"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:ac31ad58-c657-4fd1-b1c4-5ef4999cdccb"
+          },
+          "SK": {
+            "S": "s:ac31ad58-c657-4fd1-b1c4-5ef4999cdccb"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Billie Jean"
+          },
+          "artistName": {
+            "S": "Michael Jackson"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:1043283d-8a37-4dc0-92c1-6ccec29e581b"
+          },
+          "SK": {
+            "S": "s:1043283d-8a37-4dc0-92c1-6ccec29e581b"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Bitter Sweet Symphony"
+          },
+          "artistName": {
+            "S": "The Verve"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:06879619-1c35-4416-a608-e2f695f8239b"
+          },
+          "SK": {
+            "S": "s:06879619-1c35-4416-a608-e2f695f8239b"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Blackbird"
+          },
+          "artistName": {
+            "S": "Beatles"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:a73b3801-472d-4b6c-a8c2-562e0ec62c62"
+          },
+          "SK": {
+            "S": "s:a73b3801-472d-4b6c-a8c2-562e0ec62c62"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Can't Help Falling In Love"
+          },
+          "artistName": {
+            "S": "Elvis"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:8e9092f4-e6e0-404a-8006-3d578af90113"
+          },
+          "SK": {
+            "S": "s:8e9092f4-e6e0-404a-8006-3d578af90113"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Can\u2019t Take My Eyes Off of You"
+          },
+          "artistName": {
+            "S": "Frankie Valli"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:17ba696a-e5f6-40d6-a7f5-ac628e59318e"
+          },
+          "SK": {
+            "S": "s:17ba696a-e5f6-40d6-a7f5-ac628e59318e"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Changes"
+          },
+          "artistName": {
+            "S": "David Bowie"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "PK": {
+            "S": "s:8773fa22-37a4-463a-8887-d57a734ce101"
+          },
+          "SK": {
+            "S": "s:8773fa22-37a4-463a-8887-d57a734ce101"
+          },
+          "entityType": {
+            "S": "song"
+          },
+          "requests": {
+            "M": {}
+          },
+          "GSI1PK": {
+            "S": "t:genre:ClassicPopRock"
+          },
+          "title": {
+            "S": "Crazy Little Thing Called Love"
+          },
+          "artistName": {
+            "S": "Queen"
+          }
+        }
+      }
+    }
+  ]
+}
