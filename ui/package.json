@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-toast": "^1.1.5",
     "@storybook/addon-essentials": "^7.6.8",
     "@storybook/addon-interactions": "^7.6.8",
     "@storybook/addon-links": "^7.6.8",
@@ -11,9 +14,6 @@
     "@storybook/react": "^7.6.8",
     "@storybook/react-webpack5": "^7.6.8",
     "@storybook/test": "^7.6.8",
-    "@radix-ui/react-dialog": "^1.0.5",
-    "@radix-ui/react-label": "^2.0.2",
-    "@radix-ui/react-toast": "^1.1.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -66,6 +66,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@karatelabs/karate": "^0.2.2",
+    "@types/luxon": "^3.4.2",
     "@types/styled-components": "^5.1.28",
     "eslint": "^8.51.0",
     "eslint-plugin-react-hooks": "^4.6.0",

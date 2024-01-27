@@ -42,4 +42,20 @@ describe("The song repository with lock order", () => {
       expect(songRecord).toBeDefined();
       expect(songRecord.Item?.["lockOrder"].N).toEqual("0");
     });
+
+    it("clears lockOrder when locked song is unlocked", async () => {
+      const songRepository = createSongRepository(dynamo.client());
+      await songRepository.clearLockFromSong(SongIds.song5Id);
+
+      const songRecord = await dynamo.client().getItem({
+        Key: {
+          PK: Songs.song5.Item.PK,
+          SK: Songs.song5.Item.SK,
+        },
+        TableName: "song",
+      });
+
+      expect(songRecord).toBeDefined();
+      expect(songRecord.Item?.["lockOrder"]).toBeUndefined();
+    });
 });

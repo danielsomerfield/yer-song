@@ -263,6 +263,23 @@ export const createSongRepository = (client: DynamoDB) => {
     });
   };
 
+  const clearLockFromSong = async (id: string): Promise<void> => {
+    await client.updateItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: id,
+        },
+        SK: {
+          S: id,
+        },
+      },
+      ReturnValues: "UPDATED_NEW",
+      UpdateExpression:
+        "REMOVE lockOrder",
+    });
+  };
+
   return {
     getSongById,
     findSongsByTag,
@@ -270,5 +287,6 @@ export const createSongRepository = (client: DynamoDB) => {
     addVoteToSong,
     clearVotes,
     addLockToSong,
+    clearLockFromSong,
   };
 };

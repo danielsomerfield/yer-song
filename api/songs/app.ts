@@ -10,6 +10,7 @@ import { createRunAdminCommandLambda } from "./admin/runAdminCommand";
 import { createAdminLoginLambda } from "./admin/adminLogin";
 import { createGetSongRequestsLambda } from "./admin/songRequests";
 import { createApproveSongRequest } from "./admin/approveSongRequest";
+import { createClearLockSongLambda } from "./song/unlockSong";
 
 const auth = () => {
   return getAppDependencies().authRules;
@@ -53,4 +54,8 @@ export const getSongRequests = auth().requireAdmin(
 
 export const approveSongRequest = auth().requireAdmin(
   createApproveSongRequest(getAppDependencies())
+);
+
+export const clearLock = auth().requireAdmin(
+  createClearLockSongLambda(getAppDependencies())
 );
