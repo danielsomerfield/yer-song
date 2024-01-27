@@ -189,7 +189,12 @@ function App() {
               />
               <Route
                 path={"/kiosk"}
-                element={<KioskPlaylist getPlaylist={getPlayListFn} />}
+                element={
+                  <KioskPlaylist
+                    getPlaylist={getPlayListFn}
+                    voteMode={voteMode}
+                  />
+                }
               />
 
               <Route

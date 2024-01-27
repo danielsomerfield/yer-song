@@ -4,6 +4,7 @@ import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { setBackButtonLocation } from "../../components/navPanel";
 import { SongWithVotes } from "../../domain/song";
 import { GetPlaylist, Playlist } from "../../domain/playlist";
+import { VoteMode, VoteModes } from "../../domain/voting";
 
 // TODO: this can be combined with the list item in lists.tsx but extract the hover property
 const ListItem = styled.div`
@@ -43,13 +44,24 @@ const TableColumnHeader = styled.div`
   text-decoration: underline;
 `;
 
-const SongView = (song: SongWithVotes) => {
+const SongView = ({
+  song,
+  voteMode,
+}: {
+  song: SongWithVotes;
+  voteMode: VoteMode;
+}) => {
   const voterName =
     song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
 
-  console.log(song.lockOrder);
+  const totalBidsSymbol = voteMode == VoteModes.SINGLE_VOTE ? "" : "$";
   const lockedForPlay = <div>&#127925;</div>;
-  const showingVotes = <div>{song.voteCount}</div>;
+  const showingVotes = (
+    <div>
+      {totalBidsSymbol}
+      {song.voteCount}
+    </div>
+  );
   return (
     <ListItem
       role={"listitem"}
@@ -66,18 +78,28 @@ const SongView = (song: SongWithVotes) => {
   );
 };
 
-const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
+const PlaylistView = ({
+  playlist,
+  voteMode,
+}: {
+  playlist: Playlist;
+  voteMode: VoteMode;
+}) => {
   document.getElementById("qr-code")?.style.setProperty("display", "flow");
 
+  const voteColumnText =
+    voteMode == VoteModes.SINGLE_VOTE ? "Votes" : "Total bids";
   return (
     <div className="playlist-kiosk">
       <SongRow>
         <TableColumnHeader className="left">Title</TableColumnHeader>
         <TableColumnHeader>Requester</TableColumnHeader>
-        <TableColumnHeader>Votes</TableColumnHeader>
+        <TableColumnHeader>{voteColumnText}</TableColumnHeader>
       </SongRow>
       <SongsPanel role={"list"} aria-label={"tag-list"}>
-        {playlist.songs.page.map((tag) => SongView(tag))}
+        {playlist.songs.page.map((song) => (
+          <SongView song={song} voteMode={voteMode} />
+        ))}
       </SongsPanel>
     </div>
   );
@@ -85,8 +107,10 @@ const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
 
 export const KioskPlaylist = ({
   getPlaylist,
+  voteMode,
 }: {
   getPlaylist: GetPlaylist;
+  voteMode: VoteMode;
 }) => {
   const [playlist, setPlaylist] = useState<Playlist | undefined>(undefined);
   const [loadStarted, setLoadStarted] = useState(false);
@@ -125,7 +149,7 @@ export const KioskPlaylist = ({
         <div className="message">The playlist is empty. Add some songs!</div>
       );
     } else {
-      return <PlaylistView playlist={playlist} />;
+      return <PlaylistView playlist={playlist} voteMode={voteMode} />;
     }
   };
   // TODO: get rid of this hack
