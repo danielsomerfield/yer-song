@@ -25,8 +25,8 @@ const CurrencyLabel = styled.div`
   position: relative;
   right: -2vh;
   width: 0;
-  font-size: 4vh;
-  color: lightgrey;
+  font-size: 3.5vh;
+  color: darkslategrey;
   top: -0.5vh;
 `;
 

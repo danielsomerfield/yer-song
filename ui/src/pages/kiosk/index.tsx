@@ -21,7 +21,6 @@ const ListItem = styled.div`
 const SongsPanel = styled.div`
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   height: 90%;
 `;
 

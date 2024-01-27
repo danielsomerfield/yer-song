@@ -125,9 +125,15 @@ export const SongView = ({
   const voterName =
     song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
 
+  const formatVoteCount = (voteCount: number) => {
+    return voteMode == VoteModes.SINGLE_VOTE
+      ? `${voteCount} votes`
+      : `$${voteCount} total bid`;
+  };
+
   const onList = isOnPlaylist ? (
     <OnPlayListPanel aria-label={"on-playlist"} role={"note"}>
-      On playlist with {song.voteCount} votes
+      On playlist with {formatVoteCount(song.voteCount)}
       <div aria-label={"requested-by"} role={"note"}>
         {voterName ? `Requested by ${voterName}` : ""}
       </div>
