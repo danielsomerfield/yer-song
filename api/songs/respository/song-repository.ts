@@ -240,7 +240,36 @@ export const createSongRepository = (client: DynamoDB) => {
   };
 
   const addLockToSong = async (id: string): Promise<void> => {
-    await client.updateItem({
+    //TODO: this needs to be rethought.
+
+    // Set all locked to a higher number.
+    // TODO: if we sort and increment the lock order, we can retain order
+    const withVotes = await findSongsWithVotes();
+    const pushDown = withVotes.page
+      .filter((song) => song.lockOrder == 1)
+      .filter((song) => song.id != id)
+      .map((song) => ({
+        Update: {
+          TableName: "song",
+          Key: {
+            PK: {
+              S: song.id,
+            },
+            SK: {
+              S: song.id,
+            },
+          },
+          ExpressionAttributeValues: {
+            ":lockOrder": {
+              N: "2",
+            },
+          },
+          UpdateExpression: "SET lockOrder = :lockOrder",
+        },
+      }));
+
+    // Set new lock to one.
+    const pushUp = {
       TableName: "song",
       Key: {
         PK: {
@@ -250,7 +279,6 @@ export const createSongRepository = (client: DynamoDB) => {
           S: id,
         },
       },
-      ReturnValues: "UPDATED_NEW",
       ExpressionAttributeValues: {
         ":one": {
           N: "1",
@@ -260,6 +288,15 @@ export const createSongRepository = (client: DynamoDB) => {
         },
       },
       UpdateExpression: "SET lockOrder = :one, GSI2PK = :playlist",
+    };
+
+    await client.transactWriteItems({
+      TransactItems: [
+        {
+          Update: pushUp,
+        },
+        ...pushDown,
+      ],
     });
   };
 
@@ -275,8 +312,32 @@ export const createSongRepository = (client: DynamoDB) => {
         },
       },
       ReturnValues: "UPDATED_NEW",
-      UpdateExpression:
-        "REMOVE lockOrder",
+      UpdateExpression: "REMOVE lockOrder",
+    });
+  };
+
+  const increaseLockOrder = async (id: string): Promise<void> => {
+    return await addLockToSong(id);
+  };
+
+  const decreaseLockOrder = async (id: string): Promise<void> => {
+    await client.updateItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: id,
+        },
+        SK: {
+          S: id,
+        },
+      },
+      ReturnValues: "UPDATED_NEW",
+      ExpressionAttributeValues: {
+        ":one": {
+          N: "1",
+        },
+      },
+      UpdateExpression: "SET lockOrder = lockOrder - :one",
     });
   };
 
@@ -288,5 +349,7 @@ export const createSongRepository = (client: DynamoDB) => {
     clearVotes,
     addLockToSong,
     clearLockFromSong,
+    increaseLockOrder,
+    decreaseLockOrder,
   };
 };

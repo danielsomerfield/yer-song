@@ -22,14 +22,17 @@ const PlayListControls = ({
   adminService: AdminService;
   refresh: () => Promise<void>;
 }) => {
-  const   SongItemRow = ({
+  const SongItemRow = ({
     song,
   }: PropsWithChildren & { song: SongWithVotes }) => {
     const songIndex = playlist.songs.page.findIndex((s) => s.id == song.id);
-    const isBottom = songIndex >= playlist.songs.page.length - 1;
-    const isTop = songIndex <= 0;
+    // const downArrowDisabled =
+    //   songIndex >=
+    //     playlist.songs.page.filter((s) => s.lockOrder != 0).length - 1 ||
+    //   song.lockOrder == 0;
+    const upArrowDisabled = songIndex <= 0 || song.lockOrder == 0;
 
-    const lockIcon = (song.lockOrder === 1) ? <>&#128274;</> : <>&#128275;</>;
+    const lockIcon = song.lockOrder === 1 ? <>&#128274;</> : <>&#128275;</>;
     const SongItemControls = ({ song }: { song: SongWithVotes }) => {
       return (
         <div className="button-div">
@@ -41,30 +44,33 @@ const PlayListControls = ({
               await refresh();
             }}
           >
-            [ x ]
+            X
           </SongAdminButton>
           <SongAdminButton
             key={`button-up-${song.id}`}
-            disabled={isTop}
+            disabled={upArrowDisabled}
             onClick={async (evt) => {
               evt.currentTarget.disabled = true;
               await adminService.moveUpOnPlaylist(song.id);
               await refresh();
             }}
+            title={"Move to the top of the list"}
           >
             &uarr;
           </SongAdminButton>
-          <SongAdminButton
-            key={`button-down-${song.id}`}
-            disabled={song.voteCount <= 1 || isBottom}
-            onClick={async (evt) => {
-              evt.currentTarget.disabled = true;
-              await adminService.moveDownOnPlaylist(song.id);
-              await refresh();
-            }}
-          >
-            &darr;
-          </SongAdminButton>
+
+          {/*  Currently disabling moving songs down. Might bring it back. */}
+          {/*<SongAdminButton*/}
+          {/*  key={`button-down-${song.id}`}*/}
+          {/*  disabled={song.voteCount <= 1 || downArrowDisabled}*/}
+          {/*  onClick={async (evt) => {*/}
+          {/*    evt.currentTarget.disabled = true;*/}
+          {/*    await adminService.moveDownOnPlaylist(song.id);*/}
+          {/*    await refresh();*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  &darr;*/}
+          {/*</SongAdminButton>*/}
           <SongAdminButton
             key={`button-lock-${song.id}`}
             disabled={song.lockOrder === 1}
@@ -80,22 +86,22 @@ const PlayListControls = ({
       );
     };
     return (
-      //   TODO: the grid is messed up here again. Need to look at why.
       <>
-        <tr aria-label={"song-item-row"} role={"row"} >
+        <tr aria-label={"song-item-row"} role={"row"}>
           <td>{song.title}</td>
-          <td>
-            {song.voters.length > 0 ? song.voters[0].name : "unknown"}
-          </td>
+          <td>{song.voters.length > 0 ? song.voters[0].name : "unknown"}</td>
           <td>{song.voteCount}</td>
-          <td><SongItemControls song={song} /></td>
+          <td>{song.lockOrder}</td>
+          <td>
+            <SongItemControls song={song} />
+          </td>
         </tr>
       </>
     );
   };
 
   const SongView = (song: SongWithVotes) => {
-    return <SongItemRow song={song} key={`song-item-row-${song.id}`}/>;
+    return <SongItemRow song={song} key={`song-item-row-${song.id}`} />;
   };
 
   return (
@@ -116,12 +122,11 @@ const PlayListControls = ({
             <th>Song</th>
             <th>Requested by</th>
             <th>Votes</th>
+            <th>lock order</th>
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          {playlist.songs.page.map((song) => SongView(song))}
-        </tbody>
+        <tbody>{playlist.songs.page.map((song) => SongView(song))}</tbody>
       </table>
     </div>
   );

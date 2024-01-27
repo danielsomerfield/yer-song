@@ -101,5 +101,7 @@ export const getAppDependencies = (
     insertLock: songsRepository.addLockToSong,
     approveRequest: songRequestRepository.approveSongRequest,
     clearLock: songsRepository.clearLockFromSong,
+    increaseLockOrder: songsRepository.increaseLockOrder,
+    decreaseLockOrder: songsRepository.decreaseLockOrder,
   };
 };

@@ -10,20 +10,20 @@ import { User } from "../domain/user";
 
 export interface Dependencies extends CORSEnabled {
   clearVotes: (id: string) => Promise<void>;
-  findSongsWithVotes: () => Promise<Songs>;
-  insertVote: (vote: Vote, count: number) => Promise<void>;
   getIdentityFromRequest: (event: APIGatewayProxyEvent) => Maybe<User>;
   findSongById: (id: string) => Promise<Maybe<Song>>;
+  increaseLockOrder: (songId: string) => Promise<void>;
+  decreaseLockOrder: (songId: string) => Promise<void>;
 }
 
 export const createRunAdminCommandLambda = (dependencies: Dependencies) => {
   const {
     clearVotes,
-    findSongsWithVotes,
-    insertVote,
     getIdentityFromRequest,
     findSongById,
     allowedOrigins,
+    increaseLockOrder,
+    decreaseLockOrder,
   } = dependencies;
 
   const removeSongCommand = async (params: { songId: string }) => {
@@ -33,26 +33,12 @@ export const createRunAdminCommandLambda = (dependencies: Dependencies) => {
 
   //TODO: this move stuff is a bit of a tire fire. Probably want to rethink it.
   const moveUpCommand = async (params: { songId: string; identity: User }) => {
-    const { songId, identity } = params;
+    const { songId } = params;
 
     const songToMove = await findSongById(songId);
-    const paginatedPlaylist = await findSongsWithVotes();
-    const playlistSongs = paginatedPlaylist.page;
-    const index = playlistSongs.findIndex((s) => s.id == songId);
-    if (index > 0) {
-      const songToReplace = playlistSongs[index - 1];
-      const songToReplaceVoteCount = songToReplace.voteCount;
-      if (songToReplaceVoteCount && songToMove) {
-        const additionalVotes =
-          songToReplaceVoteCount - songToMove.voteCount + 1;
-        await insertVote({ songId, voter: identity }, additionalVotes);
-      } else {
-        console.log(
-          "No vote found. Skipping. This could be an unavoidable race condition condition"
-        );
-      }
-    } else {
-      console.log("Nowhere to go. Already at the top");
+
+    if (songToMove) {
+      await increaseLockOrder(songId);
     }
   };
 
@@ -60,28 +46,10 @@ export const createRunAdminCommandLambda = (dependencies: Dependencies) => {
     songId: string;
     identity: User;
   }) => {
-    {
-      const { songId, identity } = params;
-
-      const songToMove = await findSongById(songId);
-      const paginatedPlaylist = await findSongsWithVotes();
-      const playListSongs = paginatedPlaylist.page;
-      const index = playListSongs.findIndex((s) => s.id == songId);
-      if (index <= playListSongs.length - 1) {
-        const songToReplace = playListSongs[index + 1];
-        const songToReplaceVoteCount = songToReplace.voteCount;
-        if (songToReplaceVoteCount && songToMove) {
-          const votesToRemove =
-            songToReplaceVoteCount - 1 - songToMove.voteCount;
-          await insertVote({ songId, voter: identity }, votesToRemove);
-        } else {
-          console.log(
-            "No vote found. Skipping. This could be an unavoidable race condition condition"
-          );
-        }
-      } else {
-        console.log("Nowhere to go. Already at the top");
-      }
+    const { songId } = params;
+    const songToMove = await findSongById(songId);
+    if (songToMove) {
+      await decreaseLockOrder(songId);
     }
   };
   const commands = {
