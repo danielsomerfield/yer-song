@@ -121,7 +121,6 @@ const PlayListControls = ({
         fontSize: "3vh",
         position: "absolute",
         overflowX: "scroll",
-        height: "95%",
         width: "95%",
         margin: "1vh",
         display: "flex",
