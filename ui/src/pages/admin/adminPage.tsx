@@ -32,7 +32,8 @@ const PlayListControls = ({
     //   song.lockOrder == 0;
     const upArrowDisabled = songIndex <= 0 || song.lockOrder == 0;
 
-    const lockIcon = song.lockOrder === 1 ? <>&#128274;</> : <>&#128275;</>;
+    const lockIcon = song.lockOrder > 0 ? <>&#128274;</> : <>&#128275;</>;
+    const lockButtonStyle = song.lockOrder > 0 ? "red" : "transparent";
     const SongItemControls = ({ song }: { song: SongWithVotes }) => {
       return (
         <div className="button-div">
@@ -73,10 +74,15 @@ const PlayListControls = ({
           {/*</SongAdminButton>*/}
           <SongAdminButton
             key={`button-lock-${song.id}`}
-            disabled={song.lockOrder === 1}
+            style={ song.lockOrder > 0 ? { background: "red" } : { background: "transparent" }}
+            title={ song.lockOrder > 0 ? "click to unlock me" : "click to lock me" }
             onClick={async (evt) => {
               evt.currentTarget.disabled = true;
-              await adminService.lockSong(song.id);
+              if (song.lockOrder > 0) {
+                await adminService.unlockSong(song.id);
+              } else {
+                await adminService.lockSong(song.id);
+              }
               await refresh();
             }}
           >

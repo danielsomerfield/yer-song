@@ -25,6 +25,7 @@ export interface AdminService {
   lockSong: (id: string) => Promise<void>;
   getSongRequests: () => Promise<ReturnOrError<SongRequests>>;
   approveSongRequest: (approval: Approval) => Promise<void>;
+  unlockSong: (id: string) => Promise<void>;
 }
 
 export const createAdminService = (
@@ -48,6 +49,10 @@ export const createAdminService = (
   };
   const lockSong = async (id: string) => {
     return createPost<void>(configuration, `/lock/songs/${id}`, httpClient)();
+  };
+
+  const unlockSong = async (id: string) => {
+    return createPost<void>(configuration, `/unlock/songs/${id}`, httpClient)();
   };
 
   interface LoginResponse {
@@ -145,5 +150,6 @@ export const createAdminService = (
     lockSong,
     getSongRequests,
     approveSongRequest,
+    unlockSong,
   };
 };
