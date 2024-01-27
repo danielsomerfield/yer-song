@@ -120,11 +120,14 @@ const PlayListControls = ({
       aria-label={"play-list-controls"}
       role={"table"}
       style={{
+        fontSize: "3vh",
         position: "absolute",
         overflowX: "scroll",
         height: "95%",
         width: "90%",
         margin: "1vh",
+        display: "flex",
+        justifyItems: "center",
       }}
     >
       <table>
