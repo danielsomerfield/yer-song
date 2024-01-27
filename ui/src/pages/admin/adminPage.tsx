@@ -74,8 +74,14 @@ const PlayListControls = ({
           {/*</SongAdminButton>*/}
           <SongAdminButton
             key={`button-lock-${song.id}`}
-            style={ song.lockOrder > 0 ? { background: "red" } : { background: "transparent" }}
-            title={ song.lockOrder > 0 ? "click to unlock me" : "click to lock me" }
+            style={
+              song.lockOrder > 0
+                ? { background: "red" }
+                : { background: "transparent" }
+            }
+            title={
+              song.lockOrder > 0 ? "click to unlock me" : "click to lock me"
+            }
             onClick={async (evt) => {
               evt.currentTarget.disabled = true;
               if (song.lockOrder > 0) {
@@ -97,7 +103,6 @@ const PlayListControls = ({
           <td>{song.title}</td>
           <td>{song.voters.length > 0 ? song.voters[0].name : "unknown"}</td>
           <td>{song.voteCount}</td>
-          <td>{song.lockOrder}</td>
           <td>
             <SongItemControls song={song} />
           </td>
@@ -128,7 +133,6 @@ const PlayListControls = ({
             <th>Song</th>
             <th>Requested by</th>
             <th>Votes</th>
-            <th>lock order</th>
             <th></th>
           </tr>
         </thead>
