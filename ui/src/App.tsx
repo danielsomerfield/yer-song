@@ -123,7 +123,15 @@ function App() {
     <Screen className={"screen"}>
       <AppHeader className="App-header">
         <Branding>
-          <div>John and Julie's Wedding!</div>
+          <div>Arcobaleno Strings</div>
+          <div
+            style={{
+              fontSize: "4vh",
+              fontWeight: "normal",
+            }}
+          >
+            Jukebox Quartet
+          </div>
         </Branding>
         <div>
           <QRCodePanelDiv id={"qr-code"} />
