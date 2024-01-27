@@ -206,9 +206,7 @@ const ButtonForVoteMode = ({
             value: vote.value,
           });
 
-          const note = encodeURIComponent(
-            `Song: ${song.title} - RequestId: ${result.requestId} `,
-          );
+          const note = `Song: ${song.title} - RequestId: ${result.requestId}`;
           window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=@Rachel-Nesvig&amount=${vote.value}&note=${note}`;
         }}
       />
