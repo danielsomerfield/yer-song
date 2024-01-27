@@ -234,10 +234,13 @@ export const createSongRequestRepository = (
               ":zero": {
                 N: "0",
               },
+              ":ts": {
+                S: DateTime.now().toUTC().toISO({ suppressMilliseconds: true }),
+              },
             },
 
             UpdateExpression:
-              "SET requests.#id.#status = :requestStatus, GSI2PK = :playlist, voteCount = if_not_exists(voteCount, :zero) + :increment",
+              "SET requests.#id.#status = :requestStatus, GSI2PK = :playlist, voteCount = if_not_exists(voteCount, :zero) + :increment, submitTime = if_not_exists(submitTime, :ts)",
             ExpressionAttributeNames: {
               "#id": approval.requestId,
               "#status": "status",

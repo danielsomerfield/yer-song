@@ -13,6 +13,85 @@ const SongAdminButton = styled.button`
   min-width: 8vh;
 `;
 
+const SongItemRow = ({
+  song,
+  playlist,
+  adminService,
+  refresh,
+}: PropsWithChildren & {
+  song: SongWithVotes;
+  playlist: Playlist;
+  adminService: AdminService;
+  refresh: () => Promise<void>;
+}) => {
+  const songIndex = playlist.songs.page.findIndex((s) => s.id == song.id);
+  const upArrowDisabled = songIndex <= 0 || song.lockOrder == 0;
+
+  const lockIcon = song.lockOrder > 0 ? <>&#128274;</> : <>&#128275;</>;
+  const lockButtonStyle = song.lockOrder > 0 ? "red" : "transparent";
+  const SongItemControls = ({ song }: { song: SongWithVotes }) => {
+    return (
+      <div className="button-div">
+        <SongAdminButton
+          key={`button-remove-${song.id}`}
+          onClick={async (evt) => {
+            evt.currentTarget.disabled = true;
+            await adminService.removeFromPlaylist(song.id);
+            await refresh();
+          }}
+        >
+          X
+        </SongAdminButton>
+        <SongAdminButton
+          key={`button-up-${song.id}`}
+          disabled={upArrowDisabled}
+          onClick={async (evt) => {
+            evt.currentTarget.disabled = true;
+            await adminService.moveUpOnPlaylist(song.id);
+            await refresh();
+          }}
+          title={"Move to the top of the list"}
+        >
+          &uarr;
+        </SongAdminButton>
+
+        <SongAdminButton
+          key={`button-lock-${song.id}`}
+          style={
+            song.lockOrder > 0
+              ? { background: "red" }
+              : { background: "transparent" }
+          }
+          title={song.lockOrder > 0 ? "click to unlock me" : "click to lock me"}
+          onClick={async (evt) => {
+            evt.currentTarget.disabled = true;
+            if (song.lockOrder > 0) {
+              await adminService.unlockSong(song.id);
+            } else {
+              await adminService.lockSong(song.id);
+            }
+            await refresh();
+          }}
+        >
+          {lockIcon}
+        </SongAdminButton>
+      </div>
+    );
+  };
+  return (
+    <>
+      <tr aria-label={"song-item-row"} role={"row"}>
+        <td>{song.title}</td>
+        <td>{song.voters.length > 0 ? song.voters[0].name : "unknown"}</td>
+        <td>{song.voteCount}</td>
+        <td>
+          <SongItemControls song={song} />
+        </td>
+      </tr>
+    </>
+  );
+};
+
 const PlayListControls = ({
   playlist,
   adminService,
@@ -22,97 +101,16 @@ const PlayListControls = ({
   adminService: AdminService;
   refresh: () => Promise<void>;
 }) => {
-  const SongItemRow = ({
-    song,
-  }: PropsWithChildren & { song: SongWithVotes }) => {
-    const songIndex = playlist.songs.page.findIndex((s) => s.id == song.id);
-    // const downArrowDisabled =
-    //   songIndex >=
-    //     playlist.songs.page.filter((s) => s.lockOrder != 0).length - 1 ||
-    //   song.lockOrder == 0;
-    const upArrowDisabled = songIndex <= 0 || song.lockOrder == 0;
-
-    const lockIcon = song.lockOrder > 0 ? <>&#128274;</> : <>&#128275;</>;
-    const lockButtonStyle = song.lockOrder > 0 ? "red" : "transparent";
-    const SongItemControls = ({ song }: { song: SongWithVotes }) => {
-      return (
-        <div className="button-div">
-          <SongAdminButton
-            key={`button-remove-${song.id}`}
-            onClick={async (evt) => {
-              evt.currentTarget.disabled = true;
-              await adminService.removeFromPlaylist(song.id);
-              await refresh();
-            }}
-          >
-            X
-          </SongAdminButton>
-          <SongAdminButton
-            key={`button-up-${song.id}`}
-            disabled={upArrowDisabled}
-            onClick={async (evt) => {
-              evt.currentTarget.disabled = true;
-              await adminService.moveUpOnPlaylist(song.id);
-              await refresh();
-            }}
-            title={"Move to the top of the list"}
-          >
-            &uarr;
-          </SongAdminButton>
-
-          {/*  Currently disabling moving songs down. Might bring it back. */}
-          {/*<SongAdminButton*/}
-          {/*  key={`button-down-${song.id}`}*/}
-          {/*  disabled={song.voteCount <= 1 || downArrowDisabled}*/}
-          {/*  onClick={async (evt) => {*/}
-          {/*    evt.currentTarget.disabled = true;*/}
-          {/*    await adminService.moveDownOnPlaylist(song.id);*/}
-          {/*    await refresh();*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  &darr;*/}
-          {/*</SongAdminButton>*/}
-          <SongAdminButton
-            key={`button-lock-${song.id}`}
-            style={
-              song.lockOrder > 0
-                ? { background: "red" }
-                : { background: "transparent" }
-            }
-            title={
-              song.lockOrder > 0 ? "click to unlock me" : "click to lock me"
-            }
-            onClick={async (evt) => {
-              evt.currentTarget.disabled = true;
-              if (song.lockOrder > 0) {
-                await adminService.unlockSong(song.id);
-              } else {
-                await adminService.lockSong(song.id);
-              }
-              await refresh();
-            }}
-          >
-            {lockIcon}
-          </SongAdminButton>
-        </div>
-      );
-    };
-    return (
-      <>
-        <tr aria-label={"song-item-row"} role={"row"}>
-          <td>{song.title}</td>
-          <td>{song.voters.length > 0 ? song.voters[0].name : "unknown"}</td>
-          <td>{song.voteCount}</td>
-          <td>
-            <SongItemControls song={song} />
-          </td>
-        </tr>
-      </>
-    );
-  };
-
   const SongView = (song: SongWithVotes) => {
-    return <SongItemRow song={song} key={`song-item-row-${song.id}`} />;
+    return (
+      <SongItemRow
+        song={song}
+        key={`song-item-row-${song.id}`}
+        adminService={adminService}
+        refresh={refresh}
+        playlist={playlist}
+      />
+    );
   };
 
   return (
@@ -124,7 +122,7 @@ const PlayListControls = ({
         position: "absolute",
         overflowX: "scroll",
         height: "95%",
-        width: "90%",
+        width: "95%",
         margin: "1vh",
         display: "flex",
         justifyItems: "center",
