@@ -43,28 +43,31 @@ const TableColumnHeader = styled.div`
   text-decoration: underline;
 `;
 
+const SongView = (song: SongWithVotes) => {
+  const voterName =
+    song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
+
+  console.log(song.lockOrder);
+  const lockedForPlay = <div>&#127925;</div>;
+  const showingVotes = <div>{song.voteCount}</div>;
+  return (
+    <ListItem
+      role={"listitem"}
+      key={`song::${song.id}`}
+      aria-label={`song: ${song.title}`}
+      data-id={song.id}
+    >
+      <SongRow>
+        <SongTitle className="left">{song.title}</SongTitle>
+        <div>{voterName}</div>
+        <div>{song.lockOrder > 0 ? lockedForPlay : showingVotes}</div>
+      </SongRow>
+    </ListItem>
+  );
+};
+
 const PlaylistView = ({ playlist }: { playlist: Playlist }) => {
   document.getElementById("qr-code")?.style.setProperty("display", "flow");
-
-  const SongView = (song: SongWithVotes) => {
-    const voterName =
-      song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
-
-    return (
-      <ListItem
-        role={"listitem"}
-        key={`song::${song.id}`}
-        aria-label={`song: ${song.title}`}
-        data-id={song.id}
-      >
-        <SongRow>
-          <SongTitle className="left">{song.title}</SongTitle>
-          <div>{voterName}</div>
-          <div>{song.voteCount}</div>
-        </SongRow>
-      </ListItem>
-    );
-  };
 
   return (
     <div className="playlist-kiosk">
