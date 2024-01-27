@@ -47,6 +47,7 @@ const Screen = styled.div`
 
 const Branding = styled.h1`
   font-size: 5vh;
+  color: #ce9eff;
 `;
 
 const getSongForIdFn = SongService.createSongForIdFn({
