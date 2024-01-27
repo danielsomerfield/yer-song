@@ -100,5 +100,6 @@ export const getAppDependencies = (
     findAllSongRequests: songRequestRepository.findAllSongRequests,
     insertLock: songsRepository.addLockToSong,
     approveRequest: songRequestRepository.approveSongRequest,
+    clearLock: songsRepository.clearLockFromSong,
   };
 };
