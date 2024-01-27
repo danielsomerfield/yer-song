@@ -85,7 +85,7 @@ export const SongListView = ({
       setLoadStatus({
         data: {
           page: maybeSongsForTag.value.page.sort((s1, s2) =>
-            s1.title < s2.title ? -1 : 1,
+            s1.title.toLowerCase() < s2.title.toLowerCase() ? -1 : 1,
           ),
         },
         name: "loaded",
