@@ -64,6 +64,8 @@ export const LoginDialog = ({
                   type={"text"}
                   required={true}
                   minLength={5}
+                  autoCapitalize={"off"}
+                  autoCorrect={"off"}
                   onInput={(e) => {
                     if (e.currentTarget.checkValidity()) {
                       setUsernameInput(e.currentTarget.value);

@@ -46,6 +46,8 @@ export const RegistrationForm = ({
                 <input
                   id={"name"}
                   required={true}
+                  autoCapitalize={"off"}
+                  autoCorrect={"off"}
                   minLength={2}
                   onInput={(e) => {
                     setValid(e.currentTarget.checkValidity());

@@ -121,7 +121,7 @@ const PlayListControls = ({
       role={"table"}
       style={{
         position: "absolute",
-        overflow: "hidden",
+        overflowX: "scroll",
         height: "95%",
         width: "90%",
         margin: "1vh",
@@ -131,7 +131,7 @@ const PlayListControls = ({
         <thead>
           <tr aria-label={"songs-title-panel"}>
             <th>Song</th>
-            <th>Requested by</th>
+            <th>Requester</th>
             <th>Votes</th>
             <th></th>
           </tr>
