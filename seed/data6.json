@@ -1,1 +1,679 @@
-{"song": [{"PutRequest": {"Item": {"PK": {"S": "s:6dfcc8c0-fa74-4eac-824b-e5bf347e4658"}, "SK": {"S": "s:6dfcc8c0-fa74-4eac-824b-e5bf347e4658"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Paradise"}, "artistName": {"S": "Coldplay"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:265ce733-9aea-4611-a169-e9840b5e52d3"}, "SK": {"S": "s:265ce733-9aea-4611-a169-e9840b5e52d3"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Perfect"}, "artistName": {"S": "Ed Sheeran"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:84d46088-8b61-4e96-ba19-a6ed88b44357"}, "SK": {"S": "s:84d46088-8b61-4e96-ba19-a6ed88b44357"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Photograph"}, "artistName": {"S": "Ed Sheeran"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:26efac47-115d-4d9c-95b7-80da7f242123"}, "SK": {"S": "s:26efac47-115d-4d9c-95b7-80da7f242123"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Rather Be"}, "artistName": {"S": "Clean Bandit Ft. Jess Glynne"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:e51266fe-2b2c-4182-91dd-a6757ff84994"}, "SK": {"S": "s:e51266fe-2b2c-4182-91dd-a6757ff84994"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Roar"}, "artistName": {"S": "Katy Perry"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:62ca491b-d037-4962-b754-cdef22709d9e"}, "SK": {"S": "s:62ca491b-d037-4962-b754-cdef22709d9e"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Rolling in the Deep"}, "artistName": {"S": "Adele"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:e182ce74-0f41-45af-befe-81b728ccfcf8"}, "SK": {"S": "s:e182ce74-0f41-45af-befe-81b728ccfcf8"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Say You"}, "artistName": {"S": "unknown"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:3b8ca3b8-54b8-4458-a9dd-b1b4da65f3d5"}, "SK": {"S": "s:3b8ca3b8-54b8-4458-a9dd-b1b4da65f3d5"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Won\u2019t Let Go"}, "artistName": {"S": "James Arthur"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:5496a379-4744-4658-a6a6-319d2e6c639a"}, "SK": {"S": "s:5496a379-4744-4658-a6a6-319d2e6c639a"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Shape of You"}, "artistName": {"S": "Ed Sheeran"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:19ac86d2-0c82-4a55-b7ce-8d4cb626185a"}, "SK": {"S": "s:19ac86d2-0c82-4a55-b7ce-8d4cb626185a"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Something Just Like This"}, "artistName": {"S": "The Chainsmokers & Coldplay"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:629ba463-ca0e-4dc0-9b7c-a66588bb7981"}, "SK": {"S": "s:629ba463-ca0e-4dc0-9b7c-a66588bb7981"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Speechless"}, "artistName": {"S": "Dan + Shay"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:89b2a31c-5d2b-47e3-8958-41cd8f76c84f"}, "SK": {"S": "s:89b2a31c-5d2b-47e3-8958-41cd8f76c84f"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Starlight"}, "artistName": {"S": "Muse"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:021f890c-c043-4a7e-8442-469f9244c459"}, "SK": {"S": "s:021f890c-c043-4a7e-8442-469f9244c459"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Stay With Me"}, "artistName": {"S": "Sam Smith"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:9abaac7e-14ff-48a8-9900-c67d040a1e72"}, "SK": {"S": "s:9abaac7e-14ff-48a8-9900-c67d040a1e72"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Strange"}, "artistName": {"S": "Bridgerton"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:fdb28c27-e264-4a3f-ab77-3de1ead8eef4"}, "SK": {"S": "s:fdb28c27-e264-4a3f-ab77-3de1ead8eef4"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Sweet Disposition"}, "artistName": {"S": "The Temper Trap"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:993b313f-d970-49a1-902a-add98338f5e2"}, "SK": {"S": "s:993b313f-d970-49a1-902a-add98338f5e2"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Take Me To Church"}, "artistName": {"S": "Hozier"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:9769fd09-9e36-4f83-9626-53e50348c10b"}, "SK": {"S": "s:9769fd09-9e36-4f83-9626-53e50348c10b"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "The Scientist"}, "artistName": {"S": "Coldplay"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:69aa3f3e-4eda-4058-ae38-30559c0c2b4e"}, "SK": {"S": "s:69aa3f3e-4eda-4058-ae38-30559c0c2b4e"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Thinking Out Loud"}, "artistName": {"S": "Ed Sheeran"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:f91c9f1f-a767-4087-af9e-b7798209f158"}, "SK": {"S": "s:f91c9f1f-a767-4087-af9e-b7798209f158"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Treasure"}, "artistName": {"S": "Bruno Mars"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:d867fffb-2d38-450b-b708-e4f378b83b20"}, "SK": {"S": "s:d867fffb-2d38-450b-b708-e4f378b83b20"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Viva La Vida"}, "artistName": {"S": "Coldplay"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:fff5cd9f-af26-427a-9684-79b30ebd3991"}, "SK": {"S": "s:fff5cd9f-af26-427a-9684-79b30ebd3991"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Wake Me Up"}, "artistName": {"S": "Avincii"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:d1621a14-cfe1-4a3a-b622-8bf390799121"}, "SK": {"S": "s:d1621a14-cfe1-4a3a-b622-8bf390799121"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "Welcome to the Black Parade"}, "artistName": {"S": "My Chemical Romance"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:810da2be-8a90-40bd-bf5f-93c43bcb438c"}, "SK": {"S": "s:810da2be-8a90-40bd-bf5f-93c43bcb438c"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "What About Us"}, "artistName": {"S": "Pink \u2013 Duomo/Bridgerton Arrangement"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:aae92ef2-5cd1-4af3-820d-f7aaba740e9f"}, "SK": {"S": "s:aae92ef2-5cd1-4af3-820d-f7aaba740e9f"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "When You\u2019re Smiling And Astride Me"}, "artistName": {"S": "Father John Misty"}}}}, {"PutRequest": {"Item": {"PK": {"S": "s:961e931b-cda7-42f0-bc93-b691b73ae25a"}, "SK": {"S": "s:961e931b-cda7-42f0-bc93-b691b73ae25a"}, "entityType": {"S": "song"}, "requests": {"M": {}}, "GSI1PK": {"S": "t:genre:Contemporary"}, "title": {"S": "XO"}, "artistName": {"S": "Beyonce"}}}}]}
+{
+    "song": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:504b9229-c087-4013-bc76-679166751c3e"
+                    },
+                    "SK": {
+                        "S": "s:504b9229-c087-4013-bc76-679166751c3e"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Paradise"
+                    },
+                    "artistName": {
+                        "S": "Coldplay"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:4f932cd1-1f2e-4e86-82c7-9dda0f9413f3"
+                    },
+                    "SK": {
+                        "S": "s:4f932cd1-1f2e-4e86-82c7-9dda0f9413f3"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Perfect"
+                    },
+                    "artistName": {
+                        "S": "Ed Sheeran"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:42442f99-dbd1-4bdd-b665-679cb275ffcf"
+                    },
+                    "SK": {
+                        "S": "s:42442f99-dbd1-4bdd-b665-679cb275ffcf"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Photograph"
+                    },
+                    "artistName": {
+                        "S": "Ed Sheeran"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:04d60256-bb82-4843-8684-ac3be8fc3f90"
+                    },
+                    "SK": {
+                        "S": "s:04d60256-bb82-4843-8684-ac3be8fc3f90"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Rather Be"
+                    },
+                    "artistName": {
+                        "S": "Clean Bandit Ft. Jess Glynne"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:0042f636-10fe-4f81-ac30-f6b34eaf80fa"
+                    },
+                    "SK": {
+                        "S": "s:0042f636-10fe-4f81-ac30-f6b34eaf80fa"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Roar"
+                    },
+                    "artistName": {
+                        "S": "Katy Perry"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:005775e2-7317-4d62-a697-7e97fe1f7fa0"
+                    },
+                    "SK": {
+                        "S": "s:005775e2-7317-4d62-a697-7e97fe1f7fa0"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Rolling in the Deep"
+                    },
+                    "artistName": {
+                        "S": "Adele"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:8a54edb7-daca-49de-bd41-b51f80df8ba2"
+                    },
+                    "SK": {
+                        "S": "s:8a54edb7-daca-49de-bd41-b51f80df8ba2"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Say You Won\u2019t Let Go"
+                    },
+                    "artistName": {
+                        "S": "James Arthur"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:6ace1bbf-8fe4-409c-9624-8ac52817fb7a"
+                    },
+                    "SK": {
+                        "S": "s:6ace1bbf-8fe4-409c-9624-8ac52817fb7a"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Shape of You"
+                    },
+                    "artistName": {
+                        "S": "Ed Sheeran"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:f2f8d6bf-5317-4baa-97ef-b9db945b41a5"
+                    },
+                    "SK": {
+                        "S": "s:f2f8d6bf-5317-4baa-97ef-b9db945b41a5"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Something Just Like This"
+                    },
+                    "artistName": {
+                        "S": "The Chainsmokers & Coldplay"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:2b74986d-351b-4d7b-8cf0-afb003f42de8"
+                    },
+                    "SK": {
+                        "S": "s:2b74986d-351b-4d7b-8cf0-afb003f42de8"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Speechless"
+                    },
+                    "artistName": {
+                        "S": "Dan + Shay"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:a55ff26c-a076-4087-9abb-53ed3d7cd697"
+                    },
+                    "SK": {
+                        "S": "s:a55ff26c-a076-4087-9abb-53ed3d7cd697"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Starlight"
+                    },
+                    "artistName": {
+                        "S": "Muse"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:326e6cc7-4e20-4486-ac96-567ac6e0108d"
+                    },
+                    "SK": {
+                        "S": "s:326e6cc7-4e20-4486-ac96-567ac6e0108d"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Stay With Me"
+                    },
+                    "artistName": {
+                        "S": "Sam Smith"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:e0b1d13a-d7b1-4f50-b94c-17c19e3aeaf6"
+                    },
+                    "SK": {
+                        "S": "s:e0b1d13a-d7b1-4f50-b94c-17c19e3aeaf6"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Strange"
+                    },
+                    "artistName": {
+                        "S": "Bridgerton"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:e71fe8e6-6185-4dbb-9ba3-8f038724e275"
+                    },
+                    "SK": {
+                        "S": "s:e71fe8e6-6185-4dbb-9ba3-8f038724e275"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Sweet Disposition"
+                    },
+                    "artistName": {
+                        "S": "The Temper Trap"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:c5ace384-624d-463f-89cc-eff24ed21465"
+                    },
+                    "SK": {
+                        "S": "s:c5ace384-624d-463f-89cc-eff24ed21465"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Take Me To Church"
+                    },
+                    "artistName": {
+                        "S": "Hozier"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:2d59220f-3d7e-4d4b-be30-b8b9b58bc794"
+                    },
+                    "SK": {
+                        "S": "s:2d59220f-3d7e-4d4b-be30-b8b9b58bc794"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "The Scientist"
+                    },
+                    "artistName": {
+                        "S": "Coldplay"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:6bd996a6-6adf-4f7d-82c6-b976f1cd2ffa"
+                    },
+                    "SK": {
+                        "S": "s:6bd996a6-6adf-4f7d-82c6-b976f1cd2ffa"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Thinking Out Loud"
+                    },
+                    "artistName": {
+                        "S": "Ed Sheeran"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:c79d7d0d-de27-4b57-8b89-9beeb0aec6c5"
+                    },
+                    "SK": {
+                        "S": "s:c79d7d0d-de27-4b57-8b89-9beeb0aec6c5"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Treasure"
+                    },
+                    "artistName": {
+                        "S": "Bruno Mars"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:ece7ae88-9d44-4fbb-a322-0416b4086c59"
+                    },
+                    "SK": {
+                        "S": "s:ece7ae88-9d44-4fbb-a322-0416b4086c59"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Viva La Vida"
+                    },
+                    "artistName": {
+                        "S": "Coldplay"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:6503e941-01a3-47da-a0c2-a2a1acf21d02"
+                    },
+                    "SK": {
+                        "S": "s:6503e941-01a3-47da-a0c2-a2a1acf21d02"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Wake Me Up"
+                    },
+                    "artistName": {
+                        "S": "Avincii"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:19530d90-a79a-4ba7-aa86-c6edb5b27d87"
+                    },
+                    "SK": {
+                        "S": "s:19530d90-a79a-4ba7-aa86-c6edb5b27d87"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Welcome to the Black Parade"
+                    },
+                    "artistName": {
+                        "S": "My Chemical Romance"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:d4c282f8-e750-441a-b796-8e8853e90100"
+                    },
+                    "SK": {
+                        "S": "s:d4c282f8-e750-441a-b796-8e8853e90100"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "What About Us"
+                    },
+                    "artistName": {
+                        "S": "Pink \u2013 Duomo/Bridgerton Arrangement"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:63106347-8428-4e37-8fc8-cbb2047f29ef"
+                    },
+                    "SK": {
+                        "S": "s:63106347-8428-4e37-8fc8-cbb2047f29ef"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "When You\u2019re Smiling And Astride Me"
+                    },
+                    "artistName": {
+                        "S": "Father John Misty"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:f46fc88d-5852-41f8-a712-13a3d3116a97"
+                    },
+                    "SK": {
+                        "S": "s:f46fc88d-5852-41f8-a712-13a3d3116a97"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "XO"
+                    },
+                    "artistName": {
+                        "S": "Beyonce"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "PK": {
+                        "S": "s:f7cf53b9-2908-4dd1-99cb-167e34fe88d1"
+                    },
+                    "SK": {
+                        "S": "s:f7cf53b9-2908-4dd1-99cb-167e34fe88d1"
+                    },
+                    "entityType": {
+                        "S": "song"
+                    },
+                    "requests": {
+                        "M": {}
+                    },
+                    "GSI1PK": {
+                        "S": "t:genre:Contemporary"
+                    },
+                    "title": {
+                        "S": "Yellow"
+                    },
+                    "artistName": {
+                        "S": "Coldplay"
+                    }
+                }
+            }
+        }
+    ]
+}
