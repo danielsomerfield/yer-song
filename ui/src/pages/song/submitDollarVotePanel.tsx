@@ -50,7 +50,8 @@ export const SubmitDollarVotePanel = ({
   const [requestValue, setRequestValue] = useState("5");
 
   const isReady = () => {
-    return Number.isSafeInteger(Number.parseFloat(requestValue));
+    const asFloat = Number.parseFloat(requestValue);
+    return Number.isSafeInteger(asFloat) && asFloat > 0;
   };
   return (
     <>

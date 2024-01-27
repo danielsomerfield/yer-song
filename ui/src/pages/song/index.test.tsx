@@ -134,6 +134,23 @@ describe("the song page", () => {
       );
       expect(screen.getByRole("button", { name: "Venmo" })).toBeVisible();
     });
+
+    it("disables the venmo request button with negative values", () => {
+      render(
+        <SongView
+          song={songWithVotes}
+          voteForSong={async () => {
+            throw "Not expected";
+          }}
+          currentUser={currentUser}
+          voteMode={"DOLLAR_VOTE"}
+        />,
+      );
+      fireEvent.change(screen.getByRole("button", { name: "Venmo" }), "-5");
+      waitFor(() => {
+        expect(screen.getByRole("button", { name: "Venmo" })).toBeDisabled();
+      });
+    });
   });
 
   describe("loading from api", () => {

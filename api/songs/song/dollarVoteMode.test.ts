@@ -71,6 +71,18 @@ describe("dollar vote mode", () => {
     });
   });
 
+  it("rejects request with value of less than 1", async () => {
+    await testExpectedResponseCodeForBody(
+      JSON.stringify({
+        value: -10,
+      }),
+      400,
+      {
+        status: StatusCodes.INVALID_INPUT,
+      }
+    );
+  });
+
   it("rejects request with malformed json", async () => {
     await testExpectedResponseCodeForBody("{", 400, {
       status: StatusCodes.INVALID_INPUT,
@@ -89,9 +101,12 @@ describe("dollar vote mode", () => {
     expectedResponseBody: Record<string, unknown>,
     user: User = voter
   ) {
+    const insertSongRequest = fn();
+    insertSongRequest.mockResolvedValue("This should never be called");
     const dependencies = {
-      insertVote: fn(), // TODO: this shouldn't really be a dependency
-      insertSongRequest: fn(),
+      insertVote: fn(),
+      // TODO: this shouldn't really be a dependency
+      insertSongRequest,
       allowedOrigins: new Set([origin]),
       getIdentityFromRequest: () => user,
       voteMode: () => VoteModes.DOLLAR_VOTE,

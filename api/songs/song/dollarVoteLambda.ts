@@ -35,10 +35,10 @@ export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
     let songRequest: { value: number };
     try {
       songRequest = JSON.parse(event.body!);
-      if (!songRequest.value) {
+      if (!songRequest.value || songRequest.value < 1) {
         return generateResponseHeadersForDataResponse(
           {
-            message: "Missing 'value' field in body",
+            message: `Invalid request value: ${songRequest.value}`,
           },
           event.headers,
           allowedOrigins,
