@@ -73,7 +73,8 @@ export const SubmitDollarVotePanel = ({
           }}
         />
         <button
-          disabled={!isReady()}
+          disabled={true}
+          // disabled={!isReady()}
           onClick={() =>
             onSubmit({
               value: Number.parseInt(requestValue),
