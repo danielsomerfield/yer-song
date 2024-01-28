@@ -38,34 +38,28 @@ export const RegistrationForm = ({
             aria-label={"registration-form"}
           >
             <div>
-              <div>
-                The concert is over and registration is now disabled. We hope to
-                see you again!
-              </div>
               <FormRow>
                 {/* TODO: I think this `htmlFor` should be "name" */}
-                {/*<Label className="formLabel" htmlFor={"emailAddress"}>*/}
-                {/*  Name*/}
-                {/*</Label>*/}
-                {/*<input*/}
-                {/*  id={"name"}*/}
-                {/*  required={true}*/}
-                {/*  autoCapitalize={"off"}*/}
-                {/*  autoCorrect={"off"}*/}
-                {/*  minLength={2}*/}
-                {/*  onInput={(e) => {*/}
-                {/*    setValid(e.currentTarget.checkValidity());*/}
-                {/*    setNameInput(e.currentTarget.value);*/}
-                {/*  }}*/}
-                {/*  disabled={true}*/}
-                {/*  placeholder={"Enter your full name"}*/}
-                {/*/>*/}
+                <Label className="formLabel" htmlFor={"emailAddress"}>
+                  Name
+                </Label>
+                <input
+                  id={"name"}
+                  required={true}
+                  autoCapitalize={"off"}
+                  autoCorrect={"off"}
+                  minLength={2}
+                  onInput={(e) => {
+                    setValid(e.currentTarget.checkValidity());
+                    setNameInput(e.currentTarget.value);
+                  }}
+                  placeholder={"Enter your full name"}
+                />
               </FormRow>
               <ButtonRow>
-                {/*<RegisterButton onClick={submitRegistration} disabled={true}>*/}
-                {/*  /!*<RegisterButton onClick={submitRegistration} disabled={!valid}>*!/*/}
-                {/*  Regist*/}
-                {/*</RegisterButton>*/}
+                <RegisterButton onClick={submitRegistration} disabled={!valid}>
+                  Register
+                </RegisterButton>
               </ButtonRow>
             </div>
           </Dialog.Content>

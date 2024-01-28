@@ -168,7 +168,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-#            - Write
+            - Write
 
   LockSongFunction:
     Type: AWS::Serverless::Function
@@ -249,7 +249,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-#            - Write
+            - Write
                 
   RunAdminCommandFunction:
     Type: AWS::Serverless::Function
