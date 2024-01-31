@@ -381,8 +381,8 @@ Resources:
           - AttributeName: SK
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 1000
-          WriteCapacityUnits: 100
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
         GlobalSecondaryIndexes:
           - IndexName: GSI1
             KeySchema:
@@ -393,8 +393,8 @@ Resources:
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
-              ReadCapacityUnits: 250
-              WriteCapacityUnits: 25
+              ReadCapacityUnits: 10
+              WriteCapacityUnits: 10
           - IndexName: GSI2
             KeySchema:
               - AttributeName: GSI2PK
@@ -402,8 +402,8 @@ Resources:
             Projection:
               ProjectionType: ALL
             ProvisionedThroughput:
-              ReadCapacityUnits: 250
-              WriteCapacityUnits: 25
+              ReadCapacityUnits: 10
+              WriteCapacityUnits: 10
 
 Outputs:
   SongByIdAPI:

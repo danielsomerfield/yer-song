@@ -9,10 +9,6 @@ export const VoteModes = {
 
 export type VoteMode = keyof typeof VoteModes;
 
-export interface VoteSubmission {
-  requestId: string;
-}
-
 export const RequestStatuses = {
   PENDING_APPROVAL: "PENDING_APPROVAL",
   APPROVED: "APPROVED",
@@ -35,3 +31,7 @@ export interface SongRequests {
 }
 
 export type GetSongRequests = () => Promise<ReturnOrError<SongRequests>>;
+
+export interface VoteSubmission {
+  requestId: string;
+}

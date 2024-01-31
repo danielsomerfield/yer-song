@@ -1,7 +1,6 @@
 import React from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { SongPageWithParams } from "./pages/song";
 import { configuration } from "./configuration";
 import * as TagService from "./pages/songs/tagsService";
 import * as SongService from "./services/songService";
@@ -21,6 +20,11 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Logout } from "./pages/admin/logout";
 import { VoteModes } from "./domain/voting";
 import { DollarVoteAdminPage } from "./pages/admin/dollarVoteAdminPage";
+import SongPageWithParams from "./pages/song";
+import {
+  DollarVoteSongPage,
+  DVSongPage,
+} from "./pages/song/dollarVoteSongPage";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -146,14 +150,14 @@ function App() {
               <Route
                 path={"/songs/:songId"}
                 element={
-                  <SongPageWithParams
-                    getSong={getSongForIdFn}
-                    voteForSong={voteForSongFn}
-                    currentUser={currentUser}
-                    nav={navigator}
-                    voteMode={voteMode}
-                    submitDollarVoteForSong={submitDollarVoteForSongFn}
-                  />
+                  <>
+                    <DollarVoteSongPage
+                      getSong={getSongForIdFn}
+                      currentUser={currentUser}
+                      nav={navigator}
+                      submitDollarVoteForSong={submitDollarVoteForSongFn}
+                    />
+                  </>
                 }
               />
               <Route

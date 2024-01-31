@@ -1,7 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SongPage } from "../pages/song";
-import { SongWithVotes } from "../domain/song";
-import { User } from "../domain/users";
 import { NavigateFunction } from "react-router/dist/lib/hooks";
 import type { To } from "@remix-run/router";
 import type { NavigateOptions } from "react-router/dist/lib/context";

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+songId="$1"
+
+if [[ -z $songId ]]
+then
+  echo "usage: show-song <song-id>"
+  exit 1;
+fi
+
+
+aws --no-cli-pager --endpoint http://localhost:4566 \
+  dynamodb get-item \
+  --table-name song  \
+  --key "{\"PK\":{\"S\":\"$songId\"}, \"SK\":{\"S\":\"$songId\"}}" \
+  | jq
+
+
+
