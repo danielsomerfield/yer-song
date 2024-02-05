@@ -13,18 +13,14 @@ import { SongListPage } from "./pages/songs/songlistPage";
 import { PlayListPage } from "./pages/playlist/playlist";
 import AdminPage from "./pages/admin";
 import { GetPlaylist } from "./domain/playlist";
-import { KioskPlaylist } from "./pages/kiosk";
 import * as Toast from "@radix-ui/react-toast";
 import { AdminService, createAdminService } from "./pages/admin/adminService";
 import { ErrorBoundary } from "react-error-boundary";
 import { Logout } from "./pages/admin/logout";
 import { VoteModes } from "./domain/voting";
 import { DollarVoteAdminPage } from "./pages/admin/dollarVoteAdminPage";
-import SongPageWithParams from "./pages/song";
-import {
-  DollarVoteSongPage,
-  DVSongPage,
-} from "./pages/song/dollarVoteSongPage";
+import { DollarVoteSongPage } from "./pages/song/dollarVoteSongPage";
+import { KioskPlaylist } from "./pages/playlist/kiosk/kioskPlaylist";
 
 const AppContainer = styled.div`
   text-align: center;
@@ -213,9 +209,6 @@ function App() {
                 }
               />
 
-              {/*  TODO: keeping this as a separate page for the moment.
-                    Will combine later when we figure out the experience.
-              */}
               <Route
                 path={"/dvAdmin"}
                 element={

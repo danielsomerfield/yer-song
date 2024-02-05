@@ -12,7 +12,6 @@ be universal access to all the things. As a result of social login, we will stor
 
 ### View: Home
 * Not giving feedback yet on registration success / failure
-* Return key submits form
 
 ### View: Genre List (Browse) 
 * Handle load failures

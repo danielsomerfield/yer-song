@@ -35,13 +35,12 @@ export const DollarVoteSongView = ({
 }) => {
   const isOnPlaylist = song.voteCount > 0;
 
-  // TODO: this is a tricky condition so good to add some better testing
   const voterName =
     song.voters && song.voters.length > 0 ? song.voters[0].name : undefined;
 
   const onList = isOnPlaylist ? (
     <OnPlayListPanel aria-label={"on-playlist"} role={"note"}>
-      On playlist with $${song.voteCount} total bid
+      On playlist with ${song.voteCount} total bid
       <div aria-label={"requested-by"} role={"note"}>
         {voterName ? `Requested by ${voterName}` : ""}
       </div>

@@ -119,6 +119,14 @@ export const DollarVoteAdminPage = ({
         data: maybeVoteRequests.value,
         name: "loaded",
       });
+    } else if (
+      maybeVoteRequests.status == StatusCodes.INSUFFICIENT_PERMISSIONS
+    ) {
+      if (timer.current) {
+        window.clearInterval(timer.current);
+        timer.current = undefined;
+      }
+      setLoadStatus(LoadStatuses.ADMIN_REQUIRED);
     }
   };
 
@@ -147,6 +155,7 @@ export const DollarVoteAdminPage = ({
     ) {
       return (
         <LoginDialog
+          title={"Admin Login"}
           onSubmit={adminService.login}
           onLogin={async (result) => {
             if (result == "SUCCESS") {

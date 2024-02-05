@@ -187,6 +187,7 @@ export const AdminPage = ({
   if (!isAdmin(getCurrentUser())) {
     return (
       <LoginDialog
+        title={"Admin Login"}
         onSubmit={adminService.login}
         onLogin={async (result) => {
           if (result == "SUCCESS") {

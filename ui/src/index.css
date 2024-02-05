@@ -82,6 +82,12 @@ button[disabled] {
   max-width: 80%;
 }
 
+.DialogContent h2 {
+  font-size: 4vh;
+  margin: 0;
+  text-align: center;
+}
+
 input:invalid {
   border: dashed red;
   background: rgba(255,250,21,0.24)  ;

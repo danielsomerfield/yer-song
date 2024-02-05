@@ -3,27 +3,17 @@ import { LoginDialog, LoginResult } from "./loginDialog";
 import MockedFn = jest.MockedFn;
 import fn = jest.fn;
 
-async function getHiddenAlertsByClass() {
-  const hiddenAlerts = await screen.findAllByRole("alert", { hidden: true });
-  return hiddenAlerts.flatMap((a) => a.className.split(" "));
-}
-
 describe("the login dialog", () => {
   const username = "daniel";
   it("valid username and password enable the login button", async () => {
     render(<LoginDialog onSubmit={fn()} onLogin={fn()} />);
 
-    const usernameField = screen.getByRole("textbox", {
-      name: "username-input",
-    });
-    const passwordField = screen.getByLabelText("password-input");
     const loginButton: HTMLButtonElement = screen.getByRole("button", {
       name: "Log in",
     });
 
     expect(loginButton.disabled).toEqual(true);
-    fireEvent.input(usernameField, { target: { value: username } });
-    fireEvent.input(passwordField, { target: { value: "top secret" } });
+    populateUserNameAndPassword(username);
 
     await waitFor(async () => {
       expect(loginButton.disabled).toEqual(false);
@@ -31,6 +21,58 @@ describe("the login dialog", () => {
 
     expect(await getHiddenAlertsByClass()).toContain("LoginFailedAlert");
     expect(await getHiddenAlertsByClass()).toContain("ErrorAlert");
+  });
+
+  it("allows return to submit", async () => {
+    const onSubmit: MockedFn<
+      (username: string, password: string) => Promise<LoginResult>
+    > = fn();
+
+    render(<LoginDialog onSubmit={onSubmit} onLogin={fn()} />);
+
+    populateUserNameAndPassword(username);
+
+    const loginButton: HTMLButtonElement = screen.getByRole("button", {
+      name: "Log in",
+    });
+
+    await waitFor(async () => {
+      expect(loginButton.disabled).toEqual(false);
+    });
+
+    const passwordField = screen.getByLabelText("password-input");
+
+    fireEvent.keyUp(passwordField, { key: "a" });
+
+    fireEvent.keyUp(passwordField, { key: "Enter" });
+
+    await waitFor(() => {
+      expect(onSubmit).toBeCalledTimes(1);
+    });
+  });
+
+  it("disallows return to submit when no username", async () => {
+    const onSubmit: MockedFn<
+      (username: string, password: string) => Promise<LoginResult>
+    > = fn();
+
+    render(<LoginDialog onSubmit={onSubmit} onLogin={fn()} />);
+
+    const usernameField = screen.getByRole("textbox", {
+      name: "username-input",
+    });
+    const passwordField = screen.getByLabelText("password-input");
+
+    fireEvent.keyUp(passwordField, { key: "Enter" });
+
+    fireEvent.input(usernameField, { target: { value: username } });
+    fireEvent.input(passwordField, { target: { value: "top secret" } });
+
+    fireEvent.keyUp(passwordField, { key: "Enter" });
+
+    await waitFor(() => {
+      expect(onSubmit).toBeCalledTimes(1);
+    });
   });
 
   it("submits username and password on click", async () => {
@@ -122,3 +164,17 @@ describe("the login dialog", () => {
     expect(await getHiddenAlertsByClass()).toContain("LoginFailedAlert");
   });
 });
+
+async function getHiddenAlertsByClass() {
+  const hiddenAlerts = await screen.findAllByRole("alert", { hidden: true });
+  return hiddenAlerts.flatMap((a) => a.className.split(" "));
+}
+
+function populateUserNameAndPassword(username: string) {
+  const usernameField = screen.getByRole("textbox", {
+    name: "username-input",
+  });
+  const passwordField = screen.getByLabelText("password-input");
+  fireEvent.input(usernameField, { target: { value: username } });
+  fireEvent.input(passwordField, { target: { value: "top secret" } });
+}

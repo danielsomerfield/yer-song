@@ -18,9 +18,11 @@ const Alert = styled.span({
 export const LoginDialog = ({
   onSubmit,
   onLogin,
+  title = "Login",
 }: {
   onSubmit: (username: string, password: string) => Promise<LoginResult>;
   onLogin: (result: LoginResult) => Promise<void>;
+  title?: string;
 }) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -32,11 +34,28 @@ export const LoginDialog = ({
     return usernameInput.length > 0 && passwordInput.length > 0;
   };
 
+  const submitLogin = async () => {
+    try {
+      const result = await onSubmit(usernameInput, passwordInput);
+      if (result == "SUCCESS") {
+        setOpen(false);
+      } else {
+        setShowingError(false);
+        setShowingLoginFailed(true);
+      }
+      await onLogin(result);
+    } catch (e) {
+      console.log("Error when attempting login", e);
+      setShowingError(true);
+      setShowingLoginFailed(false);
+    }
+  };
   return (
     <Dialog.Root modal={true} open={open}>
       <Dialog.Portal>
         <Dialog.Overlay className="DialogOverlay">
-          <Dialog.Content className="DialogContent" aria-label={"admin-login"}>
+          <Dialog.Content className="DialogContent">
+            <Dialog.DialogTitle>{title}</Dialog.DialogTitle>
             <Alert
               className={"LoginFailedAlert"}
               aria-label={"login-failed"}
@@ -89,34 +108,21 @@ export const LoginDialog = ({
                       setPasswordInput(e.currentTarget.value);
                     }
                   }}
+                  onKeyUp={async (evt) => {
+                    if (
+                      evt.key == "Enter" &&
+                      evt.currentTarget.checkValidity()
+                    ) {
+                      await submitLogin();
+                    }
+                  }}
                   placeholder={"Enter your password"}
                   aria-label={"password-input"}
                 />
               </FormRow>
               <ButtonRow>
                 <Dialog.Close asChild>
-                  <button
-                    onClick={async () => {
-                      try {
-                        const result = await onSubmit(
-                          usernameInput,
-                          passwordInput,
-                        );
-                        if (result == "SUCCESS") {
-                          setOpen(false);
-                        } else {
-                          setShowingError(false);
-                          setShowingLoginFailed(true);
-                        }
-                        await onLogin(result);
-                      } catch (e) {
-                        console.log("Error when attempting login", e);
-                        setShowingError(true);
-                        setShowingLoginFailed(false);
-                      }
-                    }}
-                    disabled={!isValid()}
-                  >
+                  <button onClick={submitLogin} disabled={!isValid()}>
                     Log in
                   </button>
                 </Dialog.Close>

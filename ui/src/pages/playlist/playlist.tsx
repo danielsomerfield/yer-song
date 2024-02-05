@@ -4,12 +4,12 @@ import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
 import { GetPlaylist, Playlist } from "../../domain/playlist";
 import { currentUser, RegisterUser } from "../../services/userService";
-import * as Toast from "@radix-ui/react-toast";
 import { RegistrationForm } from "../../components/registrationForm";
 import { LoadStatus, LoadStatuses } from "../common/loading";
 import { StatusCodes } from "../../services/common";
 import { PlaylistView } from "./playlistView";
-import { VoteMode, VoteModes } from "../../domain/voting";
+import { VoteMode } from "../../domain/voting";
+import { ToastPopup } from "../../components/toast";
 
 type VoteForSong = (id: string) => Promise<void>;
 
@@ -109,15 +109,11 @@ export const PlayListPage = ({
   return (
     <>
       {panel()}
-
-      {/*TODO: Refactor this toast code*/}
-      <Toast.Root
-        className={"Toast"}
-        open={toastOpen}
-        onOpenChange={setToastOpen}
-      >
-        <Toast.Description>Your vote has been added</Toast.Description>
-      </Toast.Root>
+      <ToastPopup
+        toastOpen={toastOpen}
+        setToastOpen={setToastOpen}
+        text={"Your vote has been added"}
+      />
       <NavPanel nav={nav} />
     </>
   );

@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import * as Toast from "@radix-ui/react-toast";
-import { ToastProps } from "@radix-ui/react-toast";
 import { SongWithVotes } from "../../domain/song";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { Maybe } from "../../util/maybe";
+import { ToastPopup } from "../../components/toast";
 
 export const Title = styled.h1`
   font-size: 1.5em;
@@ -38,24 +37,6 @@ export const OnPlayListPanel = styled.div`
   font-style: italic;
 `;
 
-export const ToastPopup = ({
-  toastOpen,
-  setToastOpen,
-  song,
-}: {
-  toastOpen: boolean;
-  setToastOpen: ToastProps["onOpenChange"];
-  song: SongWithVotes;
-}) => (
-  <Toast.Root className={"Toast"} open={toastOpen} onOpenChange={setToastOpen}>
-    <Toast.Description>
-      {song?.voters.length > 0
-        ? "Your vote has been added"
-        : "Your song has been added to the playlist"}
-    </Toast.Description>
-  </Toast.Root>
-);
-
 export type GetSong = (id: string) => Promise<SongWithVotes | undefined>;
 
 export interface SongPageProperties extends PropsWithChildren {
@@ -77,7 +58,11 @@ export const SongPage = (properties: SongPageProperties) => {
       <ToastPopup
         toastOpen={toastOpen}
         setToastOpen={setToastOpen}
-        song={song}
+        text={
+          song?.voters.length > 0
+            ? "Your vote has been added"
+            : "Your song has been added to the playlist"
+        }
       />
     </>
   ) : (

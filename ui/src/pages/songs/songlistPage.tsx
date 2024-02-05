@@ -28,8 +28,6 @@ const SongListPanel = ({
   songs: Song[];
   navigator: NavigateFunction;
 }) => {
-  // TODO: add test for navigation
-
   return (
     <SongListPanelWrapper className={"SongListPage.SongListPanelWrapper"}>
       {songs.map((song) => {
@@ -93,9 +91,12 @@ export const SongListView = ({
     }
   };
 
-  if (loadStatus.name == LoadStatuses.LOADING.name) {
+  if (
+    loadStatus == LoadStatuses.LOADING ||
+    loadStatus == LoadStatuses.UNINITIALIZED
+  ) {
     return <LoadingMessagePanel />;
-  } else if (loadStatus.name == LoadStatuses.REGISTRATION_REQUIRED.name) {
+  } else if (loadStatus == LoadStatuses.REGISTRATION_REQUIRED) {
     return (
       <RegistrationForm
         registerUser={registerUser}
@@ -104,17 +105,16 @@ export const SongListView = ({
         }}
       />
     );
-  } else if (loadStatus.name == "loaded") {
-    if (loadStatus?.data) {
+  } else {
+    if (loadStatus.data) {
       return <SongListPanel songs={loadStatus.data?.page} navigator={nav} />;
     } else {
       return <EmptyPanel />;
     }
-  } else {
-    // TODO: Can we eliminate this case with better typing?
-    return <EmptyPanel />;
   }
 };
+
+const defaultTag = "t:genre:ClassicPopRock";
 
 export const SongListPage = ({
   registerUser,
@@ -127,17 +127,15 @@ export const SongListPage = ({
 }) => {
   const { tag } = useParams();
   if (!tag) {
-    // TODO (MVP): what do we do here?
-    throw "NYI: no tag";
+    // This should not be possible, but handling, just in case
+    console.error("No tag param was provided, redirecting to classic rock");
   }
-
   setBackButtonLocation(window.location.pathname);
-
   return (
     <>
       <SongListView
         getSongsForTagId={getSongsForTagId}
-        tagId={tag}
+        tagId={tag || defaultTag}
         nav={nav}
         registerUser={registerUser}
       />

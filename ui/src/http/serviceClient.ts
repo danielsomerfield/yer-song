@@ -7,16 +7,13 @@ axios.defaults.validateStatus = (status: number) => {
   return status < 500;
 };
 
-const defaultStatusHandler = (status: number) => {
-  // TODO: factor this out and change to useNavigate
-  // if (status == 401) {
-  //   window.location.href = "/";
-  // }
-};
-
 const getErrorForStatus = (status: number): ReturnOrError<never> => {
   if (status == 401) {
     return error(StatusCodes.REGISTRATION_REQUIRED);
+  }
+
+  if (status == 403) {
+    return error(StatusCodes.INSUFFICIENT_PERMISSIONS);
   }
 
   return error(StatusCodes.UNKNOWN);
@@ -48,7 +45,7 @@ export const createGet = <T>(
   path: string,
   httpClient: Axios = axios,
   getToken: () => string | null = TokenStore.getToken,
-  httpStatusHandler: (status: number) => void = defaultStatusHandler,
+  httpStatusHandler: (status: number) => void = getErrorForStatus,
 ) => {
   return async (): Promise<T> => {
     const url = `${configuration.songsAPIHostURL}/${path}`;
@@ -69,7 +66,7 @@ export const createPost = <T>(
   path: string,
   httpClient: Axios = axios,
   getToken: () => string | null = TokenStore.getToken,
-  httpStatusHandler: (status: number) => void = defaultStatusHandler,
+  httpStatusHandler: (status: number) => void = getErrorForStatus,
 ) => {
   return async (postData: unknown = {}) => {
     const url = `${configuration.songsAPIHostURL}${path}`;
