@@ -13,6 +13,7 @@ import {
   getStringOrDefault,
 } from "./repository";
 import { Vote } from "../song/voteForSong";
+import { DateTime } from "luxon";
 
 const createVotersList = (maybeItem: Record<string, AttributeValue>) => {
   const voterRecords = maybeItem["voters"];
@@ -40,6 +41,7 @@ export const createSongRepository = (client: DynamoDB) => {
         voteCount: getOptionalInt(maybeItem, "voteCount") || 0,
         voters: createVotersList(maybeItem),
         lockOrder: getOptionalInt(maybeItem, "lockOrder") || 0,
+        firstVoteTime: getOptionalInt(maybeItem, "firstVoteTime"),
       };
     } catch (e) {
       logger.warn(`Filtering out bad record with id '${maybeItem["pk"]}'`);
@@ -125,11 +127,21 @@ export const createSongRepository = (client: DynamoDB) => {
       })
     );
 
-    const orderByProperties = (s1: Song | undefined, s2: Song | undefined) => {
+    interface SongWithVoteTime extends Song {
+      firstVoteTime?: number;
+    }
+
+    const orderByProperties = (
+      s1: SongWithVoteTime | undefined,
+      s2: SongWithVoteTime | undefined
+    ) => {
       if (s1?.lockOrder || s2?.lockOrder) {
         return (s1?.lockOrder || Infinity) - (s2?.lockOrder || Infinity);
       }
-      return (s2?.voteCount || 0) - (s1?.voteCount || 0);
+      const byVote = (s2?.voteCount || 0) - (s1?.voteCount || 0);
+      return byVote != 0
+        ? byVote
+        : (s1?.firstVoteTime || 0) - (s2?.firstVoteTime || 0);
     };
 
     if (maybeSongResponse.Items) {
@@ -172,9 +184,12 @@ export const createSongRepository = (client: DynamoDB) => {
         ":playlist": {
           S: "ON_PLAYLIST",
         },
+        ":firstVoteTime": {
+          N: DateTime.now().toUTC().toMillis().toString(),
+        },
       },
       UpdateExpression:
-        "SET voteCount = if_not_exists(voteCount, :zero) + :increment, GSI2PK = :playlist",
+        "SET voteCount = if_not_exists(voteCount, :zero) + :increment, GSI2PK = :playlist, firstVoteTime = :firstVoteTime",
     });
     // TODO: this should be combined with the above so you don't end up with partial updates.
     await client.updateItem({
@@ -341,7 +356,39 @@ export const createSongRepository = (client: DynamoDB) => {
     });
   };
 
+  const addSong = async (song: Song, tag: string) => {
+    const songRecord = {
+      TableName: "song",
+      Item: {
+        PK: {
+          S: song.id,
+        },
+        SK: {
+          S: song.id,
+        },
+        title: {
+          S: song.title,
+        },
+        artistName: {
+          S: song.artistName,
+        },
+        voteCount: {
+          N: song.voteCount.toString(),
+        },
+        voters: { L: [] },
+        requests: {
+          M: {},
+        },
+        GSI1PK: {
+          S: tag,
+        },
+      },
+    };
+    return await client.putItem(songRecord);
+  };
+
   return {
+    addSong,
     getSongById,
     findSongsByTag,
     findSongsWithVotes,

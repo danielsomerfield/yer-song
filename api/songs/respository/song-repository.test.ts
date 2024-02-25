@@ -1,4 +1,4 @@
-import { describe, it } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 import { createSongRepository } from "./song-repository";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { QueryCommandOutput } from "@aws-sdk/client-dynamodb/dist-types/commands/QueryCommand";

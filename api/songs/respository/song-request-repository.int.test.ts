@@ -6,7 +6,6 @@ import { Songs, SongsWithRequests, Users } from "./sampledata";
 import { DateTime } from "luxon";
 import { Approval } from "../admin/approveSongRequest";
 import { RequestStatuses } from "../admin/songRequests";
-import { createSongRepository } from "./song-repository";
 
 describe("The song request repository", () => {
   let dynamo: Dynamo;
@@ -230,6 +229,4 @@ describe("The song request repository", () => {
     expect(songRecord.Item?.["GSI2PK"].S).toEqual("ON_PLAYLIST");
     expect(songRecord.Item?.["voteCount"].N).toEqual(valueToSet.toString());
   });
-
-  // TODO: Test that if the song or request doesn't exist, nothing is created
 });

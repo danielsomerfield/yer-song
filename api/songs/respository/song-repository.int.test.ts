@@ -1,8 +1,9 @@
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { beforeEach, describe, expect, it } from "@jest/globals";
 import { afterEach } from "node:test";
 import { createSongRepository } from "./song-repository";
 import { GenreIds, SongIds, Songs, Users } from "./sampledata";
 import { Dynamo, startDynamo } from "./testutils";
+import { Song } from "../domain/songs";
 
 describe("The song repository", () => {
   let dynamo: Dynamo;
@@ -160,5 +161,70 @@ describe("The song repository", () => {
     });
 
     // TODO: test non-zeroing out case
+  });
+});
+
+// TODO: migrate the lower level test above to these that aren't so fragile
+describe("the song repo", () => {
+  let dynamo: Dynamo;
+  beforeEach(async () => {
+    dynamo = await startDynamo();
+  }, 70 * 1000);
+
+  it("orders by submit time if vote counts are equal", async () => {
+    const voter = {
+      id: "user1",
+      name: "user 1",
+    };
+
+    const genreTag = "t:genre:Goofball";
+
+    const songRepository = createSongRepository(dynamo.client());
+    const song1: Song = {
+      artistName: "a",
+      id: "1",
+      lockOrder: 0,
+      title: "one",
+      voteCount: 0,
+    };
+    const song2: Song = {
+      artistName: "a",
+      id: "2",
+      lockOrder: 0,
+      title: "two",
+      voteCount: 0,
+    };
+    const song3: Song = {
+      artistName: "a",
+      id: "3",
+      lockOrder: 0,
+      title: "three",
+      voteCount: 0,
+    };
+    await songRepository.addSong(song1, genreTag);
+    await songRepository.addSong(song2, genreTag);
+    await songRepository.addSong(song3, genreTag);
+
+    await songRepository.addVoteToSong({
+      songId: song1.id,
+      voter,
+    });
+
+    await songRepository.addVoteToSong({
+      songId: song3.id,
+      voter,
+    });
+
+    await songRepository.addVoteToSong({
+      songId: song2.id,
+      voter,
+    });
+
+    const matches = await songRepository.findSongsWithVotes();
+    expect(matches.page.map((s) => s.id)).toEqual([
+      song1.id,
+      song3.id,
+      song2.id,
+    ]);
   });
 });
