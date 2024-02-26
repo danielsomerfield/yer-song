@@ -17,6 +17,11 @@ interface Approval {
   value: number;
 }
 
+interface Denial {
+  requestId: string;
+  songId: string;
+}
+
 export interface AdminService {
   removeFromPlaylist: (id: string) => Promise<void>;
   moveUpOnPlaylist: (id: string) => Promise<void>;
@@ -25,6 +30,7 @@ export interface AdminService {
   lockSong: (id: string) => Promise<void>;
   getSongRequests: () => Promise<ReturnOrError<SongRequests>>;
   approveSongRequest: (approval: Approval) => Promise<void>;
+  denySongRequest: (denial: Denial) => Promise<void>;
   unlockSong: (id: string) => Promise<void>;
 }
 
@@ -99,7 +105,12 @@ export const createAdminService = (
   // TODO: clean this up and create a better way to validate and convert types on JSON payloads
   const getSongRequestsJSON = createGetWithLoadStatus<{
     page: SongRequestJSON[];
-  }>(configuration, "/admin/songRequests", httpClient, getToken);
+  }>(
+    configuration,
+    "/admin/songRequests?status=APPROVED&status=PENDING_APPROVAL",
+    httpClient,
+    getToken,
+  );
 
   const getSongRequests: () => Promise<
     ReturnOrError<SongRequests>
@@ -138,8 +149,19 @@ export const createAdminService = (
     getToken,
   );
 
+  const denySongRequestPost = createPost<void>(
+    configuration,
+    "/admin/songRequest/denial",
+    httpClient,
+    getToken,
+  );
+
   const approveSongRequest = async (request: Approval) => {
     return approveSongRequestPost(request);
+  };
+
+  const denySongRequest = async (denial: Denial) => {
+    return denySongRequestPost(denial);
   };
 
   return {
@@ -151,5 +173,6 @@ export const createAdminService = (
     getSongRequests,
     approveSongRequest,
     unlockSong,
+    denySongRequest,
   };
 };

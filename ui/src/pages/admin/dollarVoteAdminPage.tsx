@@ -35,7 +35,7 @@ export const RequestTable = styled.table`
   }
 `;
 
-const ApproveButton = styled.button`
+const AdminButton = styled.button`
   font-size: 2vh;
 `;
 
@@ -50,30 +50,55 @@ export const VoteRequestRow = ({
 }) => {
   const action =
     request.status == RequestStatuses.PENDING_APPROVAL ? (
-      <ApproveButton
-        onClick={async (evt) => {
-          try {
-            evt.currentTarget.disabled = true;
-            await adminService.approveSongRequest({
-              requestId: request.requestId, //TODO: should this be just `id`?
-              songId: request.song.id,
-              value: request.value,
-            });
-          } catch (e) {
-            console.log(e);
-            //TODO: show the toast error
-          }
-          await load();
-        }}
-      >
-        Approve
-      </ApproveButton>
+      <>
+        <td>
+          <AdminButton
+            onClick={async (evt) => {
+              try {
+                evt.currentTarget.disabled = true;
+                await adminService.approveSongRequest({
+                  requestId: request.requestId,
+                  songId: request.song.id,
+                  value: request.value,
+                });
+              } catch (e) {
+                console.log(e);
+                //TODO: show the toast error
+              }
+              await load();
+            }}
+          >
+            Approve
+          </AdminButton>
+        </td>
+        <td>
+          <AdminButton
+            onClick={async (evt) => {
+              try {
+                evt.currentTarget.disabled = true;
+                await adminService.denySongRequest({
+                  requestId: request.requestId,
+                  songId: request.song.id,
+                });
+              } catch (e) {
+                console.log(e);
+                //TODO: show the toast error
+              }
+              await load();
+            }}
+          >
+            Deny
+          </AdminButton>
+        </td>
+      </>
     ) : (
-      <div>Approved</div>
+      <td colSpan={2}>
+        <div>Approved</div>
+      </td>
     );
   return (
     <tr aria-label={"dollar-vote-request"}>
-      <td aria-label={"action"}>{action}</td>
+      {action}
       <td aria-label={"amount"}>${request.value}</td>
       <td aria-label={"requested-by"}>{request.requestedBy.name}</td>
       <td aria-label={"title"}>{request.song.title}</td>
@@ -175,7 +200,7 @@ export const DollarVoteAdminPage = ({
                 <RequestTable aria-label={"dollar-vote-request-table"}>
                   <thead role={"columnheader"}>
                     <tr>
-                      <th>Action</th>
+                      <th colSpan={2}>Actions</th>
                       <th>Amount</th>
                       <th>Requested by</th>
                       <th>Title</th>

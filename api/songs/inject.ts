@@ -97,9 +97,11 @@ export const getAppDependencies = (
     // TODO: make this configurable
     voteMode: () => VoteModes.DOLLAR_VOTE,
     insertSongRequest: songRequestRepository.addSongRequest,
-    findAllSongRequests: songRequestRepository.findAllSongRequests,
+    findAllSongRequestsWithStatuses:
+      songRequestRepository.findAllSongRequestsWithStatuses,
     insertLock: songsRepository.addLockToSong,
     approveRequest: songRequestRepository.approveSongRequest,
+    denyRequest: songRequestRepository.denySongRequest,
     clearLock: songsRepository.clearLockFromSong,
     increaseLockOrder: songsRepository.increaseLockOrder,
     decreaseLockOrder: songsRepository.decreaseLockOrder,

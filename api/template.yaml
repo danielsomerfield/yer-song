@@ -357,8 +357,34 @@ Resources:
             - Read
             - Write
 
+  DenySongRequest:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.denySongRequest
+      Events:
+        SongQuery:
+          Type: Api
+          Properties:
+            Path: /admin/songRequest/denial
+            Method: post
+            RestApiId: !Ref SongByIdAPI
+      Policies: AWSLambdaDynamoDBExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+    Connectors:
+      ReadFromSongs:
+        Properties:
+          Destination:
+            Id: SongTable
+          Permissions:
+            - Read
+            - Write
 
-  # Dependencies
+# Dependencies
 # TODO: I can't find any bloody way to prevent having to build this other than not use
 #   any of the Connectors and generate the policy by hand. Lame. Nor can I find a way to include
 #   an external definition.
@@ -412,49 +438,25 @@ Outputs:
   SongByIdFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt SongByIdFunction.Arn
-  SongByIdFunctionFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt SongByIdFunctionRole.Arn
   TagsFunctionFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt TagsFunction.Arn
-  TagsFunctionFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt TagsFunctionRole.Arn
   SongsByTagIdFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt SongsByTagIdFunction.Arn
-  SongsByTagIdFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt SongsByTagIdFunctionRole.Arn
   PlaylistFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt PlaylistFunction.Arn
-  PlaylistFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt PlaylistFunctionRole.Arn
   VoteForSongFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt VoteForSongFunction.Arn
-  VoteForSongFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt VoteForSongFunctionRole.Arn
   RegisterUserFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt RegisterUserFunction.Arn
-  RegisterUserFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt RegisterUserFunctionRole.Arn
   RunAdminCommandFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt RunAdminCommandFunction.Arn
-  RunAdminCommandFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt RunAdminCommandFunctionRole.Arn
   AdminLoginFunction:
     Description: "Lambda Function ARN"
     Value: !GetAtt AdminLoginFunction.Arn
-  AdminLoginFunctionIamRole:
-    Description: "Implicit IAM Role"
-    Value: !GetAtt AdminLoginFunctionRole.Arn
     

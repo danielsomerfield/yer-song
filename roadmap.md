@@ -1,10 +1,10 @@
 # Current
 
-## Social login support
+## Admin: remove request
+When the admin clicks the "remove" button on the dbAdmin page, the request no longer shows up. The request record is 
+set to "removed" status and is filtered out of all views.
 
-### Global access via SSO provider (social login)
-As a would-be user of yer-song, I should be able to use a social provider to log in to the site. At this stage, it will
-be universal access to all the things. As a result of social login, we will store the user's name and email.
+
 
 # Backlog
 

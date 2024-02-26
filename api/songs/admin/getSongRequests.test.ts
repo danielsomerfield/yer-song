@@ -3,6 +3,7 @@ import { Paginated } from "../domain/songs";
 import {
   createGetSongRequestsLambda,
   Dependencies,
+  RequestStatuses,
   SongRequest,
 } from "./songRequests";
 import { APIGatewayProxyEvent } from "aws-lambda";
@@ -19,6 +20,7 @@ describe("the dollar votes admin api", () => {
     id: "song1",
     title: "Song 1",
   };
+
   const request1Timestamp = "2024-01-24T04:20:05Z";
   const request1: SongRequest = {
     id: "request1",
@@ -45,16 +47,17 @@ describe("the dollar votes admin api", () => {
       body: null,
     } as unknown as APIGatewayProxyEvent;
 
-    const findAllSongRequests: MockedFn<Dependencies["findAllSongRequests"]> =
-      fn();
+    const findAllSongRequestsWithStatuses: MockedFn<
+      Dependencies["findAllSongRequestsWithStatuses"]
+    > = fn();
 
-    findAllSongRequests.mockResolvedValue({
+    findAllSongRequestsWithStatuses.mockResolvedValue({
       thisPage: "",
       page: [request1, request2],
     });
 
     const dependencies = {
-      findAllSongRequests,
+      findAllSongRequestsWithStatuses,
       allowedOrigins: new Set([origin]),
     };
     const lambda = createGetSongRequestsLambda(dependencies);

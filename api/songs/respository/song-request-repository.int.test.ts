@@ -6,6 +6,7 @@ import { Songs, SongsWithRequests, Users } from "./sampledata";
 import { DateTime } from "luxon";
 import { Approval } from "../admin/approveSongRequest";
 import { RequestStatuses } from "../admin/songRequests";
+import { SongRequestDenial } from "../admin/denySongRequest";
 
 describe("The song request repository", () => {
   let dynamo: Dynamo;
@@ -228,5 +229,27 @@ describe("The song request repository", () => {
     });
     expect(songRecord.Item?.["GSI2PK"].S).toEqual("ON_PLAYLIST");
     expect(songRecord.Item?.["voteCount"].N).toEqual(valueToSet.toString());
+  });
+
+  it("removes a request, ensuring it doesn't show up on playlist or request list", async () => {
+    const repository = createSongRequestRepository(
+      dynamo.client(),
+      () => requestId,
+      () => now
+    );
+    const requestToRemove =
+      SongsWithRequests.song7.Item.requests.M["Song7Request1"].M.id.S;
+    const requestToRemoveSongId = SongsWithRequests.song7.Item.PK.S;
+
+    const removal: SongRequestDenial = {
+      requestId: requestToRemove,
+      songId: requestToRemoveSongId,
+    };
+    await repository.denySongRequest(removal);
+
+    const requests = await repository.findAllSongRequests();
+    const request = requests.page.find((r) => r.id == requestToRemove);
+    expect(request).toBeDefined();
+    expect(request?.status).toEqual(RequestStatuses.DENIED);
   });
 });

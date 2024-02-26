@@ -20,6 +20,7 @@ import {
 import { Maybe } from "../util/maybe";
 import { createHash } from "node:crypto";
 import { Approval } from "../admin/approveSongRequest";
+import { SongRequestDenial } from "../admin/denySongRequest";
 
 const idGenerator = () =>
   createHash("shake256", { outputLength: 6 })
@@ -117,7 +118,9 @@ export const createSongRequestRepository = (
   //  For now, we'll just make sure that the requests field exist for all songs, even if it's empty,
   //  but ultimately, we'd be much better off peeling out the requests entity into the Single Table
   //  pattern and taking the rather small cost of another index, if necessary.
-  const findAllSongRequests = async (): Promise<Paginated<SongRequest>> => {
+  const findAllSongRequestsWithStatuses = async (
+    filter?: (status: RequestStatus) => boolean
+  ): Promise<Paginated<SongRequest>> => {
     const createSongRequestFromRecord = (
       songId: string,
       songTitle: string,
@@ -200,7 +203,7 @@ export const createSongRequestRepository = (
       }) || [];
 
     return {
-      page: maybeRequests,
+      page: maybeRequests.filter((s) => filter == null || filter(s.status)),
       thisPage: "",
     };
   };
@@ -251,9 +254,42 @@ export const createSongRequestRepository = (
     });
   };
 
+  const denySongRequest = async (denial: SongRequestDenial) => {
+    await client.transactWriteItems({
+      TransactItems: [
+        {
+          Update: {
+            TableName: "song",
+            Key: {
+              PK: {
+                S: denial.songId,
+              },
+              SK: {
+                S: denial.songId,
+              },
+            },
+            ExpressionAttributeValues: {
+              ":requestStatus": {
+                S: RequestStatuses.DENIED,
+              },
+            },
+
+            UpdateExpression: "SET requests.#id.#status = :requestStatus",
+            ExpressionAttributeNames: {
+              "#id": denial.requestId,
+              "#status": "status",
+            },
+          },
+        },
+      ],
+    });
+  };
+
   return {
     addSongRequest,
-    findAllSongRequests,
+    denySongRequest,
+    findAllSongRequestsWithStatuses,
+    findAllSongRequests: findAllSongRequestsWithStatuses,
     approveSongRequest,
   };
 };

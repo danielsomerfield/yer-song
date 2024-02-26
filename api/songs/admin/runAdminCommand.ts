@@ -3,8 +3,7 @@ import {
   CORSEnabled,
   generateResponseHeadersForDataResponse,
 } from "../http/headers";
-import { Song, Songs } from "../domain/songs";
-import { Vote } from "../song/voteForSong";
+import { Song } from "../domain/songs";
 import { Maybe } from "../util/maybe";
 import { User } from "../domain/user";
 

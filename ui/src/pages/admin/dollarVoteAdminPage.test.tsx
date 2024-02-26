@@ -50,6 +50,21 @@ describe("The dollar vote admin page", () => {
     expect(screen.getByRole("button", { name: "Approve" })).toBeEnabled();
   });
 
+  it("shows the remove button for a pending request", () => {
+    render(
+      <table>
+        <tbody>
+          <VoteRequestRow
+            request={requests.request1}
+            adminService={adminService}
+            load={fn()}
+          />
+        </tbody>
+      </table>,
+    );
+    expect(screen.getByRole("button", { name: "Remove" })).toBeEnabled();
+  });
+
   it("it hides the approve button for an approved request", () => {
     render(
       <table>
@@ -63,11 +78,7 @@ describe("The dollar vote admin page", () => {
       </table>,
     );
     expect(screen.queryByRole("button", { name: "Approve" })).toBeNull();
-    expect(screen.queryByRole("cell", { name: "action" })).toHaveTextContent(
-      "Approved",
-    );
+    expect(screen.queryByRole("button", { name: "Remove" })).toBeNull();
+    expect(screen.queryByRole("row")).toHaveTextContent("Approved");
   });
-
-  // TODO: test doesn't show data, but prompts admin login if not an admin
-  // TODO: test reloads on approve
 });

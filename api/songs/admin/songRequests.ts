@@ -9,6 +9,7 @@ import { Paginated } from "../domain/songs";
 export const RequestStatuses = {
   PENDING_APPROVAL: "PENDING_APPROVAL",
   APPROVED: "APPROVED",
+  DENIED: "DENIED",
 } as const;
 
 export type RequestStatus = keyof typeof RequestStatuses;
@@ -29,15 +30,22 @@ export interface SongRequest {
 }
 
 export interface Dependencies extends CORSEnabled {
-  findAllSongRequests: () => Promise<Paginated<SongRequest>>;
+  findAllSongRequestsWithStatuses: (
+    status: (status: RequestStatus) => boolean
+  ) => Promise<Paginated<SongRequest>>;
 }
 
 export const createGetSongRequestsLambda = (dependencies: Dependencies) => {
-  const { allowedOrigins, findAllSongRequests } = dependencies;
+  const { allowedOrigins, findAllSongRequestsWithStatuses } = dependencies;
   return async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
-    const requests = await findAllSongRequests();
+    const filterNames = event.multiValueQueryStringParameters?.status;
+    const filter = (status: RequestStatus): boolean => {
+      return filterNames == undefined || filterNames?.includes(status);
+    };
+
+    const requests = await findAllSongRequestsWithStatuses(filter);
     return generateResponseHeadersForDataResponse(
       {
         page: requests.page

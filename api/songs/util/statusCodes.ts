@@ -7,3 +7,4 @@ export const StatusCodes = {
 } as const;
 
 export type StatusCode = keyof typeof StatusCodes;
+export type StatusCodeNames = [StatusCode];
