@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { BackButton, NavPanel } from "../../components/navPanel";
@@ -15,11 +15,13 @@ import {
   useSong,
 } from "./common";
 import { SubmitDollarVotePanel } from "./submitDollarVotePanel";
-import { VoteSubmission } from "../../domain/voting";
+import { VoteStatuses, VoteSubmission } from "../../domain/voting";
+import * as Toast from "@radix-ui/react-toast";
 
 type SubmitDollarVoteForSong = (vote: {
   songId: string;
   value: number;
+  voucher?: string;
 }) => Promise<VoteSubmission>;
 
 // TODO: pull from configuration
@@ -28,10 +30,12 @@ const getVenmoRecipient = () => "@Rachel-Nesvig";
 export const DollarVoteSongView = ({
   song,
   submitDollarVoteForSong,
+  showToast,
 }: {
   song: SongWithVotes;
   currentUser: CurrentUser;
   submitDollarVoteForSong: SubmitDollarVoteForSong;
+  showToast: (message: string, error: boolean) => void;
 }) => {
   const isOnPlaylist = song.voteCount > 0;
 
@@ -65,14 +69,25 @@ export const DollarVoteSongView = ({
             const result = await submitDollarVoteForSong({
               songId: song.id,
               value: vote.value,
+              voucher: vote.voucher,
             });
 
-            const note = encodeURIComponent(
-              `Song: ${song.title} - RequestId: ${result.requestId}`,
-            );
-            window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
-              vote.value
-            }&note=${note}`;
+            if (vote.voucher) {
+              if (result.status == "OK") {
+                showToast("You song has been added", false);
+              } else if (result.status == VoteStatuses.UNKNOWN_VOUCHER) {
+                showToast("Please provide a valid voucher code", true);
+              } else if (result.status == VoteStatuses.INSUFFICIENT_FUNDS) {
+                showToast(`Insufficient credit: ${result.details}`, true);
+              }
+            } else {
+              const note = encodeURIComponent(
+                `Song: ${song.title} - RequestId: ${result.requestId}`,
+              );
+              window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
+                vote.value
+              }&note=${note}`;
+            }
           }}
         />
       </div>
@@ -82,9 +97,13 @@ export const DollarVoteSongView = ({
 };
 
 export const DVSongPage = (
-  properties: DVSongPageProperties & { songId: string },
+  properties: DVSongPageProperties & {
+    songId: string;
+    showToast: (message: string, error: boolean) => void;
+  },
 ) => {
-  const { getSong, submitDollarVoteForSong, currentUser, songId } = properties;
+  const { getSong, submitDollarVoteForSong, currentUser, songId, showToast } =
+    properties;
 
   const song = useSong(songId, getSong);
 
@@ -97,6 +116,7 @@ export const DVSongPage = (
           song={song}
           currentUser={currentUser}
           submitDollarVoteForSong={submitDollarVoteForSong}
+          showToast={showToast}
         />
       </SongPage>
     );
@@ -117,15 +137,32 @@ export const DollarVoteSongPage = (
   properties: DVSongPageExtendedProperties,
 ) => {
   const { songId } = useParams();
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastError, setToastError] = useState(false);
   const { nav } = properties;
+
+  const showToast = (toastMessage: string, error: boolean) => {
+    setToastOpen(true);
+    setToastMessage(toastMessage);
+    setToastError(error);
+  };
 
   if (!songId) {
     throw `Missing path parameters: ${songId}`;
   }
   return (
     <div className={"SongWithParam"}>
-      {DVSongPage({ ...properties, songId })}
+      {DVSongPage({ ...properties, songId, showToast })}
 
+      {/*  TODO Factor this out */}
+      <Toast.Root
+        className={toastError ? "Toast ToastError" : "Toast"}
+        open={toastOpen}
+        onOpenChange={setToastOpen}
+      >
+        <Toast.Description>{toastMessage}</Toast.Description>
+      </Toast.Root>
       <NavPanel nav={nav}>
         <BackButton />
       </NavPanel>

@@ -2,6 +2,7 @@ import axios, { Axios } from "axios";
 import { Configuration } from "../configuration";
 import { createPost } from "../http/serviceClient";
 import { VoteSubmission } from "../domain/voting";
+import { getToken } from "../http/tokenStore";
 
 export const createVoteForSong = (
   configuration: Configuration,
@@ -25,12 +26,13 @@ export const createDollarVoteForSong = (
     value: number;
   }): Promise<VoteSubmission> => {
     const { songId } = vote;
-    const post = createPost<VoteSubmission>(
-      configuration,
-      `/vote/songs/${songId}`,
-      httpClient,
-    );
-    const postResult = await post(vote);
-    return postResult;
+    const path = `/vote/songs/${songId}`;
+    const url = `${configuration.songsAPIHostURL}${path}`;
+    const response = await httpClient.post(url, vote, {
+      headers: { "x-token": `Bearer ${getToken()}` },
+    });
+
+    const data = response.data;
+    return data.data;
   };
 };

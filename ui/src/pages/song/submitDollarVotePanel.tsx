@@ -3,43 +3,62 @@ import React, { useState } from "react";
 
 export const SubmitDollarVotePanelContents = styled.div`
   display: flex;
-  flex-flow: row;
-  justify-content: center;
+  flex-flow: column;
   align-items: center;
   column-gap: 1vh;
   font-size: 4vh;
+  row-gap: 2vh;
+`;
+
+const PayNowButton = styled.button`
+  width: 90%;
+  min-height: 10vh;
+  max-height: 14vh;
+  margin: 0.5vh;
+  font-size: 3.5vh;
+  min-width: 8vh;
+`;
+
+const EntryWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 1vh;
+`;
+
+export const DollarEntryComponent = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const RequestValueInput = styled.input`
-  max-width: 7vh;
-  font-size: 4vh;
-  padding-left: 4vh;
+  max-width: 9vh;
+  font-size: 5vh;
+  padding-left: 3vh;
 `;
 
-const RequestLabel = styled.label`
-  display: flex;
-  align-items: center;
+const VoucherInput = styled.input`
+  max-width: 30vh;
+  font-size: 7vh;
+  font-variant: all-small-caps;
+  text-align: center;
+  &::placeholder {
+    font-variant: normal;
+    font-size: 4vh;
+  }
 `;
 
 const CurrencyLabel = styled.div`
   position: relative;
-  right: -2vh;
+  right: -1vh;
   width: 0;
   font-size: 3.5vh;
   color: darkslategrey;
-  top: -0.5vh;
-`;
-
-const Instructions = styled.div`
-  margin-top: 0.5vh;
-  font-size: 3vh;
-  color: slategray;
-  text-align: center;
-  font-style: italic;
+  top: 0.25vh;
 `;
 
 interface DollarVote {
   value: number;
+  voucher?: string;
 }
 
 export const SubmitDollarVotePanel = ({
@@ -48,42 +67,65 @@ export const SubmitDollarVotePanel = ({
   onSubmit: (vote: DollarVote) => void;
 }) => {
   const [requestValue, setRequestValue] = useState("5");
+  const [voucher, setVoucher] = useState("");
 
   const isReady = () => {
     const asFloat = Number.parseFloat(requestValue);
-    return Number.isSafeInteger(asFloat) && asFloat > 0;
+    return Number.isSafeInteger(asFloat) && asFloat > 0 && asFloat < 1000;
   };
   return (
     <>
-      <SubmitDollarVotePanelContents>
-        <RequestLabel htmlFor={"requestValue"}>Request</RequestLabel>
-        <CurrencyLabel>$</CurrencyLabel>
-        <RequestValueInput
-          name={"requestValue"}
-          defaultValue={requestValue}
-          required={true}
-          inputMode={"numeric"}
-          step={1}
-          minLength={1}
-          type={"number"}
-          maxLength={3}
-          pattern="[0-9]*"
-          onInput={(e) => {
-            setRequestValue(e.currentTarget.value);
-          }}
-        />
-        <button
+      <SubmitDollarVotePanelContents
+        className={"SubmitDollarVotePanelContents"}
+      >
+        <EntryWrapper className={"EntryWrapper"}>
+          <DollarEntryComponent className="DollarEntryComponent">
+            <CurrencyLabel>$</CurrencyLabel>
+            <RequestValueInput
+              name={"requestValue"}
+              defaultValue={requestValue}
+              required={true}
+              inputMode={"numeric"}
+              minLength={1}
+              max={999}
+              type={"number"}
+              onInput={(e) => {
+                setRequestValue(e.currentTarget.value);
+              }}
+            />
+          </DollarEntryComponent>
+          <VoucherInput
+            name={"voucher"}
+            defaultValue={voucher}
+            required={false}
+            minLength={6}
+            maxLength={6}
+            type={"text"}
+            pattern="[a-zA-Z0-9]*"
+            onInput={(e) => {
+              setVoucher(e.currentTarget.value);
+            }}
+            placeholder={"Got a voucher?"}
+          />
+        </EntryWrapper>
+
+        <PayNowButton
           disabled={!isReady()}
-          onClick={() =>
-            onSubmit({
-              value: Number.parseInt(requestValue),
-            })
-          }
+          onClick={(evt) => {
+            evt.currentTarget.disabled = true;
+            try {
+              onSubmit({
+                value: Number.parseInt(requestValue),
+                voucher: voucher,
+              });
+            } finally {
+              evt.currentTarget.disabled = false;
+            }
+          }}
         >
-          Venmo
-        </button>
+          Pay now!
+        </PayNowButton>
       </SubmitDollarVotePanelContents>
-      <Instructions>Please enter a whole dollar value.</Instructions>
     </>
   );
 };

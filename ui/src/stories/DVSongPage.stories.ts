@@ -5,6 +5,7 @@ import { NavigateFunction } from "react-router/dist/lib/hooks";
 import type { To } from "@remix-run/router";
 import type { NavigateOptions } from "react-router/dist/lib/context";
 import { DVSongPage } from "../pages/song/dollarVoteSongPage";
+import { StatusCodes } from "../services/common";
 
 const meta = {
   title: "Song Page",
@@ -46,9 +47,10 @@ const baseConfiguration = {
   songId: "12345",
 
   submitDollarVoteForSong: async () => {
-    console.log("submitDollarVoteForSongFn");
     return {
       requestId: "",
+      status: StatusCodes.OK,
+      details: "",
     };
   },
 };

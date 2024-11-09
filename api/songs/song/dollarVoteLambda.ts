@@ -3,12 +3,32 @@ import {
   generateResponseHeaders,
   generateResponseHeadersForDataResponse,
 } from "../http/headers";
-import { StatusCodes } from "../util/statusCodes";
-import { Dependencies } from "./voteForSong";
+import { StatusCode, StatusCodes } from "../util/statusCodes";
+import { User } from "../domain/user";
+import { Maybe } from "../util/maybe";
+import { SongRequestInput } from "./domain";
+
+interface SongRequest {
+  songId: string;
+  value: number;
+  voter: User;
+  voucher?: string;
+}
+
+interface Dependencies {
+  getIdentityFromRequest: (event: APIGatewayProxyEvent) => Maybe<User>;
+  requestSong(request: SongRequestInput): Promise<RequestSongResult>;
+  allowedOrigins: Set<string>;
+}
+
+interface RequestSongResult {
+  requestId: string;
+  status: StatusCode;
+  details: string;
+}
 
 export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
-  const { allowedOrigins, getIdentityFromRequest, insertSongRequest } =
-    dependencies;
+  const { allowedOrigins, getIdentityFromRequest, requestSong } = dependencies;
   return async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
@@ -32,7 +52,7 @@ export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
       throw "NYI";
     }
 
-    let songRequest: { value: number };
+    let songRequest: SongRequest;
     try {
       songRequest = JSON.parse(event.body!);
       if (!songRequest.value || songRequest.value < 1) {
@@ -58,16 +78,21 @@ export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
       );
     }
 
-    const { requestId } = await insertSongRequest({
+    const requestSongResult = await requestSong({
       songId,
       voter,
       value: songRequest.value,
+      voucher: songRequest.voucher,
     });
-    return generateResponseHeaders(event.headers, allowedOrigins, 200, {
-      data: {
-        requestId,
-      },
-      status: "OK",
-    });
+
+    return generateResponseHeaders(
+      event.headers,
+      allowedOrigins,
+      requestSongResult.status == StatusCodes.Ok ? 200 : 422,
+      {
+        // TODO: did some weird stuff with status layers that need to be fixed
+        data: requestSongResult,
+      }
+    );
   };
 };

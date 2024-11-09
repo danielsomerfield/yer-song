@@ -12,8 +12,8 @@ import {
   getRequiredString,
   getStringOrDefault,
 } from "./repository";
-import { Vote } from "../song/voteForSong";
 import { DateTime } from "luxon";
+import { Vote } from "../song/domain";
 
 const createVotersList = (maybeItem: Record<string, AttributeValue>) => {
   const voterRecords = maybeItem["voters"];

@@ -1,5 +1,5 @@
 import { User } from "./users";
-import { ReturnOrError } from "../services/common";
+import { ReturnOrError, StatusCode } from "../services/common";
 import { DateTime } from "luxon";
 
 export const VoteModes = {
@@ -16,10 +16,17 @@ export const RequestStatuses = {
 
 export type RequestStatus = keyof typeof RequestStatuses;
 
+export const VoteStatuses = {
+  OK: "OK",
+  UNKNOWN_VOUCHER: "UnknownVoucher",
+  INSUFFICIENT_FUNDS: "InsufficientFunds",
+};
+
+export type VoteStatus = keyof typeof VoteStatuses;
+
 export interface SongRequest {
   requestedBy: User;
   song: { id: string; title: string };
-
   value: number;
   requestId: string;
   timestamp: DateTime;
@@ -34,4 +41,6 @@ export type GetSongRequests = () => Promise<ReturnOrError<SongRequests>>;
 
 export interface VoteSubmission {
   requestId: string;
+  status: VoteStatus;
+  details: string;
 }
