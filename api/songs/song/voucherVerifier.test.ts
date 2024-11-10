@@ -33,7 +33,7 @@ describe("the voucher verifier", () => {
       (code: string) => Promise<Maybe<Voucher>>
     > = fn();
 
-    getVoucherByCode.mockResolvedValue({ value: 5, code: "abced'" });
+    getVoucherByCode.mockResolvedValue(undefined);
 
     const dependencies = {
       getVoucherByCode,
@@ -45,6 +45,26 @@ describe("the voucher verifier", () => {
       voter: {} as User,
       songId: "fdas",
     });
-    expect(result).toEqual(StatusCodes.Ok);
+    expect(result).toEqual(StatusCodes.UNKNOWN_VOUCHER);
+  });
+
+  it("denies vouchers with less credit than requested", async () => {
+    const getVoucherByCode: MockedFunction<
+      (code: string) => Promise<Maybe<Voucher>>
+    > = fn();
+
+    getVoucherByCode.mockResolvedValue({ value: 5, code: "abced'" });
+
+    const dependencies = {
+      getVoucherByCode,
+    };
+    const voucherVerifier = createVoucherVerifier(dependencies);
+    const result = await voucherVerifier({
+      voucherCode: "abcd",
+      value: 20,
+      voter: {} as User,
+      songId: "fdas",
+    });
+    expect(result).toEqual(StatusCodes.INSUFFICIENT_FUNDS);
   });
 });

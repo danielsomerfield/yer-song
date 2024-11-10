@@ -8,11 +8,14 @@ import { Voucher } from "../domain/voucher";
 const tableName = "song";
 
 export const createVoucherRepository = (client: DynamoDB) => {
+  const getVoucherByCode = async () => {
+    throw "NYI";
+  };
+
   const updateVoucher = async (voucher: Voucher) => {
     const userRecord: Record<string, AttributeValue> = {
       PK: { S: `v:${voucher.code}` },
       SK: { S: `v:${voucher.code}` },
-      // TODO: we might be able to get rid of the `name` fields since it's now in GSI1PK
       entityType: { S: "voucher" },
       value: { N: voucher.value.toString() },
     };
@@ -42,6 +45,6 @@ export const createVoucherRepository = (client: DynamoDB) => {
         TransactItems: items,
       });
     },
-    updateVoucher: updateVoucher,
+    getVoucherByCode,
   };
 };

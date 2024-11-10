@@ -14,10 +14,20 @@ interface Dependencies {
   getVoucherByCode: (code: string) => Promise<Maybe<Voucher>>;
 }
 
+const verifyVoucherStatus = (
+  request: SongRequestWithVoucher,
+  voucher: Voucher
+) =>
+  voucher.value >= request.value
+    ? StatusCodes.Ok
+    : StatusCodes.INSUFFICIENT_FUNDS;
+
 export const createVoucherVerifier = (dependencies: Dependencies) => {
   const { getVoucherByCode } = dependencies;
   return async (request: SongRequestWithVoucher) => {
     const maybeVoucher = await getVoucherByCode(request.voucherCode);
-    return maybeVoucher ? StatusCodes.Ok : StatusCodes.UNKNOWN_VOUCHER;
+    return maybeVoucher
+      ? verifyVoucherStatus(request, maybeVoucher)
+      : StatusCodes.UNKNOWN_VOUCHER;
   };
 };
