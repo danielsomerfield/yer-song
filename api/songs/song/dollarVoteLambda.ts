@@ -3,9 +3,10 @@ import {
   generateResponseHeaders,
   generateResponseHeadersForDataResponse,
 } from "../http/headers";
-import { StatusCodes } from "../util/statusCodes";
-import { Dependencies } from "./voteForSong";
+import { StatusCode, StatusCodes } from "../util/statusCodes";
 import { User } from "../domain/user";
+import { Maybe } from "../util/maybe";
+import { SongRequestInput } from "./domain";
 
 interface SongRequest {
   songId: string;
@@ -14,13 +15,19 @@ interface SongRequest {
   voucher?: string;
 }
 
+interface Dependencies {
+  getIdentityFromRequest: (event: APIGatewayProxyEvent) => Maybe<User>;
+  requestSong(request: SongRequestInput): Promise<RequestSongResult>;
+  allowedOrigins: Set<string>;
+}
+
+interface RequestSongResult {
+  requestId: string;
+  status: StatusCode;
+}
+
 export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
-  const {
-    allowedOrigins,
-    getIdentityFromRequest,
-    insertSongRequest,
-    verifyVoucher,
-  } = dependencies;
+  const { allowedOrigins, getIdentityFromRequest, requestSong } = dependencies;
   return async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
@@ -70,32 +77,23 @@ export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
       );
     }
 
-    if (songRequest.voucher) {
-      const verification = verifyVoucher(songRequest.voucher, songRequest);
-      if (verification != StatusCodes.Ok) {
-        return generateResponseHeadersForDataResponse(
-          {
-            message: "unknown voucher",
-          },
-          event.headers,
-          allowedOrigins,
-          verification,
-          422
-        );
-      }
-    }
-
-    const { requestId } = await insertSongRequest({
+    const { requestId, status } = await requestSong({
       songId,
       voter,
       value: songRequest.value,
       voucher: songRequest.voucher,
     });
-    return generateResponseHeaders(event.headers, allowedOrigins, 200, {
-      data: {
-        requestId,
-      },
-      status: "OK",
-    });
+
+    return generateResponseHeaders(
+      event.headers,
+      allowedOrigins,
+      status == StatusCodes.Ok ? 200 : 422,
+      {
+        data: {
+          requestId,
+        },
+        status,
+      }
+    );
   };
 };

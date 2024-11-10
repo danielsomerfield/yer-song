@@ -3,27 +3,14 @@ import { generateResponseHeaders } from "../http/headers";
 import { User } from "../domain/user";
 import { Maybe } from "../util/maybe";
 import { createDollarVoteModeLambda } from "./dollarVoteLambda";
-import { StatusCode } from "../util/statusCodes";
+import { SongRequestInput, Vote } from "./domain";
 
-export interface Vote {
-  voter: User;
-  songId: string;
-}
-
-export interface SongRequestInput {
-  voter: User;
-  songId: string;
-  value: number;
-  voucher?: string;
-}
-
-export interface Dependencies {
+interface Dependencies {
   getIdentityFromRequest: (event: APIGatewayProxyEvent) => Maybe<User>;
   insertVote(vote: Vote): Promise<void>;
   insertSongRequest(request: SongRequestInput): Promise<{ requestId: string }>;
   allowedOrigins: Set<string>;
   voteMode: () => VoteMode;
-  verifyVoucher: (voucher: string, request: SongRequestInput) => StatusCode;
 }
 
 export const VoteModes = {
@@ -32,15 +19,6 @@ export const VoteModes = {
 } as const;
 
 type VoteMode = keyof typeof VoteModes;
-
-export const createVoteForSongLambda = (dependencies: Dependencies) => {
-  const { voteMode } = dependencies;
-
-  // TODO: taking heavy handed if/then approach to this now, but this should be refactored to a strategy pattern
-  return voteMode() == VoteModes.SINGLE_VOTE
-    ? createSingleUserVoteModeLambda(dependencies)
-    : createDollarVoteModeLambda(dependencies);
-};
 
 export const createSingleUserVoteModeLambda = (dependencies: Dependencies) => {
   const { insertVote, allowedOrigins, getIdentityFromRequest } = dependencies;

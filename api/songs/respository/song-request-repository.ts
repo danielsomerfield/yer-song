@@ -11,7 +11,6 @@ import {
   getStringOrDefault,
 } from "./repository";
 import { logger } from "../util/logger";
-import { SongRequestInput } from "../song/voteForSong";
 import {
   RequestStatus,
   RequestStatuses,
@@ -21,6 +20,8 @@ import { Maybe } from "../util/maybe";
 import { createHash } from "node:crypto";
 import { Approval } from "../admin/approveSongRequest";
 import { SongRequestDenial } from "../admin/denySongRequest";
+import { SongRequestInput } from "../song/domain";
+import { StatusCode, StatusCodes } from "../util/statusCodes";
 
 const idGenerator = () =>
   createHash("shake256", { outputLength: 6 })
@@ -34,7 +35,7 @@ export const createSongRequestRepository = (
 ) => {
   const addSongRequest = async (
     request: SongRequestInput
-  ): Promise<{ requestId: string }> => {
+  ): Promise<{ requestId: string; status: StatusCode }> => {
     const { songId, voter, value } = request;
     const nowString = nowProvider()
       .toUTC()
@@ -43,7 +44,6 @@ export const createSongRequestRepository = (
       throw new Error("Invalid timestamp. This is almost certainly a bug");
     }
     const requestId = idGen();
-    // const requestsToAdd: Record<string, AttributeValue> = {};
     const requestToAdd = {
       id: {
         S: requestId,
@@ -111,6 +111,7 @@ export const createSongRequestRepository = (
 
     return {
       requestId,
+      status: StatusCodes.Ok,
     };
   };
 

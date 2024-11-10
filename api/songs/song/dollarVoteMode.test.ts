@@ -1,13 +1,15 @@
 import { describe, it } from "@jest/globals";
 import { User } from "../domain/user";
 import * as AddVoteToSong from "./voteForSong";
-import { SongRequestInput, VoteModes } from "./voteForSong";
+import { VoteModes } from "./voteForSong";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { verifyCORSHeaders } from "../http/headers.testing";
 import { StatusCode, StatusCodes } from "../util/statusCodes";
 import resetAllMocks = jest.resetAllMocks;
 import MockedFunction = jest.MockedFunction;
 import fn = jest.fn;
+import { SongRequestInput } from "./domain";
+import { createDollarVoteModeLambda } from "./dollarVoteLambda";
 
 describe("dollar vote mode", () => {
   const songId = "s:123123";
@@ -22,19 +24,18 @@ describe("dollar vote mode", () => {
   });
 
   it("accepts multiple vote units from a registered user", async () => {
-    const insertSongRequest: MockedFunction<
-      (vote: SongRequestInput) => Promise<{ requestId: string }>
+    const requestSong: MockedFunction<
+      (
+        vote: SongRequestInput
+      ) => Promise<{ requestId: string; status: StatusCode }>
     > = fn();
 
-    insertSongRequest.mockResolvedValue({ requestId: "" });
+    requestSong.mockResolvedValue({ requestId: "", status: StatusCodes.Ok });
 
     const dependencies = {
-      insertVote: fn(), // TODO: this shouldn't really be a dependency
-      insertSongRequest,
       allowedOrigins: new Set([origin]),
       getIdentityFromRequest: () => voter,
-      voteMode: () => VoteModes.DOLLAR_VOTE,
-      verifyVoucher: () => StatusCodes.Ok,
+      requestSong,
     };
 
     const event = {
@@ -47,17 +48,15 @@ describe("dollar vote mode", () => {
       },
     } as unknown as APIGatewayProxyEvent;
 
-    const voteForSong = AddVoteToSong.createVoteForSongLambda(dependencies);
+    const voteForSong = createDollarVoteModeLambda(dependencies);
     const result = await voteForSong(event);
     const expectedSongRequest: SongRequestInput = {
       songId,
       voter,
       value: 10,
     };
-    expect(insertSongRequest.mock.calls.length).toEqual(1);
-    expect(insertSongRequest.mock.calls[0][0]).toMatchObject(
-      expectedSongRequest
-    );
+    expect(requestSong.mock.calls.length).toEqual(1);
+    expect(requestSong.mock.calls[0][0]).toMatchObject(expectedSongRequest);
     expect(result.statusCode).toEqual(200);
     expect(JSON.parse(result.body)).toMatchObject({
       status: "OK",
@@ -105,13 +104,11 @@ describe("dollar vote mode", () => {
     const insertSongRequest = fn();
     insertSongRequest.mockResolvedValue("This should never be called");
     const dependencies = {
-      insertVote: fn(),
-      // TODO: this shouldn't really be a dependency
-      insertSongRequest,
       allowedOrigins: new Set([origin]),
-      getIdentityFromRequest: () => user,
-      voteMode: () => VoteModes.DOLLAR_VOTE,
-      verifyVoucher: () => StatusCodes.Ok,
+      getIdentityFromRequest: () => voter,
+      requestSong: () => {
+        throw "NYI";
+      },
     };
 
     const event = {
@@ -122,7 +119,7 @@ describe("dollar vote mode", () => {
       body: body,
     } as unknown as APIGatewayProxyEvent;
 
-    const voteForSong = AddVoteToSong.createVoteForSongLambda(dependencies);
+    const voteForSong = createDollarVoteModeLambda(dependencies);
     const result = await voteForSong(event);
 
     expect(result.statusCode).toEqual(expectedResponseCode);

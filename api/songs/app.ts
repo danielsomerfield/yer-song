@@ -2,7 +2,6 @@ import { createGetSongLambda } from "./song/getSong";
 import { createGetTagsByNameLambda } from "./tags/getTags";
 import { createGetSongsByTagIdLambda } from "./songs/getSongs";
 import { createGetPlaylist } from "./playlist/playlist";
-import { createVoteForSongLambda } from "./song/voteForSong";
 import { createLockSongLambda } from "./song/lockSong";
 import { createRegisterUserLambda } from "./user/registration";
 import { getAppDependencies } from "./inject";
@@ -12,6 +11,7 @@ import { createGetSongRequestsLambda } from "./admin/songRequests";
 import { createApproveSongRequest } from "./admin/approveSongRequest";
 import { createClearLockSongLambda } from "./song/unlockSong";
 import { createDenySongRequest } from "./admin/denySongRequest";
+import { createDollarVoteModeLambda } from "./song/dollarVoteLambda";
 
 const auth = () => {
   return getAppDependencies().authRules;
@@ -34,7 +34,7 @@ export const getPlaylist = auth().requireUser(
 );
 
 export const voteForSong = auth().requireUser(
-  createVoteForSongLambda(getAppDependencies())
+  createDollarVoteModeLambda(getAppDependencies())
 );
 
 export const lockSong = auth().requireAdmin(

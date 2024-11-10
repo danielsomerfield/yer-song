@@ -11,8 +11,6 @@ import {
 import { createValidateAdminUser } from "./admin/validate";
 import { VoteModes } from "./song/voteForSong";
 import { createSongRequestRepository } from "./respository/song-request-repository";
-import { StatusCodes } from "./util/statusCodes";
-import { createVoucherVerifier } from "./song/voucherVerifier";
 import { createVoucherRepository } from "./respository/voucher-repository";
 
 const getDynamoEndpoint = () => {
@@ -86,10 +84,6 @@ export const getAppDependencies = (
 
   const voucherRepository = createVoucherRepository(dynamoClient);
 
-  const verifyVoucher = createVoucherVerifier({
-    getVoucherByCode: voucherRepository.getVoucherByCode,
-  });
-
   return {
     findSongById: songsRepository.getSongById,
     allowedOrigins,
@@ -103,9 +97,7 @@ export const getAppDependencies = (
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
     validateCredentials,
-    // TODO: make this configurable
-    voteMode: () => VoteModes.DOLLAR_VOTE,
-    insertSongRequest: songRequestRepository.addSongRequest,
+    requestSong: songRequestRepository.addSongRequest,
     findAllSongRequestsWithStatuses:
       songRequestRepository.findAllSongRequestsWithStatuses,
     insertLock: songsRepository.addLockToSong,
@@ -114,6 +106,5 @@ export const getAppDependencies = (
     clearLock: songsRepository.clearLockFromSong,
     increaseLockOrder: songsRepository.increaseLockOrder,
     decreaseLockOrder: songsRepository.decreaseLockOrder,
-    verifyVoucher,
   };
 };
