@@ -4,16 +4,35 @@ import {
   TransactWriteItem,
 } from "@aws-sdk/client-dynamodb";
 import { Voucher } from "../domain/voucher";
+import { Maybe } from "../util/maybe";
 
 const tableName = "song";
 
 export const createVoucherRepository = (client: DynamoDB) => {
-  const getVoucherByCode = async () => {
-    throw "NYI";
+  const getVoucherByCode = async (code: string): Promise<Maybe<Voucher>> => {
+    const record = await client.getItem({
+      TableName: "song",
+      Key: {
+        PK: {
+          S: `v:${code}`,
+        },
+        SK: {
+          S: `v:${code}`,
+        },
+      },
+    });
+    // TODO: better error handling for bad data
+    const idString = record.Item?.PK.S;
+    return record.Item && idString
+      ? {
+          code: idString.substring(2),
+          value: Number.parseInt(record.Item.value.N || "0"),
+        }
+      : undefined;
   };
 
   const updateVoucher = async (voucher: Voucher) => {
-    const userRecord: Record<string, AttributeValue> = {
+    const voucherRecord: Record<string, AttributeValue> = {
       PK: { S: `v:${voucher.code}` },
       SK: { S: `v:${voucher.code}` },
       entityType: { S: "voucher" },
@@ -22,7 +41,7 @@ export const createVoucherRepository = (client: DynamoDB) => {
 
     await client.putItem({
       TableName: tableName,
-      Item: userRecord,
+      Item: voucherRecord,
     });
   };
 
