@@ -3,6 +3,7 @@ import { generateResponseHeaders } from "../http/headers";
 import { User } from "../domain/user";
 import { Maybe } from "../util/maybe";
 import { createDollarVoteModeLambda } from "./dollarVoteLambda";
+import { StatusCode } from "../util/statusCodes";
 
 export interface Vote {
   voter: User;
@@ -13,6 +14,7 @@ export interface SongRequestInput {
   voter: User;
   songId: string;
   value: number;
+  voucher?: string;
 }
 
 export interface Dependencies {
@@ -21,6 +23,7 @@ export interface Dependencies {
   insertSongRequest(request: SongRequestInput): Promise<{ requestId: string }>;
   allowedOrigins: Set<string>;
   voteMode: () => VoteMode;
+  verifyVoucher: (voucher: string, request: SongRequestInput) => StatusCode;
 }
 
 export const VoteModes = {

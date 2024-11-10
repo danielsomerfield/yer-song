@@ -4,12 +4,12 @@ import * as AddVoteToSong from "./voteForSong";
 import { SongRequestInput, VoteModes } from "./voteForSong";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { verifyCORSHeaders } from "../http/headers.testing";
-import { StatusCode, StatusCodes } from "../util/statusCodes";
 import resetAllMocks = jest.resetAllMocks;
 import MockedFunction = jest.MockedFunction;
 import fn = jest.fn;
+import { StatusCodes } from "../util/statusCodes";
 
-describe("dollar vote mode", () => {
+describe("Paying by voucher", () => {
   const songId = "s:123123";
   const origin = "https://www.example.com";
   const voter: User = {
@@ -17,11 +17,7 @@ describe("dollar vote mode", () => {
     name: "Voter 1",
   };
 
-  beforeEach(() => {
-    resetAllMocks();
-  });
-
-  it("accepts multiple vote units from a registered user", async () => {
+  it("accepts payment from a valid voucher with sufficient value", async () => {
     const insertSongRequest: MockedFunction<
       (vote: SongRequestInput) => Promise<{ requestId: string }>
     > = fn();
@@ -41,6 +37,7 @@ describe("dollar vote mode", () => {
       pathParameters: { songId },
       body: JSON.stringify({
         value: 10,
+        voucher: "ABCDEFG",
       }),
       headers: {
         origin,
@@ -49,11 +46,14 @@ describe("dollar vote mode", () => {
 
     const voteForSong = AddVoteToSong.createVoteForSongLambda(dependencies);
     const result = await voteForSong(event);
-    const expectedSongRequest: SongRequestInput = {
+
+    const expectedSongRequest = {
       songId,
       voter,
       value: 10,
+      voucher: "ABCDEFG",
     };
+
     expect(insertSongRequest.mock.calls.length).toEqual(1);
     expect(insertSongRequest.mock.calls[0][0]).toMatchObject(
       expectedSongRequest
@@ -66,69 +66,51 @@ describe("dollar vote mode", () => {
     verifyCORSHeaders(result, origin);
   });
 
-  it("rejects request without body", async () => {
-    await testExpectedResponseCodeForBody(undefined, 400, {
-      status: StatusCodes.INVALID_INPUT,
-    });
-  });
+  it("refuses payment from an invalid voucher", async () => {
+    const insertSongRequest: MockedFunction<
+      (vote: SongRequestInput) => Promise<{ requestId: string }>
+    > = fn();
 
-  it("rejects request with value of less than 1", async () => {
-    await testExpectedResponseCodeForBody(
-      JSON.stringify({
-        value: -10,
-      }),
-      400,
-      {
-        status: StatusCodes.INVALID_INPUT,
-      }
-    );
-  });
-
-  it("rejects request with malformed json", async () => {
-    await testExpectedResponseCodeForBody("{", 400, {
-      status: StatusCodes.INVALID_INPUT,
-    });
-  });
-
-  it("rejects request with a missing value", async () => {
-    await testExpectedResponseCodeForBody("{}", 400, {
-      status: StatusCodes.INVALID_INPUT,
-    });
-  });
-
-  async function testExpectedResponseCodeForBody(
-    body: string | undefined,
-    expectedResponseCode: number,
-    expectedResponseBody: Record<string, unknown>,
-    user: User = voter
-  ) {
-    const insertSongRequest = fn();
-    insertSongRequest.mockResolvedValue("This should never be called");
     const dependencies = {
-      insertVote: fn(),
-      // TODO: this shouldn't really be a dependency
+      insertVote: fn(), // TODO: this shouldn't really be a dependency
       insertSongRequest,
       allowedOrigins: new Set([origin]),
-      getIdentityFromRequest: () => user,
+      getIdentityFromRequest: () => voter,
       voteMode: () => VoteModes.DOLLAR_VOTE,
-      verifyVoucher: () => StatusCodes.Ok,
+      verifyVoucher: () => StatusCodes.UNKNOWN_VOUCHER,
     };
 
     const event = {
       pathParameters: { songId },
+      body: JSON.stringify({
+        value: 10,
+        voucher: "ABCDEFG",
+      }),
       headers: {
         origin,
       },
-      body: body,
     } as unknown as APIGatewayProxyEvent;
 
     const voteForSong = AddVoteToSong.createVoteForSongLambda(dependencies);
     const result = await voteForSong(event);
 
-    expect(result.statusCode).toEqual(expectedResponseCode);
+    const expectedSongRequest = {
+      songId,
+      voter,
+      value: 10,
+      voucher: "ABCDEFG",
+    };
 
-    expect(JSON.parse(result.body)).toMatchObject(expectedResponseBody);
+    expect(insertSongRequest.mock.calls.length).toEqual(0);
+    expect(result.statusCode).toEqual(422);
+    expect(JSON.parse(result.body)).toMatchObject({
+      status: "UnknownVoucher",
+    });
 
     verifyCORSHeaders(result, origin);
-  }
+  });
+
+  beforeEach(() => {
+    resetAllMocks();
+  });
 });

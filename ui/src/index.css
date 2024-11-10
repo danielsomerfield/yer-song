@@ -35,12 +35,6 @@ code {
   margin-top: 2vh;
 }
 
-input {
-  margin-top: 1vh;
-  height: 6vh;
-  font-size: 5vh;
-}
-
 .DialogOverlay {
   background: rgba(0 0 0 / 0.5);
   position: fixed;

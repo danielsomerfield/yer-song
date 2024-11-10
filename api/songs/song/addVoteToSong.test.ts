@@ -7,7 +7,7 @@ import { createGetIdentityFromRequest } from "../authz/token";
 import fn = jest.fn;
 import MockedFunction = jest.MockedFunction;
 import resetAllMocks = jest.resetAllMocks;
-import { verifyCORSHeaders } from "../http/headers.testing";
+import { StatusCodes } from "../util/statusCodes";
 
 describe("add vote to song", () => {
   const insertVote: MockedFunction<(vote: Vote) => Promise<void>> = fn();
@@ -25,6 +25,7 @@ describe("add vote to song", () => {
     allowedOrigins: new Set(""),
     getIdentityFromRequest: createGetIdentityFromRequest(secret),
     voteMode: () => VoteModes.SINGLE_VOTE,
+    verifyVoucher: () => StatusCodes.Ok,
   };
 
   beforeEach(() => {

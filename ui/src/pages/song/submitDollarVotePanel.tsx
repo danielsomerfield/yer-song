@@ -1,50 +1,50 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { Label } from "@radix-ui/react-label";
-
-export const PanelContainer = styled.div``;
 
 export const SubmitDollarVotePanelContents = styled.div`
   display: flex;
-  flex-flow: row;
+  flex-flow: column;
   align-items: center;
   column-gap: 1vh;
   font-size: 4vh;
+  row-gap: 3vh;
 `;
 
-const CreditCodePanelContents = styled.div`
-  display: flex;
-  flex-flow: row;
-  align-items: stretch;
-  column-gap: 1vh;
-  font-size: 4vh;
-  margin-top: 3vh;
+const PayNowButton = styled.button`
+  width: 90%;
+  min-height: 12vh;
+  max-height: 15vh;
+  margin: 1vh;
+  font-size: 3.5vh;
+  min-width: 8vh;
 `;
 
-const TotalValuePanelContents = styled.div`
+const EntryWrapper = styled.div`
   display: flex;
-  flex-flow: row;
-  align-items: center;
+  flex-direction: row;
   column-gap: 1vh;
-  font-size: 4vh;
-  margin-top: 3vh;
+`;
+
+export const DollarEntryComponent = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const RequestValueInput = styled.input`
   max-width: 7vh;
-  font-size: 4vh;
+  font-size: 10vh;
   padding-left: 4vh;
 `;
 
-const CreditCodeInput = styled.input`
-  font-size: 3vh;
+const VoucherInput = styled.input`
+  max-width: 30vh;
+  font-size: 9vh;
+  font-variant: all-small-caps;
   text-align: center;
-  text-transform: uppercase;
-`;
-
-const RequestLabel = styled.label`
-  display: flex;
-  align-items: center;
+  &::placeholder {
+    font-variant: normal;
+    font-size: 4vh;
+  }
 `;
 
 const CurrencyLabel = styled.div`
@@ -53,53 +53,13 @@ const CurrencyLabel = styled.div`
   width: 0;
   font-size: 3.5vh;
   color: darkslategrey;
-  top: -0.5vh;
-`;
-
-const Instructions = styled.div`
-  margin-top: 0.5vh;
-  font-size: 3vh;
-  color: slategray;
-  text-align: center;
-  font-style: italic;
+  top: 0.25vh;
 `;
 
 interface DollarVote {
   value: number;
+  voucher?: string;
 }
-
-const CreditCodePanel = () => {
-  return (
-    <>
-      <CreditCodePanelContents>
-        <RequestLabel htmlFor={"creditCode"}>Credit</RequestLabel>
-        <CreditCodeInput
-          name={"creditCode"}
-          defaultValue={""}
-          required={false}
-          inputMode={"text"}
-          step={1}
-          type={"text"}
-          onInput={(e) => {
-            console.log(e);
-          }}
-          placeholder={"e.g. XNTDLC"}
-        />
-      </CreditCodePanelContents>
-    </>
-  );
-};
-
-const TotalValuePanel = () => {
-  return (
-    <>
-      <TotalValuePanelContents>
-        <RequestLabel>Total Contribution</RequestLabel>
-        <Label>$123</Label>
-      </TotalValuePanelContents>
-    </>
-  );
-};
 
 export const SubmitDollarVotePanel = ({
   onSubmit,
@@ -107,6 +67,7 @@ export const SubmitDollarVotePanel = ({
   onSubmit: (vote: DollarVote) => void;
 }) => {
   const [requestValue, setRequestValue] = useState("5");
+  const [voucher, setVoucher] = useState("");
 
   const isReady = () => {
     const asFloat = Number.parseFloat(requestValue);
@@ -114,40 +75,52 @@ export const SubmitDollarVotePanel = ({
   };
   return (
     <>
-      <PanelContainer>
-        <SubmitDollarVotePanelContents>
-          <RequestLabel htmlFor={"requestValue"}>Request</RequestLabel>
-          <CurrencyLabel>$</CurrencyLabel>
-          <RequestValueInput
-            name={"requestValue"}
-            defaultValue={requestValue}
-            required={true}
-            inputMode={"numeric"}
-            step={1}
-            minLength={1}
-            type={"number"}
-            maxLength={3}
-            pattern="[0-9]*"
+      <SubmitDollarVotePanelContents>
+        <EntryWrapper>
+          <DollarEntryComponent>
+            <CurrencyLabel>$</CurrencyLabel>
+            <RequestValueInput
+              name={"requestValue"}
+              defaultValue={requestValue}
+              required={true}
+              inputMode={"numeric"}
+              step={1}
+              minLength={1}
+              type={"number"}
+              maxLength={3}
+              pattern="[0-9]*"
+              onInput={(e) => {
+                setRequestValue(e.currentTarget.value);
+              }}
+            />
+          </DollarEntryComponent>
+          <VoucherInput
+            name={"voucher"}
+            defaultValue={voucher}
+            required={false}
+            step={2}
+            minLength={6}
+            type={"text"}
+            pattern="[a-zA-Z0-9]*"
             onInput={(e) => {
-              setRequestValue(e.currentTarget.value);
+              setVoucher(e.currentTarget.value);
             }}
+            placeholder={"Got a voucher?"}
           />
-          <button
-            disabled={!isReady()}
-            onClick={() =>
-              onSubmit({
-                value: Number.parseInt(requestValue),
-              })
-            }
-          >
-            Venmo
-          </button>
-        </SubmitDollarVotePanelContents>
-        <Instructions>Please enter a whole dollar value.</Instructions>
-        <CreditCodePanel />
-        <Instructions>Got a voucher? Enter it above.</Instructions>
-        <TotalValuePanel />
-      </PanelContainer>
+        </EntryWrapper>
+
+        <PayNowButton
+          disabled={!isReady()}
+          onClick={() =>
+            onSubmit({
+              value: Number.parseInt(requestValue),
+              voucher: voucher,
+            })
+          }
+        >
+          Pay now!
+        </PayNowButton>
+      </SubmitDollarVotePanelContents>
     </>
   );
 };

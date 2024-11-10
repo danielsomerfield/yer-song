@@ -62,7 +62,7 @@ describe("The dollar vote admin page", () => {
         </tbody>
       </table>,
     );
-    expect(screen.getByRole("button", { name: "Remove" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Deny" })).toBeEnabled();
   });
 
   it("it hides the approve button for an approved request", () => {

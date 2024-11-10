@@ -11,6 +11,7 @@ import {
 import { createValidateAdminUser } from "./admin/validate";
 import { VoteModes } from "./song/voteForSong";
 import { createSongRequestRepository } from "./respository/song-request-repository";
+import { StatusCodes } from "./util/statusCodes";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -105,5 +106,8 @@ export const getAppDependencies = (
     clearLock: songsRepository.clearLockFromSong,
     increaseLockOrder: songsRepository.increaseLockOrder,
     decreaseLockOrder: songsRepository.decreaseLockOrder,
+    verifyVoucher: () => {
+      throw "NYI";
+    },
   };
 };
