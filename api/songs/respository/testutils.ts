@@ -12,7 +12,7 @@ const startContainer = async () => {
   const dynamoDBContainer = await new GenericContainer("localstack/localstack")
     .withExposedPorts(4566)
     .withExposedPorts(4569)
-    .withWaitStrategy(Wait.forLogMessage(/.*Running on https.*/, 2))
+    .withWaitStrategy(Wait.forLogMessage(/.*Ready.*/, 1))
     .start();
   const region = "us-west-2";
   const port = dynamoDBContainer.getMappedPort(4566);

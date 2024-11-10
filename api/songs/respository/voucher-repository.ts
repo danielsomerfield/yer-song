@@ -1,10 +1,12 @@
 import {
   AttributeValue,
+  ConditionalCheckFailedException,
   DynamoDB,
   TransactWriteItem,
 } from "@aws-sdk/client-dynamodb";
 import { Voucher } from "../domain/voucher";
 import { Maybe } from "../util/maybe";
+import { StatusCode, StatusCodes } from "../util/statusCodes";
 
 const tableName = "song";
 
@@ -31,18 +33,41 @@ export const createVoucherRepository = (client: DynamoDB) => {
       : undefined;
   };
 
-  const updateVoucher = async (voucher: Voucher) => {
-    const voucherRecord: Record<string, AttributeValue> = {
-      PK: { S: `v:${voucher.code}` },
-      SK: { S: `v:${voucher.code}` },
-      entityType: { S: "voucher" },
-      value: { N: voucher.value.toString() },
-    };
+  const subtractValue = async (
+    code: string,
+    valueToSubtract: number
+  ): Promise<StatusCode> => {
+    try {
+      await client.updateItem({
+        TableName: tableName,
+        Key: {
+          PK: { S: `v:${code}` },
+          SK: { S: `v:${code}` },
+        },
+        ExpressionAttributeNames: {
+          "#valueField": "value",
+        },
+        ExpressionAttributeValues: {
+          ":valueToSubtract": {
+            N: valueToSubtract.toString(),
+          },
+        },
+        ConditionExpression: "#valueField >= :valueToSubtract",
+        UpdateExpression: `set #valueField = #valueField - :valueToSubtract`,
+        ReturnValuesOnConditionCheckFailure: "ALL_OLD",
+      });
+    } catch (e) {
+      if (e instanceof ConditionalCheckFailedException) {
+        if (e.Item) {
+          return StatusCodes.INSUFFICIENT_FUNDS;
+        } else {
+          return StatusCodes.UNKNOWN_VOUCHER;
+        }
+      }
+      return StatusCodes.UNEXPECTED_ERROR;
+    }
 
-    await client.putItem({
-      TableName: tableName,
-      Item: voucherRecord,
-    });
+    return StatusCodes.Ok;
   };
 
   return {
@@ -65,5 +90,6 @@ export const createVoucherRepository = (client: DynamoDB) => {
       });
     },
     getVoucherByCode,
+    subtractValue,
   };
 };

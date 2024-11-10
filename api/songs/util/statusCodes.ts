@@ -5,7 +5,8 @@ export const StatusCodes = {
   Ok: "OK",
   INVALID_INPUT: "InvalidInput",
   UNKNOWN_VOUCHER: "UnknownVoucher",
-  INSUFFICIENT_FUNDS: "UnsufficientFunds",
+  INSUFFICIENT_FUNDS: "InsufficientFunds",
+  UNEXPECTED_ERROR: "UnexpectedError",
 } as const;
 
 export type StatusCode = (typeof StatusCodes)[keyof typeof StatusCodes];

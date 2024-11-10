@@ -1,11 +1,9 @@
 import { describe, it } from "@jest/globals";
 import { afterEach } from "node:test";
 import { Dynamo, startDynamo } from "./testutils";
-import { createUserRepository } from "./user-repository";
-import { User } from "../domain/user";
-import * as bcrypt from "bcryptjs";
 import { createVoucherRepository } from "./voucher-repository";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
+import { StatusCodes } from "../util/statusCodes";
 
 describe("The voucher repository", () => {
   let dynamo: Dynamo;
@@ -91,5 +89,76 @@ describe("The voucher repository", () => {
       code: voucherCode,
       value: voucherValue,
     });
+  });
+
+  it("subtracts from voucher value", async () => {
+    const voucherCode = "ABCDEFG";
+    const voucherValue = 123;
+
+    const voucherRecord: Record<string, AttributeValue> = {
+      PK: { S: `v:${voucherCode}` },
+      SK: { S: `v:${voucherCode}` },
+      entityType: { S: "voucher" },
+      value: { N: voucherValue.toString() },
+    };
+
+    await dynamo.client().putItem({
+      TableName: "song",
+      Item: voucherRecord,
+    });
+
+    const voucherRepository = createVoucherRepository(dynamo.client());
+    const subtractResult = await voucherRepository.subtractValue(
+      voucherCode,
+      2
+    );
+    expect(subtractResult).toEqual(StatusCodes.Ok);
+    const loadedVoucher = await voucherRepository.getVoucherByCode(voucherCode);
+    expect(loadedVoucher).toBeDefined();
+    expect(loadedVoucher).toMatchObject({
+      code: voucherCode,
+      value: voucherValue - 2,
+    });
+  });
+
+  it("refuses to subtract when balance is insufficient", async () => {
+    const voucherCode = "ABCDEFG";
+    const voucherValue = 5;
+
+    const voucherRecord: Record<string, AttributeValue> = {
+      PK: { S: `v:${voucherCode}` },
+      SK: { S: `v:${voucherCode}` },
+      entityType: { S: "voucher" },
+      value: { N: voucherValue.toString() },
+    };
+
+    await dynamo.client().putItem({
+      TableName: "song",
+      Item: voucherRecord,
+    });
+
+    const voucherRepository = createVoucherRepository(dynamo.client());
+    const subtractResult = await voucherRepository.subtractValue(
+      voucherCode,
+      20
+    );
+    expect(subtractResult).toEqual(StatusCodes.INSUFFICIENT_FUNDS);
+    const loadedVoucher = await voucherRepository.getVoucherByCode(voucherCode);
+    expect(loadedVoucher).toBeDefined();
+    expect(loadedVoucher).toMatchObject({
+      code: voucherCode,
+      value: voucherValue,
+    });
+  });
+
+  it("refuses to subtract from non-existent voucher", async () => {
+    const voucherCode = "NO_VOUCHER";
+
+    const voucherRepository = createVoucherRepository(dynamo.client());
+    const subtractResult = await voucherRepository.subtractValue(
+      voucherCode,
+      20
+    );
+    expect(subtractResult).toEqual(StatusCodes.UNKNOWN_VOUCHER);
   });
 });

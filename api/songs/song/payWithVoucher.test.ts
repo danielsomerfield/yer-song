@@ -94,13 +94,6 @@ describe("Paying by voucher", () => {
     const voteForSong = AddVoteToSong.createVoteForSongLambda(dependencies);
     const result = await voteForSong(event);
 
-    const expectedSongRequest = {
-      songId,
-      voter,
-      value: 10,
-      voucher: "ABCDEFG",
-    };
-
     expect(insertSongRequest.mock.calls.length).toEqual(0);
     expect(result.statusCode).toEqual(422);
     expect(JSON.parse(result.body)).toMatchObject({
@@ -108,6 +101,14 @@ describe("Paying by voucher", () => {
     });
 
     verifyCORSHeaders(result, origin);
+  });
+
+  it("refuses to accept payment if there is insufficient available value", () => {
+    throw "NYI";
+  });
+
+  it("subtracts from remaining voucher value", () => {
+    throw "NYI";
   });
 
   beforeEach(() => {
