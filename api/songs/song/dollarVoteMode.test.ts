@@ -26,10 +26,14 @@ describe("dollar vote mode", () => {
     const requestSong: MockedFunction<
       (
         vote: SongRequestInput
-      ) => Promise<{ requestId: string; status: StatusCode }>
+      ) => Promise<{ requestId: string; status: StatusCode; details: string }>
     > = fn();
 
-    requestSong.mockResolvedValue({ requestId: "", status: StatusCodes.Ok });
+    requestSong.mockResolvedValue({
+      requestId: "",
+      status: StatusCodes.Ok,
+      details: "",
+    });
 
     const dependencies = {
       allowedOrigins: new Set([origin]),
@@ -57,9 +61,7 @@ describe("dollar vote mode", () => {
     expect(requestSong.mock.calls.length).toEqual(1);
     expect(requestSong.mock.calls[0][0]).toMatchObject(expectedSongRequest);
     expect(result.statusCode).toEqual(200);
-    expect(JSON.parse(result.body)).toMatchObject({
-      status: "OK",
-    });
+    expect(JSON.parse(result.body).data.status).toEqual("OK");
 
     verifyCORSHeaders(result, origin);
   });

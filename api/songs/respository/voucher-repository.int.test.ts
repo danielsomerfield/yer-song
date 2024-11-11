@@ -112,7 +112,7 @@ describe("The voucher repository", () => {
       voucherCode,
       2
     );
-    expect(subtractResult).toEqual(StatusCodes.Ok);
+    expect(subtractResult.status).toEqual(StatusCodes.Ok);
     const loadedVoucher = await voucherRepository.getVoucherByCode(voucherCode);
     expect(loadedVoucher).toBeDefined();
     expect(loadedVoucher).toMatchObject({
@@ -142,7 +142,7 @@ describe("The voucher repository", () => {
       voucherCode,
       20
     );
-    expect(subtractResult).toEqual(StatusCodes.INSUFFICIENT_FUNDS);
+    expect(subtractResult.status).toEqual(StatusCodes.INSUFFICIENT_FUNDS);
     const loadedVoucher = await voucherRepository.getVoucherByCode(voucherCode);
     expect(loadedVoucher).toBeDefined();
     expect(loadedVoucher).toMatchObject({
@@ -159,6 +159,6 @@ describe("The voucher repository", () => {
       voucherCode,
       20
     );
-    expect(subtractResult).toEqual(StatusCodes.UNKNOWN_VOUCHER);
+    expect(subtractResult.status).toEqual(StatusCodes.UNKNOWN_VOUCHER);
   });
 });

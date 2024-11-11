@@ -21,10 +21,10 @@ describe("Paying by voucher", () => {
     const requestSong: MockedFunction<
       (
         vote: SongRequestInput
-      ) => Promise<{ requestId: string; status: StatusCode }>
+      ) => Promise<{ requestId: string; status: StatusCode; details: string }>
     > = fn();
 
-    requestSong.mockResolvedValue({ requestId: "", status: "OK" });
+    requestSong.mockResolvedValue({ requestId: "", status: "OK", details: "" });
 
     const dependencies = {
       requestSong,
@@ -56,7 +56,7 @@ describe("Paying by voucher", () => {
     expect(requestSong.mock.calls.length).toEqual(1);
     expect(requestSong.mock.calls[0][0]).toMatchObject(expectedSongRequest);
     expect(result.statusCode).toEqual(200);
-    expect(JSON.parse(result.body)).toMatchObject({
+    expect(JSON.parse(result.body).data).toMatchObject({
       status: "OK",
     });
 
@@ -67,12 +67,13 @@ describe("Paying by voucher", () => {
     const requestSong: MockedFunction<
       (
         vote: SongRequestInput
-      ) => Promise<{ requestId: string; status: StatusCode }>
+      ) => Promise<{ requestId: string; status: StatusCode; details: string }>
     > = fn();
 
     requestSong.mockResolvedValue({
       requestId: "",
       status: StatusCodes.UNKNOWN_VOUCHER,
+      details: "",
     });
 
     const dependencies = {
@@ -97,7 +98,7 @@ describe("Paying by voucher", () => {
 
     expect(requestSong.mock.calls.length).toEqual(1);
     expect(result.statusCode).toEqual(422);
-    expect(JSON.parse(result.body)).toMatchObject({
+    expect(JSON.parse(result.body).data).toMatchObject({
       status: "UnknownVoucher",
     });
 

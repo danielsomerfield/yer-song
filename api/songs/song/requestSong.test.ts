@@ -15,7 +15,10 @@ describe("song request", () => {
     (vote: Vote, increment: number) => Promise<void>
   > = fn();
   const subtractFromVoucher: MockedFunction<
-    (code: string, valueToSubtract: number) => Promise<StatusCode>
+    (
+      code: string,
+      valueToSubtract: number
+    ) => Promise<{ status: StatusCode; details: string }>
   > = fn();
 
   const queueSongRequest: MockedFunction<
@@ -30,7 +33,10 @@ describe("song request", () => {
   };
 
   it("adds vote when voucher is accepted", async () => {
-    subtractFromVoucher.mockResolvedValueOnce(StatusCodes.Ok);
+    subtractFromVoucher.mockResolvedValueOnce({
+      status: StatusCodes.Ok,
+      details: "",
+    });
     const requestSong = createRequestSong(dependencies);
 
     const voucher = voucherCode;
@@ -58,7 +64,10 @@ describe("song request", () => {
 
   it("refuses an invalid voucher", async () => {
     const requestSong = createRequestSong(dependencies);
-    subtractFromVoucher.mockResolvedValueOnce(StatusCodes.UNKNOWN_VOUCHER);
+    subtractFromVoucher.mockResolvedValueOnce({
+      status: StatusCodes.UNKNOWN_VOUCHER,
+      details: "",
+    });
 
     const input: SongRequestInput = {
       songId,
@@ -78,7 +87,10 @@ describe("song request", () => {
 
   it("refuses a voucher with insufficient funds", async () => {
     const requestSong = createRequestSong(dependencies);
-    subtractFromVoucher.mockResolvedValueOnce(StatusCodes.INVALID_INPUT);
+    subtractFromVoucher.mockResolvedValueOnce({
+      status: StatusCodes.INVALID_INPUT,
+      details: "",
+    });
 
     const input: SongRequestInput = {
       songId,
