@@ -37,7 +37,7 @@ const RequestValueInput = styled.input`
 `;
 
 const VoucherInput = styled.input`
-  max-width: 30vh;
+  max-width: 28vh;
   font-size: 7vh;
   font-variant: all-small-caps;
   text-align: center;

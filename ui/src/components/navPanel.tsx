@@ -19,7 +19,7 @@ export const NavButton = styled.button`
   min-height: 12vh;
   max-height: 15vh;
   margin: 1vh;
-  font-size: 3.5vh;
+  font-size: 3vh;
   min-width: 8vh;
   border-color: #d1f1e4;
   color: white;

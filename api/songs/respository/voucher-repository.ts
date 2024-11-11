@@ -1,5 +1,4 @@
 import {
-  AttributeValue,
   ConditionalCheckFailedException,
   DynamoDB,
   TransactWriteItem,
@@ -11,6 +10,27 @@ import { StatusCode, StatusCodes } from "../util/statusCodes";
 const tableName = "song";
 
 export const createVoucherRepository = (client: DynamoDB) => {
+  const listVouchers = async (): Promise<Voucher[]> => {
+    const records = await client.scan({
+      TableName: "song",
+      ExpressionAttributeValues: {
+        ":str": {
+          S: "v:",
+        },
+      },
+      FilterExpression: "begins_with(PK, :str)",
+    });
+
+    return (
+      records.Items?.map((rec) => {
+        return {
+          code: rec.PK.S?.substring(2) || "", //TODO: fix hack for missing data,
+          value: Number.parseInt(rec.value.N || "0"),
+        };
+      }) || []
+    );
+  };
+
   const getVoucherByCode = async (code: string): Promise<Maybe<Voucher>> => {
     const record = await client.getItem({
       TableName: "song",
@@ -95,5 +115,6 @@ export const createVoucherRepository = (client: DynamoDB) => {
     },
     getVoucherByCode,
     subtractValue,
+    listVouchers,
   };
 };

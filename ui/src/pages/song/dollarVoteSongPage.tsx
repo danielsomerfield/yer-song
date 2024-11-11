@@ -84,7 +84,7 @@ export const DollarVoteSongView = ({
               const note = encodeURIComponent(
                 `Song: ${song.title} - RequestId: ${result.requestId}`,
               );
-              window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
+              window.location.href = `https://account.venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
                 vote.value
               }&note=${note}`;
             }
