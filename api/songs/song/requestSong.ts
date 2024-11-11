@@ -6,6 +6,7 @@ import { User } from "../domain/user";
 interface RequestSongResponse {
   requestId: string;
   status: StatusCode;
+  details: string;
 }
 
 export interface RequestSongInput {
@@ -25,7 +26,7 @@ interface Dependencies {
   subtractFromVoucher: (
     code: string,
     valueToSubtract: number
-  ) => Promise<StatusCode>;
+  ) => Promise<{ status: StatusCode; details: string }>;
   queueSongRequest: (request: RequestSongInput) => Promise<StatusCode>;
 }
 
@@ -33,14 +34,14 @@ async function processVoucher(
   subtractFromVoucher: (
     code: string,
     valueToSubtract: number
-  ) => Promise<StatusCode>,
+  ) => Promise<{ status: StatusCode; details: string }>,
   voucher: string,
   voucherValue: number,
   addVoteToSong: (vote: Vote, increment: number) => Promise<void>,
   request: SongRequestInput
-) {
+): Promise<{ status: StatusCode; details: string }> {
   const debitStatus = await subtractFromVoucher(voucher, voucherValue);
-  if (debitStatus == StatusCodes.Ok) {
+  if (debitStatus.status == StatusCodes.Ok) {
     await addVoteToSong(
       { songId: request.songId, voter: request.voter },
       voucherValue
@@ -58,17 +59,17 @@ export const createRequestSong = (
       dependencies;
     const voucher = request.voucher;
     if (voucher) {
-      const status = await processVoucher(
+      const { status, details } = await processVoucher(
         subtractFromVoucher,
         voucher,
         request.value,
         addVoteToSong,
         request
       );
-      return { status, requestId: idGen() };
+      return { status, requestId: idGen(), details };
     } else {
       const status = await queueSongRequest({ requestId: idGen(), ...request });
-      return { status, requestId: idGen() };
+      return { status, requestId: idGen(), details: "" };
     }
   };
 };

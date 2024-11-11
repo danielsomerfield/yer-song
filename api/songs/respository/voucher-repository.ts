@@ -36,7 +36,7 @@ export const createVoucherRepository = (client: DynamoDB) => {
   const subtractValue = async (
     code: string,
     valueToSubtract: number
-  ): Promise<StatusCode> => {
+  ): Promise<{ status: StatusCode; details: string }> => {
     try {
       await client.updateItem({
         TableName: tableName,
@@ -59,15 +59,19 @@ export const createVoucherRepository = (client: DynamoDB) => {
     } catch (e) {
       if (e instanceof ConditionalCheckFailedException) {
         if (e.Item) {
-          return StatusCodes.INSUFFICIENT_FUNDS;
+          const remaining = e.Item.value.N;
+          return {
+            status: StatusCodes.INSUFFICIENT_FUNDS,
+            details: `You have $${remaining} remaining.`,
+          };
         } else {
-          return StatusCodes.UNKNOWN_VOUCHER;
+          return { status: StatusCodes.UNKNOWN_VOUCHER, details: "" };
         }
       }
-      return StatusCodes.UNEXPECTED_ERROR;
+      return { status: StatusCodes.UNEXPECTED_ERROR, details: "" };
     }
 
-    return StatusCodes.Ok;
+    return { status: StatusCodes.Ok, details: "Ok" };
   };
 
   return {

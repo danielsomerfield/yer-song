@@ -42,4 +42,5 @@ export type GetSongRequests = () => Promise<ReturnOrError<SongRequests>>;
 export interface VoteSubmission {
   requestId: string;
   status: VoteStatus;
+  details: string;
 }

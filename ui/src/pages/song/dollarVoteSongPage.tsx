@@ -78,10 +78,7 @@ export const DollarVoteSongView = ({
               } else if (result.status == VoteStatuses.UNKNOWN_VOUCHER) {
                 showToast("Please provide a valid voucher code", true);
               } else if (result.status == VoteStatuses.INSUFFICIENT_FUNDS) {
-                showToast(
-                  "You don't have enough funds for this transaction",
-                  true,
-                );
+                showToast(`Insufficient credit: ${result.details}`, true);
               }
             } else {
               const note = encodeURIComponent(
@@ -142,13 +139,13 @@ export const DollarVoteSongPage = (
   const { songId } = useParams();
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [toastError, setToastErrror] = useState(false);
+  const [toastError, setToastError] = useState(false);
   const { nav } = properties;
 
   const showToast = (toastMessage: string, error: boolean) => {
     setToastOpen(true);
     setToastMessage(toastMessage);
-    setToastErrror(error);
+    setToastError(error);
   };
 
   if (!songId) {

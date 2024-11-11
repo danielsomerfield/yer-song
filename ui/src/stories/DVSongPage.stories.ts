@@ -50,6 +50,7 @@ const baseConfiguration = {
     return {
       requestId: "",
       status: StatusCodes.OK,
+      details: "",
     };
   },
 };

@@ -24,6 +24,7 @@ interface Dependencies {
 interface RequestSongResult {
   requestId: string;
   status: StatusCode;
+  details: string;
 }
 
 export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
@@ -77,7 +78,7 @@ export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
       );
     }
 
-    const { requestId, status } = await requestSong({
+    const requestSongResult = await requestSong({
       songId,
       voter,
       value: songRequest.value,
@@ -87,13 +88,10 @@ export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
     return generateResponseHeaders(
       event.headers,
       allowedOrigins,
-      status == StatusCodes.Ok ? 200 : 422,
+      requestSongResult.status == StatusCodes.Ok ? 200 : 422,
       {
         // TODO: did some weird stuff with status layers that need to be fixed
-        data: {
-          requestId,
-          status,
-        },
+        data: requestSongResult,
       }
     );
   };
