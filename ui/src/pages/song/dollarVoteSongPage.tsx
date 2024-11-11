@@ -15,7 +15,8 @@ import {
   useSong,
 } from "./common";
 import { SubmitDollarVotePanel } from "./submitDollarVotePanel";
-import { VoteSubmission } from "../../domain/voting";
+import { VoteStatuses, VoteSubmission } from "../../domain/voting";
+import * as Toast from "@radix-ui/react-toast";
 
 type SubmitDollarVoteForSong = (vote: {
   songId: string;
@@ -34,7 +35,7 @@ export const DollarVoteSongView = ({
   song: SongWithVotes;
   currentUser: CurrentUser;
   submitDollarVoteForSong: SubmitDollarVoteForSong;
-  showToast: () => void;
+  showToast: (message: string, error: boolean) => void;
 }) => {
   const isOnPlaylist = song.voteCount > 0;
 
@@ -51,15 +52,6 @@ export const DollarVoteSongView = ({
   ) : (
     <div></div>
   );
-
-  const handleVoucherResult = (result: VoteSubmission) => {
-    // TODO: submission could result in:
-    //    - successful payment with voucher: Toast success
-    //    - failed payment with voucher: Toast failure reason
-    //    - successful entry of the request: Forward to venmo
-
-    showToast();
-  };
 
   return (
     <SongContainer>
@@ -81,7 +73,16 @@ export const DollarVoteSongView = ({
             });
 
             if (vote.voucher) {
-              handleVoucherResult(result);
+              if (result.status == "OK") {
+                showToast("You song has been added", false);
+              } else if (result.status == VoteStatuses.UNKNOWN_VOUCHER) {
+                showToast("Please provide a valid voucher code", true);
+              } else if (result.status == VoteStatuses.INSUFFICIENT_FUNDS) {
+                showToast(
+                  "You don't have enough funds for this transaction",
+                  true,
+                );
+              }
             } else {
               const note = encodeURIComponent(
                 `Song: ${song.title} - RequestId: ${result.requestId}`,
@@ -99,11 +100,13 @@ export const DollarVoteSongView = ({
 };
 
 export const DVSongPage = (
-  properties: DVSongPageProperties & { songId: string },
+  properties: DVSongPageProperties & {
+    songId: string;
+    showToast: (message: string, error: boolean) => void;
+  },
 ) => {
-  const { getSong, submitDollarVoteForSong, currentUser, songId } = properties;
-
-  const [toastOpen, setToastOpen] = useState(false);
+  const { getSong, submitDollarVoteForSong, currentUser, songId, showToast } =
+    properties;
 
   const song = useSong(songId, getSong);
 
@@ -116,9 +119,7 @@ export const DVSongPage = (
           song={song}
           currentUser={currentUser}
           submitDollarVoteForSong={submitDollarVoteForSong}
-          showToast={() => {
-            console.log("showing toast");
-          }}
+          showToast={showToast}
         />
       </SongPage>
     );
@@ -139,15 +140,32 @@ export const DollarVoteSongPage = (
   properties: DVSongPageExtendedProperties,
 ) => {
   const { songId } = useParams();
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastError, setToastErrror] = useState(false);
   const { nav } = properties;
+
+  const showToast = (toastMessage: string, error: boolean) => {
+    setToastOpen(true);
+    setToastMessage(toastMessage);
+    setToastErrror(error);
+  };
 
   if (!songId) {
     throw `Missing path parameters: ${songId}`;
   }
   return (
     <div className={"SongWithParam"}>
-      {DVSongPage({ ...properties, songId })}
+      {DVSongPage({ ...properties, songId, showToast })}
 
+      {/*  TODO Factor this out */}
+      <Toast.Root
+        className={toastError ? "Toast ToastError" : "Toast"}
+        open={toastOpen}
+        onOpenChange={setToastOpen}
+      >
+        <Toast.Description>{toastMessage}</Toast.Description>
+      </Toast.Root>
       <NavPanel nav={nav}>
         <BackButton />
       </NavPanel>

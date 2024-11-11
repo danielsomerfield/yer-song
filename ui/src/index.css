@@ -115,6 +115,10 @@ input::placeholder {
 /*  Fade the toast in and out */
 }
 
+.ToastError {
+  background: #CC4444;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

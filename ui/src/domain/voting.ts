@@ -16,6 +16,14 @@ export const RequestStatuses = {
 
 export type RequestStatus = keyof typeof RequestStatuses;
 
+export const VoteStatuses = {
+  OK: "OK",
+  UNKNOWN_VOUCHER: "UnknownVoucher",
+  INSUFFICIENT_FUNDS: "InsufficientFunds",
+};
+
+export type VoteStatus = keyof typeof VoteStatuses;
+
 export interface SongRequest {
   requestedBy: User;
   song: { id: string; title: string };
@@ -33,5 +41,5 @@ export type GetSongRequests = () => Promise<ReturnOrError<SongRequests>>;
 
 export interface VoteSubmission {
   requestId: string;
-  status: StatusCode;
+  status: VoteStatus;
 }

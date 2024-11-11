@@ -46,6 +46,10 @@ export interface SongPageProperties extends PropsWithChildren {
 export const SongPage = (properties: SongPageProperties) => {
   const [toastOpen, setToastOpen] = useState(false);
 
+  const openToast = () => {
+    setToastOpen(true);
+  };
+
   const { song, children } = properties;
 
   if (!song) {
