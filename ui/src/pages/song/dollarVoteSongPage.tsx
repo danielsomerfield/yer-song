@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigateFunction, useParams } from "react-router-dom";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
 import { BackButton, NavPanel } from "../../components/navPanel";
@@ -29,10 +29,12 @@ const getVenmoRecipient = () => "@Rachel-Nesvig";
 export const DollarVoteSongView = ({
   song,
   submitDollarVoteForSong,
+  showToast,
 }: {
   song: SongWithVotes;
   currentUser: CurrentUser;
   submitDollarVoteForSong: SubmitDollarVoteForSong;
+  showToast: () => void;
 }) => {
   const isOnPlaylist = song.voteCount > 0;
 
@@ -49,6 +51,15 @@ export const DollarVoteSongView = ({
   ) : (
     <div></div>
   );
+
+  const handleVoucherResult = (result: VoteSubmission) => {
+    // TODO: submission could result in:
+    //    - successful payment with voucher: Toast success
+    //    - failed payment with voucher: Toast failure reason
+    //    - successful entry of the request: Forward to venmo
+
+    showToast();
+  };
 
   return (
     <SongContainer>
@@ -69,19 +80,16 @@ export const DollarVoteSongView = ({
               voucher: vote.voucher,
             });
 
-            console.log(result);
-
-            // TODO: submission could result in:
-            //    - successful payment with voucher: Toast success
-            //    - failed payment with voucher: Toast failure reason
-            //    - successful entry of the request: Forward to venmo
-
-            // const note = encodeURIComponent(
-            //   `Song: ${song.title} - RequestId: ${result.requestId}`,
-            // );
-            // window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
-            //   vote.value
-            // }&note=${note}`;
+            if (vote.voucher) {
+              handleVoucherResult(result);
+            } else {
+              const note = encodeURIComponent(
+                `Song: ${song.title} - RequestId: ${result.requestId}`,
+              );
+              window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
+                vote.value
+              }&note=${note}`;
+            }
           }}
         />
       </div>
@@ -95,6 +103,8 @@ export const DVSongPage = (
 ) => {
   const { getSong, submitDollarVoteForSong, currentUser, songId } = properties;
 
+  const [toastOpen, setToastOpen] = useState(false);
+
   const song = useSong(songId, getSong);
 
   if (!song) {
@@ -106,6 +116,9 @@ export const DVSongPage = (
           song={song}
           currentUser={currentUser}
           submitDollarVoteForSong={submitDollarVoteForSong}
+          showToast={() => {
+            console.log("showing toast");
+          }}
         />
       </SongPage>
     );

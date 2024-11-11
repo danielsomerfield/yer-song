@@ -89,10 +89,11 @@ export const createDollarVoteModeLambda = (dependencies: Dependencies) => {
       allowedOrigins,
       status == StatusCodes.Ok ? 200 : 422,
       {
+        // TODO: did some weird stuff with status layers that need to be fixed
         data: {
           requestId,
+          status,
         },
-        status,
       }
     );
   };

@@ -31,9 +31,9 @@ export const DollarEntryComponent = styled.div`
 `;
 
 const RequestValueInput = styled.input`
-  max-width: 7vh;
-  font-size: 7vh;
-  padding-left: 4vh;
+  max-width: 9vh;
+  font-size: 5vh;
+  padding-left: 3vh;
 `;
 
 const VoucherInput = styled.input`
@@ -49,7 +49,7 @@ const VoucherInput = styled.input`
 
 const CurrencyLabel = styled.div`
   position: relative;
-  right: -2vh;
+  right: -1vh;
   width: 0;
   font-size: 3.5vh;
   color: darkslategrey;
@@ -71,7 +71,7 @@ export const SubmitDollarVotePanel = ({
 
   const isReady = () => {
     const asFloat = Number.parseFloat(requestValue);
-    return Number.isSafeInteger(asFloat) && asFloat > 0;
+    return Number.isSafeInteger(asFloat) && asFloat > 0 && asFloat < 1000;
   };
   return (
     <>
@@ -86,11 +86,9 @@ export const SubmitDollarVotePanel = ({
               defaultValue={requestValue}
               required={true}
               inputMode={"numeric"}
-              step={1}
               minLength={1}
+              max={999}
               type={"number"}
-              maxLength={3}
-              pattern="[0-9]*"
               onInput={(e) => {
                 setRequestValue(e.currentTarget.value);
               }}
@@ -100,8 +98,8 @@ export const SubmitDollarVotePanel = ({
             name={"voucher"}
             defaultValue={voucher}
             required={false}
-            step={2}
             minLength={6}
+            maxLength={6}
             type={"text"}
             pattern="[a-zA-Z0-9]*"
             onInput={(e) => {
@@ -113,12 +111,17 @@ export const SubmitDollarVotePanel = ({
 
         <PayNowButton
           disabled={!isReady()}
-          onClick={() =>
-            onSubmit({
-              value: Number.parseInt(requestValue),
-              voucher: voucher,
-            })
-          }
+          onClick={(evt) => {
+            evt.currentTarget.disabled = true;
+            try {
+              onSubmit({
+                value: Number.parseInt(requestValue),
+                voucher: voucher,
+              });
+            } finally {
+              evt.currentTarget.disabled = false;
+            }
+          }}
         >
           Pay now!
         </PayNowButton>

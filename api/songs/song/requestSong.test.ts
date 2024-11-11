@@ -19,15 +19,14 @@ describe("song request", () => {
   > = fn();
 
   const queueSongRequest: MockedFunction<
-    (
-      request: SongRequestInput
-    ) => Promise<{ requestId: string; status: StatusCode }>
+    (request: SongRequestInput) => Promise<StatusCode>
   > = fn();
 
   const dependencies = {
     addVoteToSong,
     subtractFromVoucher,
     queueSongRequest,
+    idGen: () => "123123123",
   };
 
   it("adds vote when voucher is accepted", async () => {
@@ -99,10 +98,7 @@ describe("song request", () => {
 
   it("adds a song request if there is no voucher", async () => {
     const requestSong = createRequestSong(dependencies);
-    queueSongRequest.mockResolvedValueOnce({
-      status: "OK",
-      requestId: "asdfasdf",
-    });
+    queueSongRequest.mockResolvedValueOnce("OK");
 
     const input: SongRequestInput = {
       songId,

@@ -12,8 +12,6 @@ import { createValidateAdminUser } from "./admin/validate";
 import { createSongRequestRepository } from "./respository/song-request-repository";
 import { createVoucherRepository } from "./respository/voucher-repository";
 import { createRequestSong } from "./song/requestSong";
-import { Vote } from "./song/domain";
-import { StatusCode } from "./util/statusCodes";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;

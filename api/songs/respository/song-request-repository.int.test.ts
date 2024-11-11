@@ -36,11 +36,7 @@ describe("The song request repository", () => {
   const now = DateTime.fromISO(nowString);
 
   it("stores new first song request in pending status", async () => {
-    const repository = createSongRequestRepository(
-      dynamo.client(),
-      () => requestId,
-      () => now
-    );
+    const repository = createSongRequestRepository(dynamo.client(), () => now);
 
     await repository.addSongRequest({
       songId: song1Id,
@@ -49,6 +45,7 @@ describe("The song request repository", () => {
         name: voter1Name,
       },
       value,
+      requestId,
     });
 
     const item = await dynamo.client().getItem({
@@ -115,11 +112,7 @@ describe("The song request repository", () => {
   });
 
   it("leaves the song in ON_PLAYLIST status", async () => {
-    const repository = createSongRequestRepository(
-      dynamo.client(),
-      () => requestId,
-      () => now
-    );
+    const repository = createSongRequestRepository(dynamo.client(), () => now);
 
     await repository.addSongRequest({
       songId: song2Id,
@@ -128,6 +121,7 @@ describe("The song request repository", () => {
         name: voter1Name,
       },
       value,
+      requestId,
     });
 
     const item = await dynamo.client().getItem({
@@ -179,11 +173,7 @@ describe("The song request repository", () => {
   });
 
   it("fetches all song requests from songs", async () => {
-    const repository = createSongRequestRepository(
-      dynamo.client(),
-      () => requestId,
-      () => now
-    );
+    const repository = createSongRequestRepository(dynamo.client(), () => now);
 
     const requests = await repository.findAllSongRequests();
     expect(requests.page.length).toEqual(3);
@@ -197,11 +187,7 @@ describe("The song request repository", () => {
   });
 
   it("approves a request, adding it to the playlist with expected value", async () => {
-    const repository = createSongRequestRepository(
-      dynamo.client(),
-      () => requestId,
-      () => now
-    );
+    const repository = createSongRequestRepository(dynamo.client(), () => now);
     const requestToApproveId =
       SongsWithRequests.song7.Item.requests.M["Song7Request1"].M.id.S;
     const requestToApproveSongId = SongsWithRequests.song7.Item.PK.S;
@@ -232,11 +218,7 @@ describe("The song request repository", () => {
   });
 
   it("removes a request, ensuring it doesn't show up on playlist or request list", async () => {
-    const repository = createSongRequestRepository(
-      dynamo.client(),
-      () => requestId,
-      () => now
-    );
+    const repository = createSongRequestRepository(dynamo.client(), () => now);
     const requestToRemove =
       SongsWithRequests.song7.Item.requests.M["Song7Request1"].M.id.S;
     const requestToRemoveSongId = SongsWithRequests.song7.Item.PK.S;

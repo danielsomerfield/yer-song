@@ -17,31 +17,25 @@ import {
   SongRequest,
 } from "../admin/songRequests";
 import { Maybe } from "../util/maybe";
-import { createHash } from "node:crypto";
 import { Approval } from "../admin/approveSongRequest";
 import { SongRequestDenial } from "../admin/denySongRequest";
 import { StatusCode, StatusCodes } from "../util/statusCodes";
 import { User } from "../domain/user";
 
 interface SongRequestRecord {
+  requestId: string;
   voter: User;
   songId: string;
   value: number;
 }
 
-const idGenerator = () =>
-  createHash("shake256", { outputLength: 6 })
-    .update(Math.random().toString())
-    .digest("hex");
-
 export const createSongRequestRepository = (
   client: DynamoDB,
-  idGen: () => string = idGenerator,
   nowProvider: () => DateTime = DateTime.now
 ) => {
   const addSongRequest = async (
     request: SongRequestRecord
-  ): Promise<{ requestId: string; status: StatusCode }> => {
+  ): Promise<StatusCode> => {
     const { songId, voter, value } = request;
     const nowString = nowProvider()
       .toUTC()
@@ -49,10 +43,9 @@ export const createSongRequestRepository = (
     if (!nowString) {
       throw new Error("Invalid timestamp. This is almost certainly a bug");
     }
-    const requestId = idGen();
     const requestToAdd = {
       id: {
-        S: requestId,
+        S: request.requestId,
       },
       voterId: {
         S: voter.id,
@@ -111,14 +104,11 @@ export const createSongRequestRepository = (
       UpdateExpression:
         "SET requests.#id = :request, GSI2PK = if_not_exists(GSI2PK, :status), voters = list_append(if_not_exists(voters, :empty), :voter)",
       ExpressionAttributeNames: {
-        "#id": requestId,
+        "#id": request.requestId,
       },
     });
 
-    return {
-      requestId,
-      status: StatusCodes.Ok,
-    };
+    return StatusCodes.Ok;
   };
 
   // TODO: turns out that putting song requests under songs was not the best choice.
