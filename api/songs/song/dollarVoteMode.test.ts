@@ -1,15 +1,14 @@
 import { describe, it } from "@jest/globals";
 import { User } from "../domain/user";
-import * as AddVoteToSong from "./voteForSong";
-import { VoteModes } from "./voteForSong";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { verifyCORSHeaders } from "../http/headers.testing";
 import { StatusCode, StatusCodes } from "../util/statusCodes";
+import { SongRequestInput } from "./domain";
+import { createDollarVoteModeLambda } from "./dollarVoteLambda";
+
 import resetAllMocks = jest.resetAllMocks;
 import MockedFunction = jest.MockedFunction;
 import fn = jest.fn;
-import { SongRequestInput } from "./domain";
-import { createDollarVoteModeLambda } from "./dollarVoteLambda";
 
 describe("dollar vote mode", () => {
   const songId = "s:123123";

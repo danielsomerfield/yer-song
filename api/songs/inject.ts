@@ -9,9 +9,11 @@ import {
   createGetIdentityFromRequest,
 } from "./authz/token";
 import { createValidateAdminUser } from "./admin/validate";
-import { VoteModes } from "./song/voteForSong";
 import { createSongRequestRepository } from "./respository/song-request-repository";
 import { createVoucherRepository } from "./respository/voucher-repository";
+import { createRequestSong } from "./song/requestSong";
+import { Vote } from "./song/domain";
+import { StatusCode } from "./util/statusCodes";
 
 const getDynamoEndpoint = () => {
   const endpoint = process.env.API_ENDPOINT;
@@ -84,6 +86,12 @@ export const getAppDependencies = (
 
   const voucherRepository = createVoucherRepository(dynamoClient);
 
+  const requestSong = createRequestSong({
+    queueSongRequest: songRequestRepository.addSongRequest,
+    addVoteToSong: songsRepository.addVoteToSong,
+    subtractFromVoucher: voucherRepository.subtractValue,
+  });
+
   return {
     findSongById: songsRepository.getSongById,
     allowedOrigins,
@@ -97,7 +105,7 @@ export const getAppDependencies = (
     getIdentityFromRequest,
     clearVotes: songsRepository.clearVotes,
     validateCredentials,
-    requestSong: songRequestRepository.addSongRequest,
+    requestSong,
     findAllSongRequestsWithStatuses:
       songRequestRepository.findAllSongRequestsWithStatuses,
     insertLock: songsRepository.addLockToSong,

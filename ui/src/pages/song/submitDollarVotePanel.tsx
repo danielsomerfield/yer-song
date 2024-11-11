@@ -7,14 +7,14 @@ export const SubmitDollarVotePanelContents = styled.div`
   align-items: center;
   column-gap: 1vh;
   font-size: 4vh;
-  row-gap: 3vh;
+  row-gap: 2vh;
 `;
 
 const PayNowButton = styled.button`
   width: 90%;
-  min-height: 12vh;
-  max-height: 15vh;
-  margin: 1vh;
+  min-height: 10vh;
+  max-height: 14vh;
+  margin: 0.5vh;
   font-size: 3.5vh;
   min-width: 8vh;
 `;
@@ -32,13 +32,13 @@ export const DollarEntryComponent = styled.div`
 
 const RequestValueInput = styled.input`
   max-width: 7vh;
-  font-size: 10vh;
+  font-size: 7vh;
   padding-left: 4vh;
 `;
 
 const VoucherInput = styled.input`
   max-width: 30vh;
-  font-size: 9vh;
+  font-size: 7vh;
   font-variant: all-small-caps;
   text-align: center;
   &::placeholder {
@@ -75,9 +75,11 @@ export const SubmitDollarVotePanel = ({
   };
   return (
     <>
-      <SubmitDollarVotePanelContents>
-        <EntryWrapper>
-          <DollarEntryComponent>
+      <SubmitDollarVotePanelContents
+        className={"SubmitDollarVotePanelContents"}
+      >
+        <EntryWrapper className={"EntryWrapper"}>
+          <DollarEntryComponent className="DollarEntryComponent">
             <CurrencyLabel>$</CurrencyLabel>
             <RequestValueInput
               name={"requestValue"}

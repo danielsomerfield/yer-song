@@ -20,8 +20,14 @@ import { Maybe } from "../util/maybe";
 import { createHash } from "node:crypto";
 import { Approval } from "../admin/approveSongRequest";
 import { SongRequestDenial } from "../admin/denySongRequest";
-import { SongRequestInput } from "../song/domain";
 import { StatusCode, StatusCodes } from "../util/statusCodes";
+import { User } from "../domain/user";
+
+interface SongRequestRecord {
+  voter: User;
+  songId: string;
+  value: number;
+}
 
 const idGenerator = () =>
   createHash("shake256", { outputLength: 6 })
@@ -34,7 +40,7 @@ export const createSongRequestRepository = (
   nowProvider: () => DateTime = DateTime.now
 ) => {
   const addSongRequest = async (
-    request: SongRequestInput
+    request: SongRequestRecord
   ): Promise<{ requestId: string; status: StatusCode }> => {
     const { songId, voter, value } = request;
     const nowString = nowProvider()

@@ -19,7 +19,7 @@ export const SongContainer = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
-  gap: 1.5em;
+  gap: 1em;
 `;
 export const Song = styled.div`
   margin: 2vh 3vh 0 3vh;

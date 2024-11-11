@@ -15,7 +15,7 @@ const usage = () => {
 };
 
 const createVoucher = () => {
-  return Math.random().toString(36).slice(2).toUpperCase();
+  return Math.random().toString(36).slice(2, 8).toUpperCase();
 };
 
 (async function main() {

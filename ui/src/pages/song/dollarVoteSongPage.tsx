@@ -20,6 +20,7 @@ import { VoteSubmission } from "../../domain/voting";
 type SubmitDollarVoteForSong = (vote: {
   songId: string;
   value: number;
+  voucher?: string;
 }) => Promise<VoteSubmission>;
 
 // TODO: pull from configuration
@@ -65,14 +66,22 @@ export const DollarVoteSongView = ({
             const result = await submitDollarVoteForSong({
               songId: song.id,
               value: vote.value,
+              voucher: vote.voucher,
             });
 
-            const note = encodeURIComponent(
-              `Song: ${song.title} - RequestId: ${result.requestId}`,
-            );
-            window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
-              vote.value
-            }&note=${note}`;
+            console.log(result);
+
+            // TODO: submission could result in:
+            //    - successful payment with voucher: Toast success
+            //    - failed payment with voucher: Toast failure reason
+            //    - successful entry of the request: Forward to venmo
+
+            // const note = encodeURIComponent(
+            //   `Song: ${song.title} - RequestId: ${result.requestId}`,
+            // );
+            // window.location.href = `https://venmo.com/?txn=pay&audience=friends&recipients=${getVenmoRecipient()}&amount=${
+            //   vote.value
+            // }&note=${note}`;
           }}
         />
       </div>
