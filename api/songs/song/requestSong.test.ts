@@ -7,7 +7,8 @@ import fn = jest.fn;
 import resetAllMocks = jest.resetAllMocks;
 
 describe("song request", () => {
-  const voucherCode = "v:CDFF4D";
+  const voucherCode = "CDFF4D";
+  const voucher = `v:${voucherCode}`;
   const songId = "s:123123";
   const voterId = "u:123";
 
@@ -135,6 +136,29 @@ describe("song request", () => {
 
     expect(subtractFromVoucher).not.toHaveBeenCalled();
     expect(addVoteToSong).not.toHaveBeenCalled();
+  });
+
+  it("is case insensitive", async () => {
+    subtractFromVoucher.mockResolvedValueOnce({
+      status: StatusCodes.Ok,
+      details: "",
+    });
+    const requestSong = createRequestSong(dependencies);
+
+    const voucher = "abc123";
+    const input: SongRequestInput = {
+      songId,
+      value: 5,
+      voter: {
+        id: voterId,
+        name: "u123",
+      },
+      voucher,
+    };
+
+    const response = await requestSong(input);
+    expect(response.status).toEqual(StatusCodes.Ok);
+    expect(subtractFromVoucher).toHaveBeenCalledWith("ABC123", 5);
   });
 
   beforeEach(() => {

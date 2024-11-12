@@ -406,9 +406,7 @@ Resources:
             KeyType: HASH
           - AttributeName: SK
             KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 10
-          WriteCapacityUnits: 10
+        BillingMode: PAY_PER_REQUEST
         GlobalSecondaryIndexes:
           - IndexName: GSI1
             KeySchema:
@@ -418,18 +416,12 @@ Resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 10
-              WriteCapacityUnits: 10
           - IndexName: GSI2
             KeySchema:
               - AttributeName: GSI2PK
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: 10
-              WriteCapacityUnits: 10
 
 Outputs:
   SongByIdAPI:

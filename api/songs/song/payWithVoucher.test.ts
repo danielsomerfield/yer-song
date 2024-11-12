@@ -105,14 +105,6 @@ describe("Paying by voucher", () => {
     verifyCORSHeaders(result, origin);
   });
 
-  // it("refuses to accept payment if there is insufficient available value", () => {
-  //   throw "NYI";
-  // });
-  //
-  // it("subtracts from remaining voucher value", () => {
-  //   throw "NYI";
-  // });
-
   beforeEach(() => {
     resetAllMocks();
   });

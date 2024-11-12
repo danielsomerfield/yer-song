@@ -57,7 +57,7 @@ export const createRequestSong = (
   return async (request: SongRequestInput): Promise<RequestSongResponse> => {
     const { subtractFromVoucher, addVoteToSong, queueSongRequest } =
       dependencies;
-    const voucher = request.voucher;
+    const voucher = request.voucher?.toUpperCase();
     if (voucher) {
       const { status, details } = await processVoucher(
         subtractFromVoucher,

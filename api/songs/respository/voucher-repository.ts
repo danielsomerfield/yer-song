@@ -19,6 +19,7 @@ export const createVoucherRepository = (client: DynamoDB) => {
         },
       },
       FilterExpression: "begins_with(PK, :str)",
+      Limit: 1000,
     });
 
     return (
