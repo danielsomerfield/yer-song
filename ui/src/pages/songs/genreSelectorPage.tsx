@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { NavigateFunction } from "react-router-dom";
 import { ListItem } from "../../components/lists";
 import { LoadingMessagePanel } from "../../components/loadingPanel";
-import { NavPanel, setBackButtonLocation } from "../../components/navPanel";
+import { setBackButtonLocation } from "../../components/navPanel";
 import { LoadStatus, LoadStatuses } from "../common/loading";
 import { ReturnOrError, StatusCodes } from "../../services/common";
 import { RegistrationForm } from "../../components/registrationForm";

@@ -127,7 +127,7 @@ function App() {
           <div>Arcobaleno Strings</div>
           <div
             style={{
-              fontSize: "4vh",
+              fontSize: "3vh",
               fontWeight: "normal",
             }}
           >

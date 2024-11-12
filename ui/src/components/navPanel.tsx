@@ -58,7 +58,7 @@ export const NavPanel = (
 
 export const BackButton = () => {
   const lastLocation = localStorage.getItem("lastLocation");
-  localStorage.removeItem("lastLocation");
+  // localStorage.removeItem("lastLocation");
   return (
     <NavButton
       className="back-button"

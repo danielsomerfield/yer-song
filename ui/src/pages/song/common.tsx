@@ -19,6 +19,7 @@ export const SongContainer = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
+  height: 55vh;
   gap: 1em;
 `;
 export const Song = styled.div`
@@ -27,7 +28,7 @@ export const Song = styled.div`
   border: 5px solid;
   border-image-slice: 1;
   border-image-source: linear-gradient(to right, #b640ff, #90e7b3);
-  overflow: hidden;
+  overflow: scroll;
   max-height: 65%;
 `;
 

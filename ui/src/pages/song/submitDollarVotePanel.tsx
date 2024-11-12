@@ -5,9 +5,7 @@ export const SubmitDollarVotePanelContents = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
-  column-gap: 1vh;
-  font-size: 4vh;
-  row-gap: 2vh;
+  row-gap: 1vh;
 `;
 
 const PayNowButton = styled.button`
@@ -16,7 +14,7 @@ const PayNowButton = styled.button`
   max-height: 14vh;
   margin: 0.5vh;
   font-size: 3.5vh;
-  min-width: 8vh;
+  min-width: 6vh;
 `;
 
 const EntryWrapper = styled.div`
@@ -38,9 +36,10 @@ const RequestValueInput = styled.input`
 
 const VoucherInput = styled.input`
   max-width: 28vh;
-  font-size: 7vh;
+  font-size: 5vh;
   font-variant: all-small-caps;
   text-align: center;
+
   &::placeholder {
     font-variant: normal;
     font-size: 4vh;
