@@ -2,10 +2,10 @@ import csv
 import json
 import uuid
 
-data_directory = '/Users/sydney/Projects/yer-song/seed'
+data_directory = '../seed'
 
 # combine csv files: this will combine the files below into "all_songs.csv"
-csv_files = ['classic-pop-touched.csv', 'contemporary-touched.csv', 'screen-touched.csv']
+csv_files = ['classic-pop-touched.csv', 'contemporary-touched.csv', 'jazz-love-touched.csv', 'screen-touched.csv']
 
 with open('all_songs.csv', 'w') as songs_file:
     for file in csv_files:
@@ -16,10 +16,11 @@ with open('all_songs.csv', 'w') as songs_file:
 # building the json from the csv file
 song = []
 
-genres = ['Classic Pop & Rock (Last century)', 'Contemporary (This century)', 'Movie, TV, and Stage']
+genres = ['Classic Pop & Rock (Last century)', 'Contemporary (This century)', 'Jazz Standards & Old Love Songs', 'Movie, TV, and Stage']
 genre_tags = {
         'Classic Pop & Rock (Last century)': 'ClassicPopRock',
         'Contemporary (This century)': 'Contemporary',
+        'Jazz Standards & Old Love Songs': 'JazzOldLove',
         'Movie, TV, and Stage' : 'MovieTVStage'
         }
 

@@ -1,7 +1,12 @@
 '''
 This will take a file named 'contemporary.txt' with the following format:
 
-"A Sky Full of Stars (Coldplay), A Thousand Years (Christina Perri), Adore You (Harry Styles), ..."
+"
+A Sky Full of Stars (Coldplay)
+A Thousand Years (Christina Perri)
+Adore You (Harry Styles)
+...
+"
 
 And convert it to a csv file with the format:
 
@@ -10,26 +15,27 @@ A Thousand Years,Christina Perri,Contemporary (This century)
 Adore You,Harry Styles,Contemporary (This century)
 
 Note: Converted csv files will need to be cleaned up manually where band or song names have commas in them.
+Comma's are turned to semicolons. Afterwards, you'll need to quote the item and change them back to commas
+if you'd like.
 '''
 
 import csv
 
-text_file_list = ['classic-pop', 'contemporary', 'screen']
+text_file_list = ['classic-pop', 'contemporary', 'jazz-love', 'screen']
 genre_hash = {
         "classic-pop": "Classic Pop & Rock (Last century)",
         "contemporary": "Contemporary (This century)",
+        "jazz-love": "Jazz Standards & Old Love Songs",
         "screen": "Movie, TV, and Stage"
         }
 
 for genre in text_file_list:
     with open(f"{genre}.txt", 'r') as file:
         data = file.read()
-        jj
-        data = data.replace('\n', ' ')
         data = data.replace('&amp;', '&')
         data = data.replace('&#39;', "'")
         data = data.replace('&quot;', '"')
-        data = data.replace(',', '\n')
+        data = data.replace(',', ';')
         data = data.replace(' (', ', ')
         data = data.replace(')', '')
         
