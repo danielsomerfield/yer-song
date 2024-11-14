@@ -25,7 +25,7 @@ type SubmitDollarVoteForSong = (vote: {
 }) => Promise<VoteSubmission>;
 
 // TODO: pull from configuration
-const getVenmoRecipient = () => "@ArcobalenoStrings";
+const getVenmoRecipient = () => "@NicoleWilliamsTacoma";
 
 export const DollarVoteSongView = ({
   song,
