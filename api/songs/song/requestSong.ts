@@ -68,8 +68,12 @@ export const createRequestSong = (
       );
       return { status, requestId: idGen(), details };
     } else {
-      const status = await queueSongRequest({ requestId: idGen(), ...request });
-      return { status, requestId: idGen(), details: "" };
+      const requestId = idGen();
+      const status = await queueSongRequest({
+        requestId: requestId,
+        ...request,
+      });
+      return { status, requestId, details: "" };
     }
   };
 };
