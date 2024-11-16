@@ -109,7 +109,7 @@ export const SubmitDollarVotePanel = ({
         </EntryWrapper>
 
         <PayNowButton
-          disabled={!isReady()}
+          disabled={true}
           onClick={(evt) => {
             evt.currentTarget.disabled = true;
             try {
@@ -118,6 +118,8 @@ export const SubmitDollarVotePanel = ({
                 voucher: voucher,
               });
             } finally {
+              // TODO: this does not work. I think because the events fired above are async
+              // This needs to after an await or the like on the returned promise from the call.
               evt.currentTarget.disabled = false;
             }
           }}

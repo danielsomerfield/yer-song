@@ -10,8 +10,16 @@ import { StatusCodes } from "../../services/common";
 import { PlaylistView } from "./playlistView";
 import { VoteMode } from "../../domain/voting";
 import { ToastPopup } from "../../components/toast";
+import styled from "styled-components";
 
 type VoteForSong = (id: string) => Promise<void>;
+
+const NextTimePanel = styled.div`
+  margin-top: 4vh;
+  padding: 2vh;
+  text-align: center;
+  vertical-align: center;
+`;
 
 export const PlayListPage = ({
   getPlaylist,
@@ -56,16 +64,17 @@ export const PlayListPage = ({
   useEffect(() => {
     setBackButtonLocation("/playlist");
 
-    if (loadStatus.name == LoadStatuses.UNINITIALIZED.name) {
-      (async () => {
-        setLoadStatus(LoadStatuses.LOADING);
-        await refreshPlaylist();
-      })();
-    } else if (loadStatus.name == "loaded" && timer.current == undefined) {
-      timer.current = window.setInterval(async () => {
-        await refreshPlaylist();
-      }, refreshTime);
-    }
+    // Disabled
+    // if (loadStatus.name == LoadStatuses.UNINITIALIZED.name) {
+    //   (async () => {
+    //     setLoadStatus(LoadStatuses.LOADING);
+    //     await refreshPlaylist();
+    //   })();
+    // } else if (loadStatus.name == "loaded" && timer.current == undefined) {
+    //   timer.current = window.setInterval(async () => {
+    //     await refreshPlaylist();
+    //   }, refreshTime);
+    // }
   }, undefined);
 
   //TODO: replace this function with a shared component
@@ -108,6 +117,10 @@ export const PlayListPage = ({
   };
   return (
     <>
+      <NextTimePanel>
+        The concert is over and registration is now disabled. We hope to see you
+        again!
+      </NextTimePanel>
       {panel()}
       <ToastPopup
         toastOpen={toastOpen}

@@ -168,7 +168,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-            - Write
+#            - Write
 
   LockSongFunction:
     Type: AWS::Serverless::Function
@@ -195,7 +195,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-            - Write
+#            - Write
 
   UnlockLockSongFunction:
     Type: AWS::Serverless::Function
@@ -222,7 +222,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-            - Write
+#            - Write
 
   RegisterUserFunction:
     Type: AWS::Serverless::Function
@@ -249,7 +249,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-            - Write
+#            - Write
                 
   RunAdminCommandFunction:
     Type: AWS::Serverless::Function
@@ -276,7 +276,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-            - Write
+#            - Write
 
   AdminLoginFunction:
     Type: AWS::Serverless::Function
@@ -355,7 +355,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-            - Write
+#            - Write
 
   DenySongRequest:
     Type: AWS::Serverless::Function
@@ -382,7 +382,7 @@ Resources:
             Id: SongTable
           Permissions:
             - Read
-            - Write
+#            - Write
 
 # Dependencies
 # TODO: I can't find any bloody way to prevent having to build this other than not use

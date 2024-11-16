@@ -38,24 +38,28 @@ export const RegistrationForm = ({
             aria-label={"registration-form"}
           >
             <div>
-              <FormRow>
-                {/* TODO: I think this `htmlFor` should be "name" */}
-                <Label className="formLabel" htmlFor={"emailAddress"}>
-                  Name
-                </Label>
-                <input
-                  id={"name"}
-                  required={true}
-                  autoCapitalize={"off"}
-                  autoCorrect={"off"}
-                  minLength={2}
-                  onInput={(e) => {
-                    setValid(e.currentTarget.checkValidity());
-                    setNameInput(e.currentTarget.value);
-                  }}
-                  placeholder={"Enter your full name"}
-                />
-              </FormRow>
+              <div>
+                The concert is over and registration is now disabled. We hope to
+                see you again!
+              </div>
+              {/*<FormRow>*/}
+              {/*  /!* TODO: I think this `htmlFor` should be "name" *!/*/}
+              {/*  <Label className="formLabel" htmlFor={"emailAddress"}>*/}
+              {/*    Name*/}
+              {/*  </Label>*/}
+              {/*  <input*/}
+              {/*      id={"name"}*/}
+              {/*      required={true}*/}
+              {/*      autoCapitalize={"off"}*/}
+              {/*      autoCorrect={"off"}*/}
+              {/*      minLength={2}*/}
+              {/*      onInput={(e) => {*/}
+              {/*        setValid(e.currentTarget.checkValidity());*/}
+              {/*        setNameInput(e.currentTarget.value);*/}
+              {/*      }}*/}
+              {/*      placeholder={"Enter your full name"}*/}
+              {/*  />*/}
+              {/*</FormRow>*/}
               <ButtonRow>
                 <RegisterButton onClick={submitRegistration} disabled={!valid}>
                   Register
